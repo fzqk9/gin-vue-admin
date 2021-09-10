@@ -47,12 +47,24 @@ func ({{.Abbreviation}}Service *{{.StructName}}Service)Get{{.StructName}}(id uin
 
 // Get{{.StructName}}InfoList 分页获取{{.StructName}}记录
 // Author [piexlmax](https://github.com/piexlmax)
-func ({{.Abbreviation}}Service *{{.StructName}}Service)Get{{.StructName}}InfoList(info autoCodeReq.{{.StructName}}Search) (err error, list interface{}, total int64) {
+func ({{.Abbreviation}}Service *{{.StructName}}Service)Get{{.StructName}}InfoList(info autoCodeReq.{{.StructName}}Search, createdAtBetween []string) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
+    //修改 by ljd  增加查询排序 
+    order := info.OrderKey
+	desc := info.OrderDesc
     // 创建db
 	db := global.GVA_DB.Model(&autocode.{{.StructName}}{})
     var {{.Abbreviation}}s []autocode.{{.StructName}}
+
+    //修改 by ljd  
+    if info.ID > 0 {
+		db = db.Where("`id` = ?", info.ID)
+	}
+	if createdAtBetween != nil && len(createdAtBetween) > 0 {
+		db = db.Where("`created_at` BETWEEN ? AND ?", createdAtBetween[0], createdAtBetween[1])
+	}
+
     // 如果有条件搜索 下方会自动创建搜索语句
         {{- range .Fields}}
             {{- if .FieldSearchType}}
@@ -74,12 +86,24 @@ func ({{.Abbreviation}}Service *{{.StructName}}Service)Get{{.StructName}}InfoLis
     }
                 {{- else if eq .FieldType "time.Time" }}
     if info.{{.FieldName}} != nil {
-         db = db.Where("`{{.ColumnName}}` {{.FieldSearchType}} ?",{{if eq .FieldSearchType "LIKE"}}"%"+{{ end }}info.{{.FieldName}}{{if eq .FieldSearchType "LIKE"}}+"%"{{ end }})
+          db = db.Where("`{{.ColumnName}}` {{.FieldSearchType}} > ?", info.{{.FieldName}})
     }
                 {{- end }}
         {{- end }}
     {{- end }}
 	err = db.Count(&total).Error
-	err = db.Limit(limit).Offset(offset).Find(&{{.Abbreviation}}s).Error
+	//err = db.Limit(limit).Offset(offset).Find(&{{.Abbreviation}}s).Error
+    //修改 by ljd  增加查询排序 
+     if order != "" {
+		var OrderStr string
+		if desc {
+			OrderStr = order + " desc"
+		} else {
+			OrderStr = order
+		}
+        err = db.Order(OrderStr).Limit(limit).Offset(offset).Find(&{{.Abbreviation}}s).Error 
+	} else {
+		err = db.Limit(limit).Offset(offset).Find(&{{.Abbreviation}}s).Error
+	}
 	return err, {{.Abbreviation}}s, total
 }

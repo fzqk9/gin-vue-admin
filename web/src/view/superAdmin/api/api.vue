@@ -219,7 +219,8 @@ export default {
     sortChange({ prop, order }) {
       if (prop) {
         this.searchInfo.orderKey = toSQLLine(prop)
-        this.searchInfo.desc = order === 'descending'
+       // this.searchInfo.desc = order === 'descending'
+	    this.searchInfo.orderDesc = order === 'descending'
       }
       this.getTableData()
     },

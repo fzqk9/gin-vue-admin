@@ -101,6 +101,46 @@
           </el-select>
         </el-col>
       </el-form-item>
+	  <!--  add by ljd 20210909-->
+	 <el-form-item label="是否隐藏" prop="beHide">
+	     <el-col :span="8">
+	       <el-select v-model="dialogMiddle.beHide" placeholder="请选择是否隐藏" clearable>
+	         <el-option
+	           v-for="item in beHideOptions"
+	           :key="item.value"
+	           :label="item.label"
+	           :value="item.value"
+	         />
+	       </el-select>
+	     </el-col>
+	   </el-form-item>
+	 			
+		<el-form-item label="是否快编" prop="beQuickEdit">
+			<el-col :span="8">
+			  <el-select v-model="dialogMiddle.beQuickEdit" placeholder="请选择是否快编" clearable>
+				<el-option
+				  v-for="item in beHideOptions"
+				  :key="item.value"
+				  :label="item.label"
+				  :value="item.value"
+				/>
+			  </el-select>
+			</el-col>
+		  </el-form-item>
+	     
+	     <el-form-item label="是否导出" prop="Excel">
+	         <el-col :span="8">
+	           <el-select v-model="dialogMiddle.beQuickEdit" placeholder="请选择是否快编" clearable>
+	             <el-option
+	               v-for="item in beHideOptions"
+	               :key="item.value"
+	               :label="item.label"
+	               :value="item.value"
+	             />
+	           </el-select>
+	         </el-col>
+	       </el-form-item>
+		
     </el-form>
   </div>
 </template>
@@ -125,6 +165,26 @@ export default {
       middleDate: {},
       dbfdOptions: [],
       dictOptions: [],
+	  beHideOptions: [
+	  	{
+	  	  label: '否',
+	  	  value: false
+	  	} ,
+	  	{
+	  	  label: '是',
+	  	  value: true
+	  	}
+	    ],
+	  		orderByOptions: [	    
+	  			{
+	  			  label: '否',
+	  			  value: false
+	  			} ,
+	  			{
+	  			  label: '是',
+	  			  value: true
+	  			}
+	  		  ],
       typeSearchOptions: [
         {
           label: '=',
@@ -167,7 +227,11 @@ export default {
         {
           label: '时间',
           value: 'time.Time'
-        }
+        }, 
+		{
+		  label: '图片',
+		  value: 'image'
+		}
       ],
       rules: {
         fieldName: [

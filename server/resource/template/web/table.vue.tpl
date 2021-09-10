@@ -1,7 +1,24 @@
+<!--修改 by ljd 20210725， bool datatime DictType字段 的查询填充数据 --> 
+
 <template>
   <div>
     <div class="search-term">
       <el-form :inline="true" :model="searchInfo" class="demo-form-inline">
+<!--修改 by ljd 20210725 --> 
+{{- if .SearchCreate}} 
+  <el-form-item label="创建时间">
+        <el-date-picker type="datetimerange" v-model="searchInfo.createdAtBetween" format="yyyy-MM-dd HH:mm:ss"
+        value-format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" start-placeholder="开始日期"
+        end-placeholder="结束日期" range-separator="至" clearable></el-date-picker> 
+         </el-form-item>
+  {{ end -}} 
+
+      {{- if .SearchId}} 
+        <el-form-item label="ID">
+            <el-input placeholder="搜索ID" v-model="searchInfo.ID" />
+        </el-form-item>
+    {{ end -}} 
+
            {{- range .Fields}}  {{- if .FieldSearchType}} {{- if eq .FieldType "bool" }}
             <el-form-item label="{{.FieldDesc}}" prop="{{.FieldJson}}">
             <el-select v-model="searchInfo.{{.FieldJson}}" clearable placeholder="请选择">
@@ -17,7 +34,23 @@
                 </el-option>
             </el-select>
             </el-form-item>
-                  {{- else }}
+           {{ else if eq .FieldType "int" -}}
+              {{ if .DictType -}}
+                <el-form-item label="{{.FieldDesc}}" prop="{{.FieldJson}}">                
+                    <el-select v-model="searchInfo.{{ .FieldJson }}" placeholder="请选择" clearable>
+                      <el-option v-for="(item,key) in {{ .DictType }}Options" :key="key" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                </el-form-item>
+              {{ else -}}
+                <el-input placeholder="搜索条件"  v-model="searchInfo.{{ .FieldJson }}" clearable placeholder="请输入"/>
+              {{ end -}}      
+          {{ else if eq .FieldType "time.Time" -}}
+            <el-form-item label="{{.FieldDesc}}">
+                <el-date-picker type="datetimerange" v-model="formData.{{ .FieldJson }}" format="yyyy-MM-dd HH:mm:ss"
+                  value-format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" start-placeholder="开始日期"
+                  end-placeholder="结束日期" range-separator="至" clearable></el-date-picker> 
+             </el-form-item>
+          {{ else -}} 
         <el-form-item label="{{.FieldDesc}}">
           <el-input v-model="searchInfo.{{.FieldJson}}" placeholder="搜索条件" />
         </el-form-item>{{ end }}{{ end }}{{ end }}
@@ -45,26 +78,33 @@
       tooltip-effect="dark"
       :data="tableData"
       @selection-change="handleSelectionChange"
+      @sort-change="sortChange" 
     >
       <el-table-column type="selection" width="55" />
-      <el-table-column label="日期" width="180">
-        <template #default="scope">{{ "{{ formatDate(scope.row.CreatedAt) }}" }}</template>
-      </el-table-column>
+        <!-- add by ljd 20210709,增加id 排序功能等  -->
+       <el-table-column label="ID" min-width="60" prop="ID" sortable="custom" />  
+  
       {{- range .Fields}}
+       {{- if  .BeHide }}  
+           <!-- add by ljd 20210720, 隐藏字段   {{.FieldJson}} -->         
+         {{- else }}  
       {{- if .DictType}}
-      <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120">
+      <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120" {{- if  .OrderBy  }} sortable="custom"{{ end -}} >
         <template #default="scope">
           {{"{{"}} filterDict(scope.row.{{.FieldJson}},"{{.DictType}}") {{"}}"}}
         </template>
       </el-table-column>
       {{- else if eq .FieldType "bool" }}
-      <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120">
+      <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"{{- if  .OrderBy }} sortable="custom"{{ end -}}  >
         <template #default="scope">{{"{{"}} formatBoolean(scope.row.{{.FieldJson}}) {{"}}"}}</template>
       </el-table-column> {{- else }}
-      <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120" />
+      <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120" {{- if  .OrderBy }} sortable="custom"{{ end -}}  />
       {{- end }}
       {{- end }}
-      <el-table-column label="按钮组">
+       <el-table-column label="日期" width="180"  prop="created_at" sortable="custom" >
+        <template #default="scope">{{ "{{ formatDate(scope.row.CreatedAt) }}" }}</template>
+      </el-table-column>
+      <el-table-column label="操作">
         <template #default="scope">
           <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="update{{.StructName}}(scope.row)">变更</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteRow(scope.row)">删除</el-button>
@@ -101,7 +141,9 @@
       {{- end }}
       {{- end }}
       {{- if eq .FieldType "time.Time" }}
-          <el-date-picker v-model="formData.{{ .FieldJson }}" type="date" placeholder="选择日期" clearable />
+           <el-date-picker type="datetimerange" v-model="formData.{{ .FieldJson }}" format="yyyy-MM-dd HH:mm:ss"
+                    value-format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" start-placeholder="开始日期"
+                    end-placeholder="结束日期" range-separator="至" clearable></el-date-picker>
       {{- end }}
       {{- if eq .FieldType "float64" }}
           <el-input-number v-model="formData.{{ .FieldJson }}" :precision="2" clearable />
@@ -129,6 +171,7 @@ import {
   get{{.StructName}}List
 } from '@/api/{{.PackageName}}' //  此处请自行替换地址
 import infoList from '@/mixins/infoList'
+import { toSQLLine } from '@/utils/stringFun'
 export default {
   name: '{{.StructName}}',
   mixins: [infoList],
@@ -290,6 +333,14 @@ export default {
     openDialog() {
       this.type = 'create'
       this.dialogFormVisible = true
+    },
+     //  add by ljd 20210709, 排序 
+    sortChange({ prop, order }) {
+      if (prop) {
+        this.searchInfo.orderKey = toSQLLine(prop)
+        this.searchInfo.orderDesc = order === 'descending'
+      }
+      this.getTableData()
     }
   },
 }

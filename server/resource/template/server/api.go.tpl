@@ -127,9 +127,11 @@ func ({{.Abbreviation}}Api *{{.StructName}}Api) Find{{.StructName}}(c *gin.Conte
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /{{.Abbreviation}}/get{{.StructName}}List [get]
 func ({{.Abbreviation}}Api *{{.StructName}}Api) Get{{.StructName}}List(c *gin.Context) {
+	createdAtBetween, _ := c.GetQueryArray("createdAtBetween[]")
+
 	var pageInfo autocodeReq.{{.StructName}}Search
 	_ = c.ShouldBindQuery(&pageInfo)
-	if err, list, total := {{.Abbreviation}}Service.Get{{.StructName}}InfoList(pageInfo); err != nil {
+	if err, list, total := {{.Abbreviation}}Service.Get{{.StructName}}InfoList(pageInfo,createdAtBetween); err != nil {
 	    global.GVA_LOG.Error("获取失败!", zap.Any("err", err))
         response.FailWithMessage("获取失败", c)
     } else {

@@ -12,6 +12,8 @@ type AutoCodeStruct struct {
 	Description        string   `json:"description"`        // Struct中文名称
 	AutoCreateApiToSql bool     `json:"autoCreateApiToSql"` // 是否自动创建api
 	AutoMoveFile       bool     `json:"autoMoveFile"`       // 是否自动移动文件
+	SearchCreate       bool     `json:"searchCreate"`       // 是否 搜索创建时间   新增 by ljd 20210731
+	SearchId           bool     `json:"searchId"`           // 是否搜索ID  新增 by ljd 20210731
 	Fields             []*Field `json:"fields"`
 }
 
@@ -26,6 +28,9 @@ type Field struct {
 	ColumnName      string `json:"columnName"`      // 数据库字段
 	FieldSearchType string `json:"fieldSearchType"` // 搜索条件
 	DictType        string `json:"dictType"`        // 字典
+	OrderBy         bool   `json:"orderBy"`         // 排序  add by ljd 20210709 增加排序字段
+	BeHide          bool   `json:"beHide"`          // 隐藏  add by ljd 20210709 增加隐藏
+	BeQuickEdit     bool   `json:"beQuickEdit"`     // 快速排序  add by ljd 20210709 增加隐藏
 }
 
 var AutoMoveErr error = errors.New("创建代码成功并移动文件成功")
