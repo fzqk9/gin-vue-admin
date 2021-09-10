@@ -61,7 +61,7 @@ export default {
     // @params afterFunc function 请求完成后执行的函数 默认为空函数
     async getTableData(beforeFunc = () => {}, afterFunc = () => {}) {
       beforeFunc()
-	  //判断一个查询对象是否有空属性  add by ljd 20210718
+	  //判断一个查询对象是否有空属性    add by ljd 20210718  
 	  this.obj_attr_is_null(this.searchInfo);  
       const table = await this.listApi({ page: this.page, pageSize: this.pageSize, ...this.searchInfo })
       if (table.code === 0) {
