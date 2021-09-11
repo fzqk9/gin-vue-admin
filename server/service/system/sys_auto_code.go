@@ -158,12 +158,13 @@ func (autoCodeService *AutoCodeService) CreateTemp(autoCode system.AutoCodeStruc
 	if err != nil {
 		return err
 	}
+	fmt.Println("aaa111")
 	meta, _ := json.Marshal(autoCode)
 	// 写入文件前，先创建文件夹
 	if err = utils.CreateDir(needMkdir...); err != nil {
 		return err
 	}
-
+	fmt.Println("aaa222")
 	// 生成文件
 	for _, value := range dataList {
 		f, err := os.OpenFile(value.autoCodePath, os.O_CREATE|os.O_WRONLY, 0755)
@@ -188,7 +189,9 @@ func (autoCodeService *AutoCodeService) CreateTemp(autoCode system.AutoCodeStruc
 		idBf.WriteString(strconv.Itoa(int(id)))
 		idBf.WriteString(";")
 	}
+
 	if autoCode.AutoMoveFile { // 判断是否需要自动转移
+		fmt.Println("aaa3333")
 		Init()
 		for index := range dataList {
 			autoCodeService.addAutoMoveFile(&dataList[index])
@@ -216,12 +219,14 @@ func (autoCodeService *AutoCodeService) CreateTemp(autoCode system.AutoCodeStruc
 			}()
 		}
 	} else { // 打包
+		fmt.Println("aaa4444")
 		if err = utils.ZipFiles("./ginvueadmin.zip", fileList, ".", "."); err != nil {
 			return err
 		}
 	}
 	if autoCode.AutoMoveFile || autoCode.AutoCreateApiToSql {
 		if autoCode.TableName != "" {
+			fmt.Println("bbbb111")
 			err = AutoCodeHistoryServiceApp.CreateAutoCodeHistory(
 				string(meta),
 				autoCode.StructName,
@@ -232,6 +237,7 @@ func (autoCodeService *AutoCodeService) CreateTemp(autoCode system.AutoCodeStruc
 				idBf.String(),
 			)
 		} else {
+			fmt.Println("bbbb2222")
 			err = AutoCodeHistoryServiceApp.CreateAutoCodeHistory(
 				string(meta),
 				autoCode.StructName,

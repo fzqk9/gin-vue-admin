@@ -59,46 +59,47 @@
       </el-form-item>
       <el-form-item label="文件名称" prop="packageName">
         <el-input v-model="form.packageName" placeholder="生成文件的默认名称(建议为驼峰格式,首字母小写,如sysXxxXxxx)" />
-      </el-form-item>
-      <el-form-item>
+      </el-form-item> 
+            
+      <el-form-item label-width="100px" >
         <template #label>
-          <el-tooltip content="注：把自动生成的API注册进数据库" placement="bottom" effect="light">
-            <div> 自动创建API </div>
+          <el-tooltip content="注：把自动生成的API注册进数据库" placement="bottom" effect="dark">
+            <div>自动创建API</div>
           </el-tooltip>
         </template>
         <el-checkbox v-model="form.autoCreateApiToSql" />
       </el-form-item>
-      <el-form-item>
+      <el-form-item label-width="100px" >
         <template #label>
-          <el-tooltip content="注：自动迁移生成的文件到ymal配置的对应位置" placement="bottom" effect="light">
-            <div> 自动移动文件 </div>
+          <el-tooltip content="注：自动迁移生成的文件到ymal配置的对应位置" placement="bottom" effect="dark">
+            <div>自动移动文件</div>
           </el-tooltip>
         </template>
         <el-checkbox v-model="form.autoMoveFile" />
       </el-form-item>
 	  <!-- add by ljd 20210909 -->
-	  <el-form-item>
-	    <template slot="label">
-	      <el-tooltip content="注：搜索id" placement="bottom" effect="light">
+	  <el-form-item label-width="70px" >
+	    <template #label>
+	      <el-tooltip content="注：搜索id" placement="bottom" effect="dark">
 	        <div> 搜索id </div>
 	      </el-tooltip>
 	    </template>
 	    <el-checkbox v-model="form.searchId" />
 	  </el-form-item>
 	  
-	  <el-form-item>
-	    <template slot="label">
-	      <el-tooltip content="注：搜索和显示创建日期" placement="bottom" effect="light">
+	  <el-form-item label-width="70px" >
+	    <template #label>
+	      <el-tooltip content="注：搜索和显示创建日期" placement="bottom" effect="dark">
 	        <div> 搜索日期 </div>
 	      </el-tooltip>
 	    </template>
 	    <el-checkbox v-model="form.searchCreate" />
 	  </el-form-item>
 	  
-	  <el-form-item>
-	    <template slot="label">
-	      <el-tooltip content="注：是否导出excel" placement="bottom" effect="light">
-	        <div> 是否导出 </div>
+	  <el-form-item label-width="100px" >
+	    <template #label>
+	      <el-tooltip content="注：是否导出excel" placement="bottom" effect="dark">
+	        <div>导出excel </div>
 	      </el-tooltip>
 	    </template>
 	    <el-checkbox v-model="form.beExcel" />
@@ -119,7 +120,53 @@
       <el-table-column prop="dataTypeLong" label="字段长度" width="130" />
       <el-table-column prop="columnName" label="数据库字段" width="130" />
       <el-table-column prop="comment" label="字段描述" width="130" /> 
-	    
+      <el-table-column prop="fieldSearchType" label="搜索条件" width="130" > 
+             <template  #default="scope" >                    
+              <el-popover trigger="click" placement="top"  >  
+                <el-select v-model="scope.row.fieldSearchType" placeholder="请选择" clearable>
+                  <el-option
+                    v-for="item in typeSearchOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+                </el-select> 
+                 <template #reference>
+                   <div  class="quickEdit"  >{{scope.row.fieldSearchType?scope.row.fieldSearchType:"请选择:"}} </div>
+               </template>
+              </el-popover>
+      		  </template>  
+       </el-table-column> 
+            <el-table-column prop="dictType" label="字典" width="130"  >
+      	  <template #default="scope" >  
+              <el-popover trigger="click" placement="top" :ref="`popover-${scope.$index}`">
+                     <el-select v-model="scope.row.dictType" :disabled="scope.row.fieldType!=='int'" placeholder="请选择字典" clearable>
+                       <el-option
+                         v-for="item in dictOptions"
+                         :key="item.type"
+                         :label="`${item.type}(${item.name})`"
+                         :value="item.type"
+                       />
+                     </el-select>
+                       <template #reference>
+                         <div  class="quickEdit"  >  {{ scope.row.dictType?scope.row.dictType:"请选择:"}} </div>
+                       </template>
+              </el-popover> 
+      	  </template> 
+      	  </el-table-column> 
+      	  <el-table-column prop="orderBy" label="是否排序" width="130"  >
+      		  <template #default="scope" >
+      			  <el-switch v-model="scope.row.orderBy" /> 
+      		  </template> </el-table-column>
+      	  <el-table-column prop="beHide" label="是否隐藏" width="130" >
+      		  <template #default="scope" >
+      			  <el-switch v-model="scope.row.beHide" /> 
+      		  </template> </el-table-column>
+      	  <el-table-column prop="beQuickEdit" label="是否快编" width="130" >
+      		  <template #default="scope" >
+      		      <el-switch v-model="scope.row.beQuickEdit" /> 
+      		  </template>
+      	   </el-table-column> 
 	   
       <el-table-column label="操作" width="300">
         <template #default="scope">
@@ -202,6 +249,7 @@ import { toUpperCase, toHump, toSQLLine } from '@/utils/stringFun'
 import { createTemp, getDB, getTable, getColumn, preview, getMeta } from '@/api/autoCode'
 import { getDict } from '@/utils/dictionary'
 import { getSysDictionaryList } from '@/api/sysDictionary'
+ 
 
 export default {
   name: 'AutoCode',
@@ -323,13 +371,20 @@ export default {
       previewFlag: false
     }
   },
-  created() {
-    this.getDb()
-    this.setFdMap()
-    const id = this.$route.params.id
+  async created() {
+    this.getDb();
+    this.setFdMap();
+    const id = this.$route.params.id;
     if (id) {
-      this.getAutoCodeJson(id)
-    }
+      this.getAutoCodeJson(id);
+    };
+    // // add by ljd     
+    const dictRes = await getSysDictionaryList({
+      page: 1,
+      pageSize: 999999
+    }) 
+    this.dictOptions = dictRes.data.list;
+    
   },
   methods: {
     editAndAddField(item) {

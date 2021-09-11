@@ -12,6 +12,7 @@ import (
 	systemReq "github.com/flipped-aurora/gin-vue-admin/server/model/system/request"
 	"github.com/flipped-aurora/gin-vue-admin/server/utils"
 
+	var_dump "github.com/favframework/debug"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -113,6 +114,7 @@ func (autoApi *AutoCodeApi) GetMeta(c *gin.Context) {
 func (autoApi *AutoCodeApi) PreviewTemp(c *gin.Context) {
 	var a system.AutoCodeStruct
 	_ = c.ShouldBindJSON(&a)
+
 	if err := utils.Verify(a, utils.AutoCodeVerify); err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -137,10 +139,13 @@ func (autoApi *AutoCodeApi) PreviewTemp(c *gin.Context) {
 func (autoApi *AutoCodeApi) CreateTemp(c *gin.Context) {
 	var a system.AutoCodeStruct
 	_ = c.ShouldBindJSON(&a)
-	if err := utils.Verify(a, utils.AutoCodeVerify); err != nil {
-		response.FailWithMessage(err.Error(), c)
-		return
-	}
+
+	var_dump.Dump(a)
+
+	// if err := utils.Verify(a, utils.AutoCodeVerify); err != nil {
+	// 	response.FailWithMessage(err.Error(), c)
+	// 	return
+	// }
 	var apiIds []uint
 	if a.AutoCreateApiToSql {
 		if ids, err := autoCodeService.AutoCreateApi(&a); err != nil {
@@ -152,17 +157,28 @@ func (autoApi *AutoCodeApi) CreateTemp(c *gin.Context) {
 			apiIds = ids
 		}
 	}
+	var_dump.Dump("11111111111111111")
 	err := autoCodeService.CreateTemp(a, apiIds...)
+	fmt.Println("代码生成错误:err=", err)
 	if err != nil {
+		var_dump.Dump("2222222222222222")
+		fmt.Println("bbbb2222")
+
 		if errors.Is(err, system.AutoMoveErr) {
+
+			var_dump.Dump("2233")
 			c.Writer.Header().Add("success", "true")
 			c.Writer.Header().Add("msg", url.QueryEscape(err.Error()))
 		} else {
+
+			var_dump.Dump("2244")
 			c.Writer.Header().Add("success", "false")
 			c.Writer.Header().Add("msg", url.QueryEscape(err.Error()))
 			_ = os.Remove("./ginvueadmin.zip")
 		}
 	} else {
+
+		var_dump.Dump("3333333333")
 		c.Writer.Header().Add("Content-Disposition", fmt.Sprintf("attachment; filename=%s", "ginvueadmin.zip")) // fmt.Sprintf("attachment; filename=%s", filename)对下载的文件重命名
 		c.Writer.Header().Add("Content-Type", "application/json")
 		c.Writer.Header().Add("success", "true")
