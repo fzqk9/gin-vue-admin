@@ -51,14 +51,19 @@
         <el-form-item>
           <el-button size="mini" type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
           <el-button size="mini" type="primary" icon="el-icon-plus" @click="openDialog">新增</el-button>
-          <el-popover v-model="deleteVisible" placement="top" width="160">
-            <p>确定要删除吗？</p>
-            <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="deleteVisible = false">取消</el-button>
-              <el-button size="mini" type="primary" @click="onDelete">确定</el-button>
-            </div>
-            <el-button slot="reference" icon="el-icon-delete" size="mini" type="danger" style="margin-left: 10px;">批量删除</el-button>
-          </el-popover>
+         
+         
+       <el-popover v-model:visible="deleteVisible" placement="top" width="160">
+                  <p>确定要删除吗？</p>
+                  <div style="text-align: right; margin: 0">
+                    <el-button size="mini" type="text" @click="deleteVisible = false">取消</el-button>
+                    <el-button size="mini" type="primary" @click="onDelete">确定</el-button>
+                  </div>
+                  <template #reference>
+                    <el-button icon="el-icon-delete" size="mini" type="danger" style="margin-left: 10px;">批量删除</el-button>
+                  </template>
+                </el-popover>
+                
         </el-form-item>
       </el-form>
     </div>
@@ -123,9 +128,7 @@
       @current-change="handleCurrentChange"
       @size-change="handleSizeChange"
     />
-    
- 
-    <el-dialog :before-close="closeDialog"  v-model="dialogFormVisible" title="弹窗操作">
+    <el-dialog :before-close="closeDialog" v-model="dialogFormVisible" title="弹窗操作">
       <el-form :model="formData" label-position="right" label-width="80px">
         <el-form-item label="父ID:">
               
@@ -159,7 +162,8 @@
               
                         <el-input v-model.number="formData.sort" clearable placeholder="请输入" />
                     </el-form-item>
-        <el-form-item label="是否导航:"> 
+        <el-form-item label="是否导航:">
+              
                   <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" v-model="formData.beNav" clearable ></el-switch>
               </el-form-item>
         <el-form-item label="描述:">
@@ -264,7 +268,7 @@ export default {
       ],
     }
   },
- 
+  
   async created() {
     await this.getTableData()
     
@@ -290,6 +294,7 @@ export default {
     },
     handleSelectionChange(val) {
       this.multipleSelection = val
+      this.deleteVisible = true
     },
     deleteRow(row) {
       this.$confirm('确定要删除吗?', '提示', {
@@ -337,7 +342,7 @@ export default {
     closeDialog() {
       this.dialogFormVisible = false
       this.formData = {
-          pid: 0,
+        pid: 0,
           beSys: false,
           groupId: 0,
           mediaType: 0,
@@ -388,10 +393,8 @@ export default {
       }
     },
     openDialog() {
-       console.log("openDialog")
       this.type = 'create'
       this.dialogFormVisible = true
-       console.log("openDialog 2")
     },
     //  add by ljd 20210709, 排序 
     sortChange({ prop, order }) {
