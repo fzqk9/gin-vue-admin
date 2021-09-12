@@ -45,7 +45,7 @@ export default {
       this.getTableData()
     },
      // 判断一个查询对象是否有空属性  add by ljd 20210718
-		obj_attr_is_null(obj){      
+	 obj_attr_is_null(obj){      
 		  for (const key in obj) {
 		    if (obj.hasOwnProperty(key)) {
 		      if (obj[key] === null || obj[key] === '') {
@@ -56,7 +56,7 @@ export default {
 		      }
 		    }
 		  }
-		},
+	 },
     // @params beforeFunc function 请求发起前执行的函数 默认为空函数
     // @params afterFunc function 请求完成后执行的函数 默认为空函数
     async getTableData(beforeFunc = () => {}, afterFunc = () => {}) {

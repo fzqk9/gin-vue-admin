@@ -4,8 +4,8 @@
   <div>
     <div class="search-term">
       <el-form :inline="true" :model="searchInfo" class="demo-form-inline"> 
-  <el-form-item label="创建时间"> 
-        <el-date-picker
+  <el-form-item label="创建时间">
+        <el-date-picker 
               v-model="searchInfo.createdAtBetween" 
               type="datetimerange"
               format="YYYY-MM-DD HH:mm:ss"
@@ -13,10 +13,7 @@
               range-separator="至"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
-            >
-            </el-date-picker>
-            
-            
+            />
          </el-form-item>
    
         <el-form-item label="ID">
@@ -84,7 +81,7 @@
             </template>
           </el-table-column>
           <el-table-column label="系统分类" prop="beSys" width="120">
-            <template #default="scope">{{scope.row.beSys|formatBoolean}}</template>
+            <template #default="scope">{{formatBoolean(scope.row.beSys)}}</template>
           </el-table-column>
           <el-table-column label="群组id" prop="groupId" width="120"/> 
           <el-table-column label="文章类型" prop="mediaType" width="120">
@@ -96,7 +93,7 @@
           <el-table-column label="配图" prop="thumb" width="120"/> 
           <el-table-column label="排序" prop="sort" width="120"/> 
           <el-table-column label="是否导航" prop="beNav" width="120">
-            <template #default="scope">{{scope.row.beNav|formatBoolean}}</template>
+            <template #default="scope">{{formatBoolean(scope.row.beNav)}}</template>
           </el-table-column>  
            <!-- add by ljd 20210720, 隐藏字段   desc -->
           <el-table-column label="关键词" prop="keywords" width="120"/>   
@@ -106,7 +103,7 @@
               {{filterDict(scope.row.status,"status")}}
             </template>
           </el-table-column><el-table-column label="日期" width="180" prop="created_at" sortable="custom" >
-        <template #default="scope">{{ scope.row.CreatedAt|formatDate }}</template>
+        <template #default="scope">{{ formatDate(scope.row.CreatedAt)}}</template>
       </el-table-column>
       
       <el-table-column label="操作">
@@ -126,7 +123,9 @@
       @current-change="handleCurrentChange"
       @size-change="handleSizeChange"
     />
-    <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="弹窗操作">
+    
+ 
+    <el-dialog :before-close="closeDialog"  v-model="dialogFormVisible" title="弹窗操作">
       <el-form :model="formData" label-position="right" label-width="80px">
         <el-form-item label="父ID:">
               
@@ -160,8 +159,7 @@
               
                         <el-input v-model.number="formData.sort" clearable placeholder="请输入" />
                     </el-form-item>
-        <el-form-item label="是否导航:">
-              
+        <el-form-item label="是否导航:"> 
                   <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" v-model="formData.beNav" clearable ></el-switch>
               </el-form-item>
         <el-form-item label="描述:">
@@ -234,7 +232,7 @@ export default {
           alias: '',
           status: 0,
           
-      },
+      }, 
       shortcuts: [
                 {
                   text: '最近一周',
@@ -262,27 +260,11 @@ export default {
                     start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
                     return [start, end]
                   },
-                },
-              ],
+           },
+      ],
     }
   },
-  filters: {
-    formatDate: function(time) {
-      if (time !== null && time !== '') {
-        var date = new Date(time);
-        return formatTimeToStr(date, 'yyyy-MM-dd hh:mm:ss');
-      } else {
-        return '1111'
-      }
-    },
-    formatBoolean: function(bool) {
-      if (bool != null) {
-        return bool ? '是' : '否'
-      } else {
-        return ''
-      }
-    }
-  },
+ 
   async created() {
     await this.getTableData()
     
@@ -355,7 +337,7 @@ export default {
     closeDialog() {
       this.dialogFormVisible = false
       this.formData = {
-        pid: 0,
+          pid: 0,
           beSys: false,
           groupId: 0,
           mediaType: 0,
@@ -406,8 +388,10 @@ export default {
       }
     },
     openDialog() {
+       console.log("openDialog")
       this.type = 'create'
       this.dialogFormVisible = true
+       console.log("openDialog 2")
     },
     //  add by ljd 20210709, 排序 
     sortChange({ prop, order }) {

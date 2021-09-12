@@ -81,7 +81,7 @@
             </template>
           </el-table-column>
           <el-table-column label="系统分类" prop="beSys" width="120">
-            <template #default="scope">{{scope.row.beSys|formatBoolean}}</template>
+            <template #default="scope">{{formatBoolean(scope.row.beSys)}}</template>
           </el-table-column>
           <el-table-column label="群组id" prop="groupId" width="120"/> 
           <el-table-column label="文章类型" prop="mediaType" width="120">
@@ -93,7 +93,7 @@
           <el-table-column label="配图" prop="thumb" width="120"/> 
           <el-table-column label="排序" prop="sort" width="120"/> 
           <el-table-column label="是否导航" prop="beNav" width="120">
-            <template #default="scope">{{scope.row.beNav|formatBoolean}}</template>
+            <template #default="scope">{{formatBoolean(scope.row.beNav)}}</template>
           </el-table-column>  
            <!-- add by ljd 20210720, 隐藏字段   desc -->
           <el-table-column label="关键词" prop="keywords" width="120"/>   
@@ -103,7 +103,7 @@
               {{filterDict(scope.row.status,"status")}}
             </template>
           </el-table-column><el-table-column label="日期" width="180" prop="created_at" sortable="custom" >
-        <template #default="scope">{{ scope.row.CreatedAt|formatDate }}</template>
+        <template #default="scope">{{ formatDate(scope.row.CreatedAt)}}</template>
       </el-table-column>
       
       <el-table-column label="操作">
@@ -123,7 +123,7 @@
       @current-change="handleCurrentChange"
       @size-change="handleSizeChange"
     />
-    <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="弹窗操作">
+    <el-dialog :before-close="closeDialog" v-model="dialogFormVisible" title="弹窗操作">
       <el-form :model="formData" label-position="right" label-width="80px">
         <el-form-item label="父ID:">
               
@@ -263,23 +263,7 @@ export default {
       ],
     }
   },
-  filters: {
-    formatDate: function(time) {
-      if (time !== null && time !== '') {
-        var date = new Date(time);
-        return formatTimeToStr(date, 'yyyy-MM-dd hh:mm:ss');
-      } else {
-        return ''
-      }
-    },
-    formatBoolean: function(bool) {
-      if (bool != null) {
-        return bool ? '是' : '否'
-      } else {
-        return ''
-      }
-    }
-  },
+  
   async created() {
     await this.getTableData()
     

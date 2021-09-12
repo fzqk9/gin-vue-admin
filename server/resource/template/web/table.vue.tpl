@@ -115,14 +115,14 @@
           </el-table-column>
           {{- else if eq .FieldType "bool" }}
           <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{- if  .OrderBy }} sortable="custom"{{ end -}}  >
-            <template #default="scope">{{ "{{scope.row."}}{{.FieldJson}}{{"|formatBoolean}}" }}</template>
+            <template #default="scope">{{ "{{formatBoolean(scope.row."}}{{.FieldJson}}{{")}}" }}</template>
           </el-table-column> {{- else }}
           <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{- if  .OrderBy }} sortable="custom"{{ end -}}  /> {{ end -}}
           {{ end -}} 
        {{ end -}}  
 
       <el-table-column label="日期" width="180" prop="created_at" sortable="custom" >
-        <template #default="scope">{{ "{{ scope.row.CreatedAt|formatDate }}" }}</template>
+        <template #default="scope">{{ "{{ formatDate(scope.row.CreatedAt)}}" }}</template>
       </el-table-column>
       
       <el-table-column label="操作">
@@ -257,23 +257,7 @@ export default {
       ],
     }
   },
-  filters: {
-    formatDate: function(time) {
-      if (time !== null && time !== '') {
-        var date = new Date(time);
-        return formatTimeToStr(date, 'yyyy-MM-dd hh:mm:ss');
-      } else {
-        return ''
-      }
-    },
-    formatBoolean: function(bool) {
-      if (bool != null) {
-        return bool ? '是' : '否'
-      } else {
-        return ''
-      }
-    }
-  },
+  
   async created() {
     await this.getTableData()
     {{ range .Fields -}}
