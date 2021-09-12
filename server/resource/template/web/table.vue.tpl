@@ -142,7 +142,7 @@
       @current-change="handleCurrentChange"
       @size-change="handleSizeChange"
     />
-    <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="弹窗操作">
+    <el-dialog :before-close="closeDialog" v-model="dialogFormVisible" title="弹窗操作">
       <el-form :model="formData" label-position="right" label-width="80px">
     {{- range .Fields}}
         <el-form-item label="{{.FieldDesc}}:">
