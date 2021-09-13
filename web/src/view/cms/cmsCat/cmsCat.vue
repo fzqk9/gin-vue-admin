@@ -38,15 +38,16 @@
             
             
             
+          <el-form-item label="描述">
+                <el-input placeholder="搜索条件" v-model="searchInfo.desc" clearable />
+              </el-form-item>
+            
+          <el-form-item label="关键词">
+                <el-input placeholder="搜索条件" v-model="searchInfo.keywords" clearable />
+              </el-form-item>
             
             
             
-          <el-form-item label="状态" prop="status">                
-                    <el-select v-model="searchInfo.status" placeholder="请选择" clearable>
-                      <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value"></el-option>
-                    </el-select>
-                </el-form-item>
-                
           
         <el-form-item>
           <el-button size="mini" type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
@@ -96,15 +97,11 @@
           <el-table-column label="排序" prop="sort" width="120"/> 
           <el-table-column label="是否导航" prop="beNav" width="120">
             <template #default="scope">{{formatBoolean(scope.row.beNav)}}</template>
-          </el-table-column>  
-           <!-- add by ljd 20210720, 隐藏字段   desc -->
+          </el-table-column>
+          <el-table-column label="描述" prop="desc" width="120"/> 
           <el-table-column label="关键词" prop="keywords" width="120"/>   
            <!-- add by ljd 20210720, 隐藏字段   alias -->
-          <el-table-column label="状态" prop="status" width="120" sortable="custom">
-            <template #default="scope">
-              {{filterDict(scope.row.status,"status")}}
-            </template>
-          </el-table-column><el-table-column label="日期" width="180" prop="created_at" sortable="custom" >
+          <el-table-column label="状态" prop="status" width="120" sortable="custom"/> <el-table-column label="日期" width="180" prop="created_at" sortable="custom" >
         <template #default="scope">{{ formatDate(scope.row.CreatedAt)}}</template>
       </el-table-column>
       
@@ -177,10 +174,8 @@
               </el-form-item>
         <el-form-item label="状态:">
               
-                        <el-select v-model="formData.status" placeholder="请选择" clearable>
-                          <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value" />
-                        </el-select>
-                    </el-form-item>
+                  <el-input v-model="formData.status" clearable placeholder="请输入" />
+              </el-form-item>
      </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="closeDialog">取 消</el-button>
@@ -217,8 +212,6 @@ export default {
           
       media_typeOptions: [],
           
-      statusOptions: [],
-          
       formData: {
         pid: 0,
           beSys: false,
@@ -231,7 +224,7 @@ export default {
           desc: '',
           keywords: '',
           alias: '',
-          status: 0,
+          status: '',
           
       }, 
       shortcuts: [
@@ -272,8 +265,6 @@ export default {
     await this.getDict('media_type')
       
     await this.getDict('media_type')
-      
-    await this.getDict('status')
       
   },
   methods: {
@@ -349,7 +340,7 @@ export default {
           desc: '',
           keywords: '',
           alias: '',
-          status: 0,
+          status: '',
           
       }
     },
