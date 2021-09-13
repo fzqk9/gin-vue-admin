@@ -117,8 +117,10 @@
                           <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="quickEdit_do('mediaType',scope.row.ID,scope.row.mediaType,scope)">保存</el-button>
                           </el-col> 
                         </el-row>  
-                              <div slot="reference" class="quickEdit"  > {{filterDict(scope.row.mediaType,"media_type")}} </div>
-                            </el-popover>
+                          <template #reference>
+                              <div class="quickEdit" > {{filterDict(scope.row.mediaType,"media_type")}} </div>
+                          </template>
+                       </el-popover>
                     </template>  
                     </el-table-column> 
            
@@ -132,10 +134,9 @@
                           <el-col :span="16">  <el-input type="textarea" autosize placeholder="请输入内容" v-model="scope.row.name"></el-input></el-col>
                           <el-col :span="4"> <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="quickEdit_do('name',scope.row.ID,scope.row.name,scope)">保存</el-button> </el-col> 
                         </el-row>  
-						<template #reference>
-						  <div #default="reference" class="quickEdit"  > {{scope.row.name)}} </div>
-						</template>
-                       
+                          <template #reference>
+                            <div   class="quickEdit"  > {{scope.row.name}} </div>
+                          </template>
                         </el-popover>
                     </template>
                      </el-table-column>              
@@ -172,7 +173,20 @@
           
         
              
-                  <el-table-column label="状态" prop="status" width="120"   sortable="custom"  />
+                 <!-- BeQuickEdit -->
+                    <el-table-column label="状态" prop="status" width="120"   sortable="custom" >
+                    <template #default="scope">
+                        <el-popover trigger="click" placement="top" :ref="`popover-${scope.$index}`" >  
+                        <el-row :gutter="10">
+                          <el-col :span="16">  <el-input type="textarea" autosize placeholder="请输入内容" v-model="scope.row.status"></el-input></el-col>
+                          <el-col :span="4"> <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="quickEdit_do('status',scope.row.ID,scope.row.status,scope)">保存</el-button> </el-col> 
+                        </el-row>  
+                          <template #reference>
+                            <div   class="quickEdit"  > {{scope.row.status}} </div>
+                          </template>
+                        </el-popover>
+                    </template>
+                     </el-table-column>              
                  
            
         
