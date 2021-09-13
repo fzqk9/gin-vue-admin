@@ -130,8 +130,10 @@
                           <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="quickEdit_do('{{.FieldJson}}',scope.row.ID,scope.row.{{.FieldJson}},scope)">保存</el-button>
                           </el-col> 
                         </el-row>  
-                              <div slot="reference" class="quickEdit"  > {{"{{"}}filterDict(scope.row.{{.FieldJson}},"{{.DictType}}"){{"}}"}} </div>
-                            </el-popover>
+                          <template #reference>
+                              <div class="quickEdit" > {{"{{"}}filterDict(scope.row.{{.FieldJson}},"{{.DictType}}"){{"}}"}} </div>
+                          </template>
+                       </el-popover>
                     </template>  
                     </el-table-column>
                 {{- else if eq .FieldType "bool" }}
@@ -140,13 +142,15 @@
                     </el-table-column>
                  {{- else }}
                     <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{if .OrderBy}} sortable="custom"{{end}} >
-                    <template slot-scope="scope">
+                    <template #default="scope">
                         <el-popover trigger="click" placement="top" :ref="`popover-${scope.$index}`" >  
                         <el-row :gutter="10">
                           <el-col :span="16">  <el-input type="textarea" autosize placeholder="请输入内容" v-model="scope.row.{{.FieldJson}}"></el-input></el-col>
                           <el-col :span="4"> <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="quickEdit_do('{{.FieldJson}}',scope.row.ID,scope.row.{{.FieldJson}},scope)">保存</el-button> </el-col> 
                         </el-row>  
-                        <div slot="reference" class="quickEdit"  > {{"{{"}}scope.row.{{.FieldJson}}){{"}}"}} </div>
+                          <template #reference>
+                            <div   class="quickEdit"  > {{"{{"}}scope.row.{{.FieldJson}}{{"}}"}} </div>
+                          </template>
                         </el-popover>
                     </template>
                      </el-table-column>              
@@ -160,7 +164,7 @@
                 </el-table-column>
                 {{- else if eq .FieldType "bool" }}
                 <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{if .OrderBy}} sortable="custom"{{end}}  >
-                  <template #default="scope">{{ "{{formatBoolean(scope.row."}}{{.FieldJson}}{{")}}" }}</template>
+                  <template #default="scope">{{"{{formatBoolean(scope.row."}}{{.FieldJson}}{{")}}"}}</template>
                 </el-table-column> {{- else }}
                   <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{if .OrderBy}} sortable="custom"{{end}}  />
                 {{ end -}} 
