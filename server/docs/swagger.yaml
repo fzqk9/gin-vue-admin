@@ -15,6 +15,42 @@ definitions:
         description: 更新时间
         type: string
     type: object
+  autocode.CmsCat:
+    properties:
+      alias:
+        type: string
+      beNav:
+        type: boolean
+      beSys:
+        type: boolean
+      createdAt:
+        description: 创建时间
+        type: string
+      desc:
+        type: string
+      groupId:
+        type: integer
+      id:
+        description: 主键ID
+        type: integer
+      keywords:
+        type: string
+      mediaType:
+        type: integer
+      name:
+        type: string
+      pid:
+        type: integer
+      sort:
+        type: integer
+      status:
+        type: integer
+      thumb:
+        type: string
+      updatedAt:
+        description: 更新时间
+        type: string
+    type: object
   config.AliyunOSS:
     properties:
       accessKeyId:
@@ -482,6 +518,12 @@ definitions:
     type: object
   request.PageInfo:
     properties:
+      orderDesc:
+        description: 排序方式:升序false(默认)|降序true
+        type: boolean
+      orderKey:
+        description: Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd
+        type: string
       page:
         description: 页码
         type: integer
@@ -514,9 +556,6 @@ definitions:
       createdAt:
         description: 创建时间
         type: string
-      desc:
-        description: 排序方式:升序false(默认)|降序true
-        type: boolean
       description:
         description: api中文描述
         type: string
@@ -526,8 +565,11 @@ definitions:
       method:
         description: 方法:创建POST(默认)|查看GET|更新PUT|删除DELETE
         type: string
+      orderDesc:
+        description: 排序方式:升序false(默认)|降序true
+        type: boolean
       orderKey:
-        description: 排序
+        description: Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd
         type: string
       page:
         description: 页码
@@ -560,6 +602,12 @@ definitions:
     type: object
   request.SysAutoHistory:
     properties:
+      orderDesc:
+        description: 排序方式:升序false(默认)|降序true
+        type: boolean
+      orderKey:
+        description: Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd
+        type: string
       page:
         description: 页码
         type: integer
@@ -611,6 +659,12 @@ definitions:
       packageName:
         description: 文件名称
         type: string
+      searchCreate:
+        description: 是否 搜索创建时间   新增 by ljd 20210731
+        type: boolean
+      searchId:
+        description: 是否搜索ID  新增 by ljd 20210731
+        type: boolean
       structName:
         description: Struct名称
         type: string
@@ -620,6 +674,12 @@ definitions:
     type: object
   system.Field:
     properties:
+      beHide:
+        description: 隐藏  add by ljd 20210709 增加隐藏
+        type: boolean
+      beQuickEdit:
+        description: 快速排序  add by ljd 20210709 增加隐藏
+        type: boolean
       columnName:
         description: 数据库字段
         type: string
@@ -650,6 +710,9 @@ definitions:
       fieldType:
         description: Field数据类型
         type: string
+      orderBy:
+        description: 排序  add by ljd 20210709 增加排序字段
+        type: boolean
     type: object
   system.SysApi:
     properties:
@@ -1516,6 +1579,14 @@ paths:
         in: query
         name: id
         type: integer
+      - description: 排序方式:升序false(默认)|降序true
+        in: query
+        name: orderDesc
+        type: boolean
+      - description: Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd
+        in: query
+        name: orderKey
+        type: string
       - description: 页码
         in: query
         name: page
@@ -1644,6 +1715,244 @@ paths:
       summary: 获取权限列表
       tags:
       - Casbin
+  /cmsCat/createCmsCat:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建CmsCat
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/autocode.CmsCat'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"获取成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 创建CmsCat
+      tags:
+      - CmsCat
+  /cmsCat/deleteCmsCat:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 删除CmsCat
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/autocode.CmsCat'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"删除成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 删除CmsCat
+      tags:
+      - CmsCat
+  /cmsCat/deleteCmsCatByIds:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 批量删除CmsCat
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.IdsReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"批量删除成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 批量删除CmsCat
+      tags:
+      - CmsCat
+  /cmsCat/findCmsCat:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - in: query
+        name: alias
+        type: string
+      - in: query
+        name: beNav
+        type: boolean
+      - in: query
+        name: beSys
+        type: boolean
+      - description: 创建时间
+        in: query
+        name: createdAt
+        type: string
+      - in: query
+        name: desc
+        type: string
+      - in: query
+        name: groupId
+        type: integer
+      - description: 主键ID
+        in: query
+        name: id
+        type: integer
+      - in: query
+        name: keywords
+        type: string
+      - in: query
+        name: mediaType
+        type: integer
+      - in: query
+        name: name
+        type: string
+      - in: query
+        name: pid
+        type: integer
+      - in: query
+        name: sort
+        type: integer
+      - in: query
+        name: status
+        type: integer
+      - in: query
+        name: thumb
+        type: string
+      - description: 更新时间
+        in: query
+        name: updatedAt
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"查询成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 用id查询CmsCat
+      tags:
+      - CmsCat
+  /cmsCat/getCmsCatList:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - in: query
+        name: alias
+        type: string
+      - in: query
+        name: beNav
+        type: boolean
+      - in: query
+        name: beSys
+        type: boolean
+      - description: 创建时间
+        in: query
+        name: createdAt
+        type: string
+      - in: query
+        name: desc
+        type: string
+      - in: query
+        name: groupId
+        type: integer
+      - description: 主键ID
+        in: query
+        name: id
+        type: integer
+      - in: query
+        name: keywords
+        type: string
+      - in: query
+        name: mediaType
+        type: integer
+      - in: query
+        name: name
+        type: string
+      - description: 排序方式:升序false(默认)|降序true
+        in: query
+        name: orderDesc
+        type: boolean
+      - description: Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd
+        in: query
+        name: orderKey
+        type: string
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页大小
+        in: query
+        name: pageSize
+        type: integer
+      - in: query
+        name: pid
+        type: integer
+      - in: query
+        name: sort
+        type: integer
+      - in: query
+        name: status
+        type: integer
+      - in: query
+        name: thumb
+        type: string
+      - description: 更新时间
+        in: query
+        name: updatedAt
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"获取成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 分页获取CmsCat列表
+      tags:
+      - CmsCat
+  /cmsCat/updateCmsCat:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 更新CmsCat
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/autocode.CmsCat'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"更新成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 更新CmsCat
+      tags:
+      - CmsCat
   /customer/customer:
     delete:
       consumes:
@@ -1760,6 +2069,14 @@ paths:
       consumes:
       - application/json
       parameters:
+      - description: 排序方式:升序false(默认)|降序true
+        in: query
+        name: orderDesc
+        type: boolean
+      - description: Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd
+        in: query
+        name: orderKey
+        type: string
       - description: 页码
         in: query
         name: page
@@ -2386,6 +2703,14 @@ paths:
         in: query
         name: name
         type: string
+      - description: 排序方式:升序false(默认)|降序true
+        in: query
+        name: orderDesc
+        type: boolean
+      - description: Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd
+        in: query
+        name: orderKey
+        type: string
       - description: 页码
         in: query
         name: page
@@ -2552,6 +2877,14 @@ paths:
       - description: 展示值
         in: query
         name: label
+        type: string
+      - description: 排序方式:升序false(默认)|降序true
+        in: query
+        name: orderDesc
+        type: boolean
+      - description: Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd
+        in: query
+        name: orderKey
         type: string
       - description: 页码
         in: query
@@ -2790,6 +3123,14 @@ paths:
       - description: 请求方法
         in: query
         name: method
+        type: string
+      - description: 排序方式:升序false(默认)|降序true
+        in: query
+        name: orderDesc
+        type: boolean
+      - description: Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd
+        in: query
+        name: orderKey
         type: string
       - description: 页码
         in: query

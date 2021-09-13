@@ -966,6 +966,18 @@
                         "in": "query"
                     },
                     {
+                        "type": "boolean",
+                        "description": "排序方式:升序false(默认)|降序true",
+                        "name": "orderDesc",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd",
+                        "name": "orderKey",
+                        "in": "query"
+                    },
+                    {
                         "type": "integer",
                         "description": "页码",
                         "name": "page",
@@ -1158,6 +1170,396 @@
                 "responses": {
                     "200": {
                         "description": "{\"success\":true,\"data\":{},\"msg\":\"获取成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsCat/createCmsCat": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CmsCat"
+                ],
+                "summary": "创建CmsCat",
+                "parameters": [
+                    {
+                        "description": "创建CmsCat",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/autocode.CmsCat"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"获取成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsCat/deleteCmsCat": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CmsCat"
+                ],
+                "summary": "删除CmsCat",
+                "parameters": [
+                    {
+                        "description": "删除CmsCat",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/autocode.CmsCat"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"删除成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsCat/deleteCmsCatByIds": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CmsCat"
+                ],
+                "summary": "批量删除CmsCat",
+                "parameters": [
+                    {
+                        "description": "批量删除CmsCat",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.IdsReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"批量删除成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsCat/findCmsCat": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CmsCat"
+                ],
+                "summary": "用id查询CmsCat",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "alias",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "name": "beNav",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "name": "beSys",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "创建时间",
+                        "name": "createdAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "desc",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "groupId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "主键ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "keywords",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "mediaType",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "pid",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "thumb",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "更新时间",
+                        "name": "updatedAt",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"查询成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsCat/getCmsCatList": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CmsCat"
+                ],
+                "summary": "分页获取CmsCat列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "alias",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "name": "beNav",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "name": "beSys",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "创建时间",
+                        "name": "createdAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "desc",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "groupId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "主键ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "keywords",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "mediaType",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "排序方式:升序false(默认)|降序true",
+                        "name": "orderDesc",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd",
+                        "name": "orderKey",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页大小",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "pid",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "thumb",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "更新时间",
+                        "name": "updatedAt",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"获取成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsCat/updateCmsCat": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CmsCat"
+                ],
+                "summary": "更新CmsCat",
+                "parameters": [
+                    {
+                        "description": "更新CmsCat",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/autocode.CmsCat"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"更新成功\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -1362,6 +1764,18 @@
                 ],
                 "summary": "分页获取权限客户列表",
                 "parameters": [
+                    {
+                        "type": "boolean",
+                        "description": "排序方式:升序false(默认)|降序true",
+                        "name": "orderDesc",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd",
+                        "name": "orderKey",
+                        "in": "query"
+                    },
                     {
                         "type": "integer",
                         "description": "页码",
@@ -2391,6 +2805,18 @@
                         "in": "query"
                     },
                     {
+                        "type": "boolean",
+                        "description": "排序方式:升序false(默认)|降序true",
+                        "name": "orderDesc",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd",
+                        "name": "orderKey",
+                        "in": "query"
+                    },
+                    {
                         "type": "integer",
                         "description": "页码",
                         "name": "page",
@@ -2656,6 +3082,18 @@
                         "type": "string",
                         "description": "展示值",
                         "name": "label",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "排序方式:升序false(默认)|降序true",
+                        "name": "orderDesc",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd",
+                        "name": "orderKey",
                         "in": "query"
                     },
                     {
@@ -3034,6 +3472,18 @@
                         "type": "string",
                         "description": "请求方法",
                         "name": "method",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "排序方式:升序false(默认)|降序true",
+                        "name": "orderDesc",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd",
+                        "name": "orderKey",
                         "in": "query"
                     },
                     {
@@ -3494,6 +3944,59 @@
                 "id": {
                     "description": "主键ID",
                     "type": "integer"
+                },
+                "updatedAt": {
+                    "description": "更新时间",
+                    "type": "string"
+                }
+            }
+        },
+        "autocode.CmsCat": {
+            "type": "object",
+            "properties": {
+                "alias": {
+                    "type": "string"
+                },
+                "beNav": {
+                    "type": "boolean"
+                },
+                "beSys": {
+                    "type": "boolean"
+                },
+                "createdAt": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "groupId": {
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "keywords": {
+                    "type": "string"
+                },
+                "mediaType": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pid": {
+                    "type": "integer"
+                },
+                "sort": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "thumb": {
+                    "type": "string"
                 },
                 "updatedAt": {
                     "description": "更新时间",
@@ -4171,6 +4674,14 @@
         "request.PageInfo": {
             "type": "object",
             "properties": {
+                "orderDesc": {
+                    "description": "排序方式:升序false(默认)|降序true",
+                    "type": "boolean"
+                },
+                "orderKey": {
+                    "description": "Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd",
+                    "type": "string"
+                },
                 "page": {
                     "description": "页码",
                     "type": "integer"
@@ -4218,10 +4729,6 @@
                     "description": "创建时间",
                     "type": "string"
                 },
-                "desc": {
-                    "description": "排序方式:升序false(默认)|降序true",
-                    "type": "boolean"
-                },
                 "description": {
                     "description": "api中文描述",
                     "type": "string"
@@ -4234,8 +4741,12 @@
                     "description": "方法:创建POST(默认)|查看GET|更新PUT|删除DELETE",
                     "type": "string"
                 },
+                "orderDesc": {
+                    "description": "排序方式:升序false(默认)|降序true",
+                    "type": "boolean"
+                },
                 "orderKey": {
-                    "description": "排序",
+                    "description": "Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd",
                     "type": "string"
                 },
                 "page": {
@@ -4283,6 +4794,14 @@
         "request.SysAutoHistory": {
             "type": "object",
             "properties": {
+                "orderDesc": {
+                    "description": "排序方式:升序false(默认)|降序true",
+                    "type": "boolean"
+                },
+                "orderKey": {
+                    "description": "Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd",
+                    "type": "string"
+                },
                 "page": {
                     "description": "页码",
                     "type": "integer"
@@ -4355,6 +4874,14 @@
                     "description": "文件名称",
                     "type": "string"
                 },
+                "searchCreate": {
+                    "description": "是否 搜索创建时间   新增 by ljd 20210731",
+                    "type": "boolean"
+                },
+                "searchId": {
+                    "description": "是否搜索ID  新增 by ljd 20210731",
+                    "type": "boolean"
+                },
                 "structName": {
                     "description": "Struct名称",
                     "type": "string"
@@ -4368,6 +4895,14 @@
         "system.Field": {
             "type": "object",
             "properties": {
+                "beHide": {
+                    "description": "隐藏  add by ljd 20210709 增加隐藏",
+                    "type": "boolean"
+                },
+                "beQuickEdit": {
+                    "description": "快速排序  add by ljd 20210709 增加隐藏",
+                    "type": "boolean"
+                },
                 "columnName": {
                     "description": "数据库字段",
                     "type": "string"
@@ -4407,6 +4942,10 @@
                 "fieldType": {
                     "description": "Field数据类型",
                     "type": "string"
+                },
+                "orderBy": {
+                    "description": "排序  add by ljd 20210709 增加排序字段",
+                    "type": "boolean"
                 }
             }
         },
