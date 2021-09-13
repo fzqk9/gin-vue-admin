@@ -39,9 +39,7 @@
         <el-input v-model="formData.alias" clearable placeholder="请输入" />
       </el-form-item>
       <el-form-item label="状态:">
-        <el-select v-model="formData.status" placeholder="请选择" clearable>
-          <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value" />
-        </el-select>
+        <el-input v-model="formData.status" clearable placeholder="请输入" />
       </el-form-item>
       <el-form-item>
         <el-button size="mini" type="primary" @click="save">保存</el-button>
@@ -66,7 +64,6 @@ export default {
       type: '',
       media_typeOptions: [],
       media_typeOptions: [],
-      statusOptions: [],
       formData: {
         pid: 0,
         beSys: false,
@@ -79,7 +76,7 @@ export default {
         desc: '',
         keywords: '',
         alias: '',
-        status: 0,
+        status: '',
       }
     }
   },
@@ -96,7 +93,6 @@ export default {
     }
     await this.getDict('media_type')
     await this.getDict('media_type')
-    await this.getDict('status')
   },
   methods: {
     async save() {

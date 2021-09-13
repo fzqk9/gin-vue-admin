@@ -75,8 +75,11 @@ func (cmsCatService *CmsCatService)GetCmsCatInfoList(info autoCodeReq.CmsCatSear
     if info.Name != "" {
         db = db.Where("`name` LIKE ?","%"+ info.Name+"%")
     }
-    if info.Status != nil {
-        db = db.Where("`status` = ?",info.Status)
+    if info.Desc != "" {
+        db = db.Where("`desc` LIKE ?","%"+ info.Desc+"%")
+    }
+    if info.Keywords != "" {
+        db = db.Where("`keywords` LIKE ?","%"+ info.Keywords+"%")
     }
 	err = db.Count(&total).Error
 	//err = db.Limit(limit).Offset(offset).Find(&cmsCats).Error
