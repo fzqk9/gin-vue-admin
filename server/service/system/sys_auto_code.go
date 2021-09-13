@@ -489,6 +489,15 @@ func (autoCodeService *AutoCodeService) getNeedList(autoCode *system.AutoCodeStr
 
 // injectionCode 封装代码注入
 func injectionCode(structName string, bf *strings.Builder) error {
+
+	//先清除注入
+	for _, meta := range injectionPaths {
+		code := fmt.Sprintf(meta.structNameF, structName)
+		//先清除注入 by ljd 20210913
+		utils.AutoClearCode(meta.path, code)
+		//bf.WriteString(fmt.Sprintf("%s@%s@%s;", meta.path, meta.funcName, code))
+	}
+
 	for _, meta := range injectionPaths {
 		code := fmt.Sprintf(meta.structNameF, structName)
 		if err := utils.AutoInjectionCode(meta.path, meta.funcName, code); err != nil {
