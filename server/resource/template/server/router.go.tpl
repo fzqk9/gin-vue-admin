@@ -20,5 +20,6 @@ func (s *{{.StructName}}Router) Init{{.StructName}}Router(Router *gin.RouterGrou
 		{{.Abbreviation}}Router.PUT("update{{.StructName}}", {{.Abbreviation}}Api.Update{{.StructName}})    // 更新{{.StructName}}
 		{{.Abbreviation}}Router.GET("find{{.StructName}}", {{.Abbreviation}}Api.Find{{.StructName}})        // 根据ID获取{{.StructName}}
 		{{.Abbreviation}}Router.GET("get{{.StructName}}List", {{.Abbreviation}}Api.Get{{.StructName}}List)  // 获取{{.StructName}}列表
+	    {{.Abbreviation}}Router.POST("quickEdit", {{.Abbreviation}}Api.QuickEdit)  // 快速编辑
 	}
 }

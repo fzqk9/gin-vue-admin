@@ -192,7 +192,8 @@ import {
   deleteCmsCatByIds,
   updateCmsCat,
   findCmsCat,
-  getCmsCatList
+  getCmsCatList,
+  quickEdit
 } from '@/api/cmsCat' //  此处请自行替换地址
 import { formatTimeToStr } from '@/utils/date'
 import infoList from '@/mixins/infoList'
@@ -390,6 +391,30 @@ export default {
         this.searchInfo.orderDesc = order === 'descending'
       }
       this.getTableData()
+    },
+    quickEdit_do(field,id,value,scope) {  
+	  let value2 = value;
+	  if (typeof(value)==="boolean")
+		   value2 = value?"1":"0"
+	  value2 =  value2+"";   
+	  let obj = {field:field,id:id,value:value2}	
+	  console.log("quickEdit_do2 obj 1 =",obj);
+      this.quickEdit(obj);
+	  
+	  if (scope._self.$refs[`popover-${scope.$index}`])
+		 scope._self.$refs[`popover-${scope.$index}`].doClose();
+    },
+    async quickEdit(obj) { 
+    // console.log("quickEdit_do2 res 2 =",obj);
+      const res =  await quickEdit(obj)	 
+    // console.log("quickEdit_do2 res 3=",res);
+      if (res.code === 0) {
+        this.$message({
+          type: 'success',
+          message: '修改成功'
+        }) 
+        // this.getTableData()
+      }
     }
   },
 }

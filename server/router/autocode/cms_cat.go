@@ -20,5 +20,6 @@ func (s *CmsCatRouter) InitCmsCatRouter(Router *gin.RouterGroup) {
 		cmsCatRouter.PUT("updateCmsCat", cmsCatApi.UpdateCmsCat)    // 更新CmsCat
 		cmsCatRouter.GET("findCmsCat", cmsCatApi.FindCmsCat)        // 根据ID获取CmsCat
 		cmsCatRouter.GET("getCmsCatList", cmsCatApi.GetCmsCatList)  // 获取CmsCat列表
+	    cmsCatRouter.POST("quickEdit", cmsCatApi.QuickEdit)  // 快速编辑
 	}
 }

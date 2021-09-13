@@ -15,7 +15,7 @@ type CmsCatApi struct {
 }
 
 var cmsCatService = service.ServiceGroupApp.AutoCodeServiceGroup.CmsCatService
-
+var commDbService = service.ServiceGroupApp.CommonServiceGroup.CommDbService
 
 // CreateCmsCat 创建CmsCat
 // @Tags CmsCat
@@ -142,4 +142,28 @@ func (cmsCatApi *CmsCatApi) GetCmsCatList(c *gin.Context) {
             PageSize: pageInfo.PageSize,
         }, "获取成功", c)
     }
+}
+
+
+
+// QuickEdit 快速更新
+// @Tags QuickEdit
+// @Summary 快速更新
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body autocode.CmsAd true "快速更新"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
+// @Router  /cmsCat/quickEdit [post] 
+func (cmsCatApi *CmsCatApi) QuickEdit(c *gin.Context) {
+	var quickEdit request.QuickEdit
+	_ = c.ShouldBindJSON(&quickEdit)
+	quickEdit.Table = "cms_cat"
+	//var_dump.Dump(quickEdit)
+	if err := commDbService.QuickEdit(quickEdit); err != nil {
+		global.GVA_LOG.Error("更新失败!", zap.Any("err", err))
+		response.FailWithMessage("更新失败", c)
+	} else {
+		response.OkWithMessage("更新成功", c)
+	}
 }

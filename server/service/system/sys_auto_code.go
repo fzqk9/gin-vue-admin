@@ -407,6 +407,12 @@ func (autoCodeService *AutoCodeService) AutoCreateApi(a *system.AutoCodeStruct) 
 			Description: "获取" + a.Description + "列表",
 			ApiGroup:    a.Abbreviation,
 			Method:      "GET",
+		}, // add by ljd  20210913
+		{
+			Path:        "/" + a.Abbreviation + "/" + "quickEdit",
+			Description: "快速编辑 ",
+			ApiGroup:    a.Abbreviation,
+			Method:      "POST",
 		},
 	}
 	err = global.GVA_DB.Transaction(func(tx *gorm.DB) error {

@@ -15,7 +15,7 @@ type {{.StructName}}Api struct {
 }
 
 var {{.Abbreviation}}Service = service.ServiceGroupApp.AutoCodeServiceGroup.{{.StructName}}Service
-
+var commDbService = service.ServiceGroupApp.CommonServiceGroup.CommDbService
 
 // Create{{.StructName}} 创建{{.StructName}}
 // @Tags {{.StructName}}
@@ -142,4 +142,28 @@ func ({{.Abbreviation}}Api *{{.StructName}}Api) Get{{.StructName}}List(c *gin.Co
             PageSize: pageInfo.PageSize,
         }, "获取成功", c)
     }
+}
+
+
+
+// QuickEdit 快速更新
+// @Tags QuickEdit
+// @Summary 快速更新
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body autocode.CmsAd true "快速更新"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
+// @Router  /{{.Abbreviation}}/quickEdit [post] 
+func ({{.Abbreviation}}Api *{{.StructName}}Api) QuickEdit(c *gin.Context) {
+	var quickEdit request.QuickEdit
+	_ = c.ShouldBindJSON(&quickEdit)
+	quickEdit.Table = "{{.TableName}}"
+	//var_dump.Dump(quickEdit)
+	if err := commDbService.QuickEdit(quickEdit); err != nil {
+		global.GVA_LOG.Error("更新失败!", zap.Any("err", err))
+		response.FailWithMessage("更新失败", c)
+	} else {
+		response.OkWithMessage("更新成功", c)
+	}
 }

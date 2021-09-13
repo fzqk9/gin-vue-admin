@@ -95,3 +95,20 @@ export const getCmsCatList = (params) => {
     params
   })
 }
+
+
+// @Tags CmsCat
+// @Summary 快速编辑
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body model.CmsCat true "快速编辑"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
+// @Router /cmsCat/quickEdit [post]
+export const quickEdit = (data) => {
+  return service({
+    url: '/cmsCat/quickEdit',
+    method: 'post',
+    data
+  })
+}
