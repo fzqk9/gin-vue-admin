@@ -1,7 +1,8 @@
  <!--修改 by ljd 20210725， bool datatime DictType字段 的查询填充数据 --> 
 
 <template>
-  <div>
+  <div>  
+  <!----------查询form------------------ -->
     <div class="search-term">
       <el-form :inline="true" :model="searchInfo" class="demo-form-inline"> 
   <el-form-item label="创建时间">
@@ -19,7 +20,7 @@
         <el-form-item label="ID">
             <el-input placeholder="搜索ID" v-model="searchInfo.ID" />
         </el-form-item>
-      
+        
             
           <el-form-item label="群组id">
                       <el-input placeholder="搜索条件" v-model="searchInfo.groupId" clearable />
@@ -52,6 +53,9 @@
         <el-form-item>
           <el-button size="mini" type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
           <el-button size="mini" type="primary" icon="el-icon-plus" @click="openDialog">新增</el-button>
+         
+           <el-button size="mini" type="primary" icon="el-icon-plus" @click="excel">导出</el-button>
+        
           <el-popover v-model:visible="deleteVisible" placement="top" width="160">
             <p>确定要删除吗？</p>
             <div style="text-align: right; margin: 0">
@@ -65,6 +69,7 @@
         </el-form-item>
       </el-form>
     </div>
+   <!----------数据表------------------ -->
     <el-table
       ref="multipleTable"
       border
@@ -77,31 +82,76 @@
     >
       <el-table-column type="selection" width="55" />
          <!-- add by ljd 20210709,增加id 排序功能等  -->
-       <el-table-column label="ID" min-width="60" prop="ID" sortable="custom" />
-          <el-table-column label="父ID" prop="pid" width="120" sortable="custom">
-            <template #default="scope">
-              {{filterDict(scope.row.pid,"media_type")}}
-            </template>
-          </el-table-column>
-          <el-table-column label="系统分类" prop="beSys" width="120">
-            <template #default="scope">{{formatBoolean(scope.row.beSys)}}</template>
-          </el-table-column>
-          <el-table-column label="群组id" prop="groupId" width="120"/> 
-          <el-table-column label="文章类型" prop="mediaType" width="120">
-            <template #default="scope">
-              {{filterDict(scope.row.mediaType,"media_type")}}
-            </template>
-          </el-table-column>
-          <el-table-column label="名称" prop="name" width="120"/> 
-          <el-table-column label="配图" prop="thumb" width="120"/> 
-          <el-table-column label="排序" prop="sort" width="120"/> 
-          <el-table-column label="是否导航" prop="beNav" width="120">
-            <template #default="scope">{{formatBoolean(scope.row.beNav)}}</template>
-          </el-table-column>
-          <el-table-column label="描述" prop="desc" width="120"/> 
-          <el-table-column label="关键词" prop="keywords" width="120"/>   
-           <!-- add by ljd 20210720, 隐藏字段   alias -->
-          <el-table-column label="状态" prop="status" width="120" sortable="custom"/> <el-table-column label="日期" width="180" prop="created_at" sortable="custom" >
+       <el-table-column label="ID" min-width="60" prop="ID" sortable="custom" />  
+             
+                <el-table-column label="父ID" prop="pid" width="120"  sortable="custom" >
+                  <template #default="scope">
+                    {{filterDict(scope.row.pid,"media_type")}}
+                  </template>
+                </el-table-column> 
+           
+        
+             
+                <el-table-column label="系统分类" prop="beSys" width="120"    >
+                  <template #default="scope">{{formatBoolean(scope.row.beSys)}}</template>
+                </el-table-column> 
+           
+        
+             
+                <el-table-column label="群组id" prop="groupId" width="120"    />
+                 
+           
+        
+             
+                <el-table-column label="文章类型" prop="mediaType" width="120"  >
+                  <template #default="scope">
+                    {{filterDict(scope.row.mediaType,"media_type")}}
+                  </template>
+                </el-table-column> 
+           
+        
+             
+                <el-table-column label="名称" prop="name" width="120"    />
+                 
+           
+        
+             
+                <el-table-column label="配图" prop="thumb" width="120"    />
+                 
+           
+        
+             
+                <el-table-column label="排序" prop="sort" width="120"    />
+                 
+           
+        
+             
+                <el-table-column label="是否导航" prop="beNav" width="120"    >
+                  <template #default="scope">{{formatBoolean(scope.row.beNav)}}</template>
+                </el-table-column> 
+           
+        
+             
+                <el-table-column label="描述" prop="desc" width="120"    />
+                 
+           
+        
+             
+                <el-table-column label="关键词" prop="keywords" width="120"    />
+                 
+           
+        
+           <!-- add by ljd 20210720, 隐藏字段   alias -->         
+          
+        
+             
+                 <!-- BeQuickEdit -->
+                <el-table-column label="状态" prop="status" width="120"   sortable="custom"  />
+                 
+           
+        
+
+      <el-table-column label="日期" width="180" prop="created_at" sortable="custom" >
         <template #default="scope">{{ formatDate(scope.row.CreatedAt)}}</template>
       </el-table-column>
       
@@ -122,6 +172,7 @@
       @current-change="handleCurrentChange"
       @size-change="handleSizeChange"
     />
+    <!---------- 编辑弹窗------------------ -->
     <el-dialog :before-close="closeDialog" v-model="dialogFormVisible" title="弹窗操作">
       <el-form :model="formData" label-position="right" label-width="80px">
         <el-form-item label="父ID:">
