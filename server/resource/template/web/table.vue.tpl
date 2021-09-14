@@ -130,8 +130,8 @@
                     </template>  
                     </el-table-column>
                 {{- else if eq .FieldType "bool" }}
-                    <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{if .OrderBy}} sortable="custom"{{end}}  >
-                      <template #default="scope">{{ "{{formatBoolean(scope.row."}}{{.FieldJson}}{{")}}" }}</template>
+                    <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{if .OrderBy}} sortable="custom"{{end}}  >                        
+                        <template #default="scope" ><el-switch v-model="scope.row.{{.FieldJson}}" @change="quickEdit_do('{{.ColumnName}}',scope.row.ID,scope.row.{{.FieldJson}},scope)"/></template> 
                     </el-table-column>
                  {{- else }}
                     <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{if .OrderBy}} sortable="custom"{{end}} >
