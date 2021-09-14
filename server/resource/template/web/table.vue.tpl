@@ -119,17 +119,10 @@
                 {{- if .DictType}}
                     <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120" {{if .OrderBy}} sortable="custom"{{end}} >
                     <template #default="scope">  
-                    <el-popover trigger="click" placement="top" :ref="`popover-${scope.$index}`"> 
-                        <el-row :gutter="10">
-                          <el-col :span="16">  
-                              <el-select v-model="searchInfo.{{ .FieldJson }}" placeholder="请选择" clearable>
-                                  <el-option v-for="(item,key) in {{ .DictType }}Options" :key="key" :label="item.label" :value="item.value"></el-option>
-                                </el-select> 
-                        </el-col> 
-                        <el-col :span="4">
-                          <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="quickEdit_do('{{.FieldJson}}',scope.row.ID,scope.row.{{.FieldJson}},scope)">保存</el-button>
-                          </el-col> 
-                        </el-row>  
+                    <el-popover trigger="click" placement="top"  width = "280">  
+                          <el-select v-model="scope.row.{{.FieldJson}}" placeholder="请选择"  @change="quickEdit_do('{{.ColumnName}}',scope.row.ID,scope.row.{{.FieldJson}},scope)">
+                              <el-option v-for="(item,key) in {{.DictType}}Options" :key="key" :label="item.label" :value="item.value"></el-option>
+                          </el-select> 
                           <template #reference>
                               <div class="quickEdit" > {{"{{"}}filterDict(scope.row.{{.FieldJson}},"{{.DictType}}"){{"}}"}} </div>
                           </template>
@@ -143,13 +136,13 @@
                  {{- else }}
                     <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{if .OrderBy}} sortable="custom"{{end}} >
                     <template #default="scope">
-                        <el-popover trigger="click" placement="top" :ref="`popover-${scope.$index}`" >  
+                        <el-popover trigger="click" placement="top"  width = "280">  
                         <el-row :gutter="10">
                           <el-col :span="16">  <el-input type="textarea" autosize placeholder="请输入内容" v-model="scope.row.{{.FieldJson}}"></el-input></el-col>
-                          <el-col :span="4"> <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="quickEdit_do('{{.FieldJson}}',scope.row.ID,scope.row.{{.FieldJson}},scope)">保存</el-button> </el-col> 
+                          <el-col :span="4"> <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="quickEdit_do('{{.ColumnName}}',scope.row.ID,scope.row.{{.FieldJson}},scope)">保存</el-button> </el-col> 
                         </el-row>  
                           <template #reference>
-                            <div   class="quickEdit"  > {{"{{"}}scope.row.{{.FieldJson}}{{"}}"}} </div>
+                            <div  class="quickEdit"  > {{"{{"}}scope.row.{{.FieldJson}}{{"}}"}} </div>
                           </template>
                         </el-popover>
                     </template>
@@ -446,22 +439,21 @@ export default {
       }
       this.getTableData()
     },
-    quickEdit_do(field,id,value,scope) {  
+    quickEdit_do(field,id,value,scope) {    
 	  let value2 = value;
 	  if (typeof(value)==="boolean")
 		   value2 = value?"1":"0"
 	  value2 =  value2+"";   
 	  let obj = {field:field,id:id,value:value2}	
-	  console.log("quickEdit_do2 obj 1 =",obj);
-      this.quickEdit(obj);
-	  
-	  if (scope._self.$refs[`popover-${scope.$index}`])
-		 scope._self.$refs[`popover-${scope.$index}`].doClose();
+	 // console.log("quickEdit_do2 obj 1 =",obj);
+      this.quickEdit(obj);	  
+	    // if (scope._self.$refs[`popover-${scope.$index}`])
+		  // scope._self.$refs[`popover-${scope.$index}`].doClose();
     },
     async quickEdit(obj) { 
-    // console.log("quickEdit_do2 res 2 =",obj);
+    //console.log("quickEdit_do2 res 2 =",obj);
       const res =  await quickEdit(obj)	 
-    // console.log("quickEdit_do2 res 3=",res);
+     // console.log("quickEdit_do2 res 3=",res);
       if (res.code === 0) {
         this.$message({
           type: 'success',
