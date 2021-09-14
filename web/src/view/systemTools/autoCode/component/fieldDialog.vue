@@ -128,9 +128,9 @@
 			</el-col>
 		  </el-form-item>
 	     
-	     <el-form-item label="是否导出" prop="Excel">
+	     <el-form-item label="是否排序" prop="orderBy">
 	         <el-col :span="8">
-	           <el-select v-model="dialogMiddle.beQuickEdit" placeholder="请选择是否快编" clearable>
+	           <el-select v-model="dialogMiddle.orderBy" placeholder="请选择是否排序" clearable>
 	             <el-option
 	               v-for="item in beHideOptions"
 	               :key="item.value"

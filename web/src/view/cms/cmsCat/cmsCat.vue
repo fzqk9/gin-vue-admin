@@ -48,7 +48,12 @@
               </el-form-item>
             
             
-            
+          <el-form-item label="状态" prop="status">                
+                    <el-select v-model="searchInfo.status" placeholder="请选择" clearable>
+                      <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                </el-form-item>
+                
           
         <el-form-item>
           <el-button size="mini" type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
@@ -84,11 +89,8 @@
          <!-- add by ljd 20210709,增加id 排序功能等  -->
        <el-table-column label="ID" min-width="60" prop="ID" sortable="custom" />  
              
-                <el-table-column label="父ID" prop="pid" width="120"  sortable="custom" >
-                  <template #default="scope">
-                    {{filterDict(scope.row.pid,"media_type")}}
-                  </template>
-                </el-table-column> 
+                  <el-table-column label="父ID" prop="pid" width="120"   sortable="custom"  />
+                 
            
         
              
@@ -104,19 +106,12 @@
         
              
                  <!-- BeQuickEdit -->
-                    <el-table-column label="文章类型" prop="mediaType" width="120"  >
+                    <el-table-column label="文章类型" prop="mediaType" width="120"  sortable="custom" >
                     <template #default="scope">  
-                    <el-popover trigger="click" placement="top" :ref="`popover-${scope.$index}`"> 
-                        <el-row :gutter="10">
-                          <el-col :span="16">  
-                              <el-select v-model="searchInfo.mediaType" placeholder="请选择" clearable>
-                                  <el-option v-for="(item,key) in media_typeOptions" :key="key" :label="item.label" :value="item.value"></el-option>
-                                </el-select> 
-                        </el-col> 
-                        <el-col :span="4">
-                          <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="quickEdit_do('mediaType',scope.row.ID,scope.row.mediaType,scope)">保存</el-button>
-                          </el-col> 
-                        </el-row>  
+                    <el-popover trigger="click" placement="top"  width = "280">  
+                          <el-select v-model="scope.row.mediaType" placeholder="请选择"  @change="quickEdit_do('media_type',scope.row.ID,scope.row.mediaType,scope)">
+                              <el-option v-for="(item,key) in media_typeOptions" :key="key" :label="item.label" :value="item.value"></el-option>
+                          </el-select> 
                           <template #reference>
                               <div class="quickEdit" > {{filterDict(scope.row.mediaType,"media_type")}} </div>
                           </template>
@@ -129,13 +124,13 @@
                  <!-- BeQuickEdit -->
                     <el-table-column label="名称" prop="name" width="120"   >
                     <template #default="scope">
-                        <el-popover trigger="click" placement="top" :ref="`popover-${scope.$index}`" >  
+                        <el-popover trigger="click" placement="top"  width = "280">  
                         <el-row :gutter="10">
                           <el-col :span="16">  <el-input type="textarea" autosize placeholder="请输入内容" v-model="scope.row.name"></el-input></el-col>
                           <el-col :span="4"> <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="quickEdit_do('name',scope.row.ID,scope.row.name,scope)">保存</el-button> </el-col> 
                         </el-row>  
                           <template #reference>
-                            <div   class="quickEdit"  > {{scope.row.name}} </div>
+                            <div  class="quickEdit"  > {{scope.row.name}} </div>
                           </template>
                         </el-popover>
                     </template>
@@ -174,20 +169,18 @@
         
              
                  <!-- BeQuickEdit -->
-                    <el-table-column label="状态" prop="status" width="120"   sortable="custom" >
-                    <template #default="scope">
-                        <el-popover trigger="click" placement="top" :ref="`popover-${scope.$index}`" >  
-                        <el-row :gutter="10">
-                          <el-col :span="16">  <el-input type="textarea" autosize placeholder="请输入内容" v-model="scope.row.status"></el-input></el-col>
-                          <el-col :span="4"> <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="quickEdit_do('status',scope.row.ID,scope.row.status,scope)">保存</el-button> </el-col> 
-                        </el-row>  
+                    <el-table-column label="状态" prop="status" width="120"  sortable="custom" >
+                    <template #default="scope">  
+                    <el-popover trigger="click" placement="top"  width = "280">  
+                          <el-select v-model="scope.row.status" placeholder="请选择"  @change="quickEdit_do('status',scope.row.ID,scope.row.status,scope)">
+                              <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value"></el-option>
+                          </el-select> 
                           <template #reference>
-                            <div   class="quickEdit"  > {{scope.row.status}} </div>
+                              <div class="quickEdit" > {{filterDict(scope.row.status,"status")}} </div>
                           </template>
-                        </el-popover>
-                    </template>
-                     </el-table-column>              
-                 
+                       </el-popover>
+                    </template>  
+                    </el-table-column> 
            
         
 
@@ -217,9 +210,7 @@
       <el-form :model="formData" label-position="right" label-width="80px">
         <el-form-item label="父ID:">
               
-                        <el-select v-model="formData.pid" placeholder="请选择" clearable>
-                          <el-option v-for="(item,key) in media_typeOptions" :key="key" :label="item.label" :value="item.value" />
-                        </el-select>
+                        <el-input v-model.number="formData.pid" clearable placeholder="请输入" />
                     </el-form-item>
         <el-form-item label="系统分类:">
               
@@ -265,8 +256,10 @@
               </el-form-item>
         <el-form-item label="状态:">
               
-                  <el-input v-model="formData.status" clearable placeholder="请输入" />
-              </el-form-item>
+                        <el-select v-model="formData.status" placeholder="请选择" clearable>
+                          <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value" />
+                        </el-select>
+                    </el-form-item>
      </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="closeDialog">取 消</el-button>
@@ -302,7 +295,7 @@ export default {
       
       media_typeOptions: [],
           
-      media_typeOptions: [],
+      statusOptions: [],
           
       formData: {
         pid: 0,
@@ -316,7 +309,7 @@ export default {
           desc: '',
           keywords: '',
           alias: '',
-          status: '',
+          status: 0,
           
       }, 
       shortcuts: [
@@ -356,7 +349,7 @@ export default {
     
     await this.getDict('media_type')
       
-    await this.getDict('media_type')
+    await this.getDict('status')
       
   },
   methods: {
@@ -432,7 +425,7 @@ export default {
           desc: '',
           keywords: '',
           alias: '',
-          status: '',
+          status: 0,
           
       }
     },
@@ -483,22 +476,21 @@ export default {
       }
       this.getTableData()
     },
-    quickEdit_do(field,id,value,scope) {  
+    quickEdit_do(field,id,value,scope) {    
 	  let value2 = value;
 	  if (typeof(value)==="boolean")
 		   value2 = value?"1":"0"
 	  value2 =  value2+"";   
 	  let obj = {field:field,id:id,value:value2}	
-	  console.log("quickEdit_do2 obj 1 =",obj);
-      this.quickEdit(obj);
-	  
-	  if (scope._self.$refs[`popover-${scope.$index}`])
-		 scope._self.$refs[`popover-${scope.$index}`].doClose();
+	 // console.log("quickEdit_do2 obj 1 =",obj);
+      this.quickEdit(obj);	  
+	    // if (scope._self.$refs[`popover-${scope.$index}`])
+		  // scope._self.$refs[`popover-${scope.$index}`].doClose();
     },
     async quickEdit(obj) { 
-    // console.log("quickEdit_do2 res 2 =",obj);
+    //console.log("quickEdit_do2 res 2 =",obj);
       const res =  await quickEdit(obj)	 
-    // console.log("quickEdit_do2 res 3=",res);
+     // console.log("quickEdit_do2 res 3=",res);
       if (res.code === 0) {
         this.$message({
           type: 'success',

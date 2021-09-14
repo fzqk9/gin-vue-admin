@@ -81,6 +81,9 @@ func (cmsCatService *CmsCatService)GetCmsCatInfoList(info autoCodeReq.CmsCatSear
     if info.Keywords != "" {
         db = db.Where("`keywords` LIKE ?","%"+ info.Keywords+"%")
     }
+    if info.Status != nil {
+        db = db.Where("`status` = ?",info.Status)
+    }
 	err = db.Count(&total).Error
 	//err = db.Limit(limit).Offset(offset).Find(&cmsCats).Error
     //修改 by ljd  增加查询排序 

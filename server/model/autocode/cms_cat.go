@@ -20,7 +20,7 @@ type CmsCat struct {
       Desc  string `json:"desc" form:"desc" gorm:"column:desc;comment:描述;type:text;"`
       Keywords  string `json:"keywords" form:"keywords" gorm:"column:keywords;comment:关键词;type:longtext;"`
       Alias  string `json:"alias" form:"alias" gorm:"column:alias;comment:别名;type:varchar(256);"`
-      Status  string `json:"status" form:"status" gorm:"column:status;comment:状态:0未审核 1审核  2未通过审核 3 草稿;type:text;"`
+      Status  *int `json:"status" form:"status" gorm:"column:status;comment:状态:0未审核 1审核  2未通过审核 3 草稿;type:smallint"`
 }
 
 

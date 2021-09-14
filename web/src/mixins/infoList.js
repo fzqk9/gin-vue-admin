@@ -27,10 +27,14 @@ export default {
         return ''
       }
     },
-    filterDict(value, type) {
-      const rowLabel = this[type + 'Options'] && this[type + 'Options'].filter(item => item.value === value)
+    filterDict(value, type) { 
+	  //const rowLabel = this[type + 'Options'] && this[type + 'Options'].filter(item => item.value === value) 
+     // by ljd 20210914   === 号 存在问题 ， 
+	  //console.log(this[type + 'Options']);
+	  const rowLabel = this[type + 'Options'] && this[type + 'Options'].filter(item => item.value == value) 
       return rowLabel && rowLabel[0] && rowLabel[0].label
     },
+	 
     async getDict(type) {
       const dicts = await getDict(type)
       this[type + 'Options'] = dicts

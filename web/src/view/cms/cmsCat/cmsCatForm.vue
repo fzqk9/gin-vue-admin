@@ -2,9 +2,7 @@
   <div>
     <el-form :model="formData" label-position="right" label-width="80px">
       <el-form-item label="父ID:">
-        <el-select v-model="formData.pid" placeholder="请选择" clearable>
-          <el-option v-for="(item,key) in media_typeOptions" :key="key" :label="item.label" :value="item.value" />
-        </el-select>
+        <el-input v-model.number="formData.pid" clearable placeholder="请输入" />
       </el-form-item>
       <el-form-item label="系统分类:">
         <el-switch v-model="formData.beSys" active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" clearable ></el-switch>
@@ -39,7 +37,9 @@
         <el-input v-model="formData.alias" clearable placeholder="请输入" />
       </el-form-item>
       <el-form-item label="状态:">
-        <el-input v-model="formData.status" clearable placeholder="请输入" />
+        <el-select v-model="formData.status" placeholder="请选择" clearable>
+          <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value" />
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button size="mini" type="primary" @click="save">保存</el-button>
@@ -63,7 +63,7 @@ export default {
     return {
       type: '',
       media_typeOptions: [],
-      media_typeOptions: [],
+      statusOptions: [],
       formData: {
         pid: 0,
         beSys: false,
@@ -76,7 +76,7 @@ export default {
         desc: '',
         keywords: '',
         alias: '',
-        status: '',
+        status: 0,
       }
     }
   },
@@ -92,7 +92,7 @@ export default {
       this.type = 'create'
     }
     await this.getDict('media_type')
-    await this.getDict('media_type')
+    await this.getDict('status')
   },
   methods: {
     async save() {
