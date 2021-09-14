@@ -142,7 +142,7 @@
                           <el-col :span="4"> <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="quickEdit_do('{{.ColumnName}}',scope.row.ID,scope.row.{{.FieldJson}},scope)">保存</el-button> </el-col> 
                         </el-row>  
                           <template #reference>
-                            <div  class="quickEdit"  > {{"{{"}}scope.row.{{.FieldJson}}{{"}}"}} </div>
+                            <div  class="quickEditTxt"  > {{"{{"}}scope.row.{{.FieldJson}}{{"}}"}} </div>
                           </template>
                         </el-popover>
                     </template>

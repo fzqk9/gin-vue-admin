@@ -89,14 +89,28 @@
          <!-- add by ljd 20210709,增加id 排序功能等  -->
        <el-table-column label="ID" min-width="60" prop="ID" sortable="custom" />  
              
-                  <el-table-column label="父ID" prop="pid" width="120"   sortable="custom"  />
+                 <!-- BeQuickEdit -->
+                    <el-table-column label="父ID" prop="pid" width="120"   sortable="custom" >
+                    <template #default="scope">
+                        <el-popover trigger="click" placement="top"  width = "280">  
+                        <el-row :gutter="10">
+                          <el-col :span="16">  <el-input type="textarea" autosize placeholder="请输入内容" v-model="scope.row.pid"></el-input></el-col>
+                          <el-col :span="4"> <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="quickEdit_do('pid',scope.row.ID,scope.row.pid,scope)">保存</el-button> </el-col> 
+                        </el-row>  
+                          <template #reference>
+                            <div  class="quickEdit"  > {{scope.row.pid}} </div>
+                          </template>
+                        </el-popover>
+                    </template>
+                     </el-table-column>              
                  
            
         
              
-                <el-table-column label="系统分类" prop="beSys" width="120"    >
-                  <template #default="scope">{{formatBoolean(scope.row.beSys)}}</template>
-                </el-table-column> 
+                 <!-- BeQuickEdit -->
+                    <el-table-column label="系统分类" prop="beSys" width="120"    >                        
+                        <template #default="scope" ><el-switch v-model="scope.row.beSys" @change="quickEdit_do('be_sys',scope.row.ID,scope.row.beSys,scope)"/></template> 
+                    </el-table-column> 
            
         
              
@@ -130,7 +144,7 @@
                           <el-col :span="4"> <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="quickEdit_do('name',scope.row.ID,scope.row.name,scope)">保存</el-button> </el-col> 
                         </el-row>  
                           <template #reference>
-                            <div  class="quickEdit"  > {{scope.row.name}} </div>
+                            <div  class="quickEditTxt"  > {{scope.row.name}} </div>
                           </template>
                         </el-popover>
                     </template>
@@ -139,19 +153,21 @@
            
         
              
-                  <el-table-column label="配图" prop="thumb" width="120"    />
-                 
-           
-        
+                 <el-table-column label="配图" prop="thumb" width="120"  >
+                        <template  #default="scope">
+							 <img  src="{{scope.row.thumb}}" />  
+                 		</template>  
+                 </el-table-column> 
              
                   <el-table-column label="排序" prop="sort" width="120"    />
                  
            
         
              
-                <el-table-column label="是否导航" prop="beNav" width="120"    >
-                  <template #default="scope">{{formatBoolean(scope.row.beNav)}}</template>
-                </el-table-column> 
+                 <!-- BeQuickEdit -->
+                    <el-table-column label="是否导航" prop="beNav" width="120"    >                        
+                        <template #default="scope" ><el-switch v-model="scope.row.beNav" @change="quickEdit_do('be_nav',scope.row.ID,scope.row.beNav,scope)"/></template> 
+                    </el-table-column> 
            
         
              
@@ -282,8 +298,9 @@ import {
 import { formatTimeToStr } from '@/utils/date'
 import infoList from '@/mixins/infoList'
 import { toSQLLine } from '@/utils/stringFun'
+ 
 export default {
-  name: 'CmsCat',
+  name: 'CmsCat', 
   mixins: [infoList],
   data() {
     return {

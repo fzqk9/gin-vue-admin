@@ -1419,6 +1419,11 @@ $mainHight: 100vh;
 
 .quickEdit{
    cursor: pointer;
-   text-decoration:underline;
+   text-decoration:underline ;
+   color:#409EFF
+}
+.quickEditTxt{
+   cursor: pointer;
+   text-decoration:underline dotted;
    color:#409EFF
 }
