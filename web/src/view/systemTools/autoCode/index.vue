@@ -571,9 +571,9 @@ export default {
     },
     async setFdMap() {
       const fdTypes = ['string', 'int', 'bool', 'float64', 'time.Time']
-      fdTypes.map(async fdtype => {
+      fdTypes.forEach(async fdtype => {
         const res = await getDict(fdtype)
-        res && res.map(item => {
+        res && res.forEach(item => {
           this.fdMap[item.label] = fdtype
         })
       })

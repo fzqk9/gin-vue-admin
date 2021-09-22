@@ -1,51 +1,53 @@
 <template>
   <div>
-    <el-form :model="formData" label-position="right" label-width="80px">
-      <el-form-item label="父ID:">
-        <el-input v-model.number="formData.pid" clearable placeholder="请输入" />
-      </el-form-item>
-      <el-form-item label="系统分类:">
-        <el-switch v-model="formData.beSys" active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" clearable ></el-switch>
-      </el-form-item>
-      <el-form-item label="群组id:">
-        <el-input v-model.number="formData.groupId" clearable placeholder="请输入" />
-      </el-form-item>
-      <el-form-item label="文章类型:">
-        <el-select v-model="formData.mediaType" placeholder="请选择" clearable>
-          <el-option v-for="(item,key) in media_typeOptions" :key="key" :label="item.label" :value="item.value" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="名称:">
-        <el-input v-model="formData.name" clearable placeholder="请输入" />
-      </el-form-item>
-      <el-form-item label="配图:">
-        <el-input v-model="formData.thumb" clearable placeholder="请输入" />
-      </el-form-item>
-      <el-form-item label="排序:">
-        <el-input v-model.number="formData.sort" clearable placeholder="请输入" />
-      </el-form-item>
-      <el-form-item label="是否导航:">
-        <el-switch v-model="formData.beNav" active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" clearable ></el-switch>
-      </el-form-item>
-      <el-form-item label="描述:">
-        <el-input v-model="formData.desc" clearable placeholder="请输入" />
-      </el-form-item>
-      <el-form-item label="关键词:">
-        <el-input v-model="formData.keywords" clearable placeholder="请输入" />
-      </el-form-item>
-      <el-form-item label="别名:">
-        <el-input v-model="formData.alias" clearable placeholder="请输入" />
-      </el-form-item>
-      <el-form-item label="状态:">
-        <el-select v-model="formData.status" placeholder="请选择" clearable>
-          <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value" />
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-button size="mini" type="primary" @click="save">保存</el-button>
-        <el-button size="mini" type="primary" @click="back">返回</el-button>
-      </el-form-item>
-    </el-form>
+    <div class="gva-form-box">
+      <el-form :model="formData" label-position="right" label-width="80px">
+        <el-form-item label="父ID:">
+          <el-input v-model.number="formData.pid" clearable placeholder="请输入" />
+        </el-form-item>
+        <el-form-item label="系统分类:">
+          <el-switch v-model="formData.beSys" active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" clearable ></el-switch>
+        </el-form-item>
+        <el-form-item label="群组id:">
+          <el-input v-model.number="formData.groupId" clearable placeholder="请输入" />
+        </el-form-item>
+        <el-form-item label="文章类型:">
+          <el-select v-model="formData.mediaType" placeholder="请选择" clearable>
+            <el-option v-for="(item,key) in media_typeOptions" :key="key" :label="item.label" :value="item.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="名称:">
+          <el-input v-model="formData.name" clearable placeholder="请输入" />
+        </el-form-item>
+        <el-form-item label="配图:">
+          <el-input v-model="formData.thumb" clearable placeholder="请输入" />
+        </el-form-item>
+        <el-form-item label="排序:">
+          <el-input v-model.number="formData.sort" clearable placeholder="请输入" />
+        </el-form-item>
+        <el-form-item label="是否导航:">
+          <el-switch v-model="formData.beNav" active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" clearable ></el-switch>
+        </el-form-item>
+        <el-form-item label="描述:">
+          <el-input v-model="formData.desc" clearable placeholder="请输入" />
+        </el-form-item>
+        <el-form-item label="关键词:">
+          <el-input v-model="formData.keywords" clearable placeholder="请输入" />
+        </el-form-item>
+        <el-form-item label="别名:">
+          <el-input v-model="formData.alias" clearable placeholder="请输入" />
+        </el-form-item>
+        <el-form-item label="状态:">
+          <el-select v-model="formData.status" placeholder="请选择" clearable>
+            <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button size="mini" type="primary" @click="save">保存</el-button>
+          <el-button size="mini" type="primary" @click="back">返回</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
   </div>
 </template>
 

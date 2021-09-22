@@ -98,7 +98,7 @@
                           <el-col :span="4"> <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="quickEdit_do('pid',scope.row.ID,scope.row.pid,scope)">保存</el-button> </el-col> 
                         </el-row>  
                           <template #reference>
-                            <div  class="quickEdit"  > {{scope.row.pid}} </div>
+                            <div  class="quickEditTxt"  > {{scope.row.pid}} </div>
                           </template>
                         </el-popover>
                     </template>
@@ -153,11 +153,10 @@
            
         
              
-                 <el-table-column label="配图" prop="thumb" width="120"  >
-                        <template  #default="scope">
-							 <img  src="{{scope.row.thumb}}" />  
-                 		</template>  
-                 </el-table-column> 
+                  <el-table-column label="配图" prop="thumb" width="120"    />
+                 
+           
+        
              
                   <el-table-column label="排序" prop="sort" width="120"    />
                  
@@ -298,9 +297,8 @@ import {
 import { formatTimeToStr } from '@/utils/date'
 import infoList from '@/mixins/infoList'
 import { toSQLLine } from '@/utils/stringFun'
- 
 export default {
-  name: 'CmsCat', 
+  name: 'CmsCat',
   mixins: [infoList],
   data() {
     return {
