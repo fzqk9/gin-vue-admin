@@ -153,8 +153,11 @@
            
         
              
-                  <el-table-column label="配图" prop="thumb" width="120"    />
-                 
+                  <el-table-column label="配图" prop="thumb" width="120" >
+				  <template #default="scope">
+				    <ImageView pic-type="img" :pic-src="scope.row.thumb" />
+				  </template>
+                  </el-table-column>
            
         
              
@@ -297,9 +300,13 @@ import {
 import { formatTimeToStr } from '@/utils/date'
 import infoList from '@/mixins/infoList'
 import { toSQLLine } from '@/utils/stringFun'
+import ImageView from '@/components/mediaLib/ImageView.vue'
 export default {
   name: 'CmsCat',
   mixins: [infoList],
+  components: {
+    ImageView
+  },
   data() {
     return {
       listApi: getCmsCatList,

@@ -99,7 +99,7 @@ export default {
         password: [{ validator: checkPassword, trigger: 'blur' }],
         captcha: [{ required: true, message: '请输入验证码', trigger: 'blur' },
           {
-            min: 5,
+            min: 2,
             max: 6,
             message: '验证码格式不正确',
             trigger: 'blur',
