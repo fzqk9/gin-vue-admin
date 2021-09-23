@@ -1544,6 +1544,44 @@ var doc = `{
                 }
             }
         },
+        "/cmsCat/quickEdit": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "QuickEdit"
+                ],
+                "summary": "快速更新",
+                "parameters": [
+                    {
+                        "description": "快速更新",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/autocode.CmsCat"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"更新成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/cmsCat/updateCmsCat": {
             "put": {
                 "security": [
@@ -4871,6 +4909,10 @@ var doc = `{
                     "description": "是否自动移动文件",
                     "type": "boolean"
                 },
+                "beExcel": {
+                    "description": "导出excel  add by ljd 20210709",
+                    "type": "boolean"
+                },
                 "description": {
                     "description": "Struct中文名称",
                     "type": "string"
@@ -4911,11 +4953,11 @@ var doc = `{
             "type": "object",
             "properties": {
                 "beHide": {
-                    "description": "隐藏  add by ljd 20210709 增加隐藏",
+                    "description": "隐藏  add by ljd 20210709",
                     "type": "boolean"
                 },
                 "beQuickEdit": {
-                    "description": "快速排序  add by ljd 20210709 增加隐藏",
+                    "description": "快速排序  add by ljd 20210709",
                     "type": "boolean"
                 },
                 "columnName": {

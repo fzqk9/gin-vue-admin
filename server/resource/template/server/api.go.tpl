@@ -152,7 +152,7 @@ func ({{.Abbreviation}}Api *{{.StructName}}Api) Get{{.StructName}}List(c *gin.Co
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body autocode.CmsAd true "快速更新"
+// @Param data body autocode.{{.StructName}} true "快速更新{{.StructName}}" 
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router  /{{.Abbreviation}}/quickEdit [post] 
 func ({{.Abbreviation}}Api *{{.StructName}}Api) QuickEdit(c *gin.Context) {

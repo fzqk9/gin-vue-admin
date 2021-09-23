@@ -248,10 +248,13 @@
               
                   <el-input v-model="formData.name" clearable placeholder="请输入" />
               </el-form-item>
+			  
         <el-form-item label="配图:">
-              
-                  <el-input v-model="formData.thumb" clearable placeholder="请输入" />
-              </el-form-item>
+			 <ImageView pic-type="img" :pic-src="formData.thumb" /> 
+        </el-form-item>
+	 
+			  
+			  
         <el-form-item label="排序:">
               
                         <el-input v-model.number="formData.sort" clearable placeholder="请输入" />
@@ -300,12 +303,15 @@ import {
 import { formatTimeToStr } from '@/utils/date'
 import infoList from '@/mixins/infoList'
 import { toSQLLine } from '@/utils/stringFun'
-import ImageView from '@/components/mediaLib/ImageView.vue'
+import ImageView from '@/components/mediaLib/imageView.vue'
+ import MediaLib  from '@/components/mediaLib/index.vue'
+//import ChooseImg from '@/components/chooseImg/index.vue'
 export default {
   name: 'CmsCat',
   mixins: [infoList],
   components: {
-    ImageView
+    ImageView,
+	MediaLib
   },
   data() {
     return {

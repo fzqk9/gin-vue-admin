@@ -1,39 +1,32 @@
  <template>
-   <span class="headerAvatar">
+   <div > 
      <template v-if="picType === 'avatar'">
        <el-avatar v-if="userInfo.headerImg" :size="24" :src="avatar" />
        <el-avatar v-else :size="24" :src="require('@/assets/noBody.png')" />
      </template>
-     <template v-if="picType === 'img'"> 
-	 
-	  <div class="demo-image__preview">
-	     <el-image lazy
-	       style="width: 100px; height: 100px"
-	       :src="file"
-	       :preview-src-list="fileList"
-	     >
-	     </el-image>
-	   </div> 
+     <template v-if="picType === 'img'"> 	 
+	     <el-image lazy class="image-div" fit="fill" :src="file" :preview-src-list="fileList" /> 
      </template>
-     <template v-if="picType === 'file'">
-      <div class="demo-image__preview">
-         <el-image lazy
-           style="width: 100px; height: 100px"
-           :src="file"
-           :preview-src-list="fileList" 
-         >
-         </el-image>
-       </div> 
+     <template v-if="picType === 'file'">      
+         <el-image lazy class="image-div" fit="fill" :src="file" :preview-src-list="fileList" /> 
      </template>
-   </span>
+	   <span class="imgtxt" @click="openChooseImg">重新上传</span>  
+	   
+   </div>
+    <ChooseImg ref="chooseImg" @enter-img="enterImg" />
  </template>
  
  <script>
+ import { ref } from 'vue'
  import { mapGetters } from 'vuex'
+ import ChooseImg from '@/components/chooseImg/index.vue'
   import { isEmpty } from '@/utils/utils'
  const path = import.meta.env.VITE_BASE_API
  export default {
    name: 'ImageView',
+   components: {
+     ChooseImg
+   },
    props: {
      picType: {
        type: String,
@@ -44,7 +37,12 @@
        type: String,
        required: false,
        default: ''
-     }
+     },
+	 beEdit: {
+	   type: Number,
+	   required: false,
+	   default: 0
+	 }
    },
    data() {
      return {
@@ -86,22 +84,43 @@
 		}
 		 return [url];
 		
-	 }
+	 },
+	 openChooseImg() {
+		 console.log("1111");
+	     //this.$refs.chooseImg.open()
+	 },
+	 enterImg(url) {
+		 console.log("222");
+		 console.log(url);
+	   // const res = await setUserInfo({ headerImg: url, ID: this.userInfo.ID })
+	   // if (res.code === 0) {
+	   //   this.ResetUserInfo({ headerImg: url })
+	   //   this.$message({
+	   //     type: 'success',
+	   //     message: '设置成功'
+	   //   })
+	   // }
+	 },
    }
  }
  </script>
  
- <style scoped>
- .headerAvatar{
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     margin-right: 8px;
+ <style scoped> 
+ 
+  .image-div{
+	    display: flex; 
+	     width: 80px;
+	     height:80px; 
  }
- .file{
-     width: 80px;
-     height: 80px;
-     position: relative;
+ 
+ .imgtxt {
+   display: flex; 
+   font-size: 14px;
+   margin-top: 0px;
+   cursor: pointer;
+   text-decoration:underline;
+   color:#409EFF
  }
+ 
  </style>
  

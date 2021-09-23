@@ -646,6 +646,9 @@ definitions:
       autoMoveFile:
         description: 是否自动移动文件
         type: boolean
+      beExcel:
+        description: 导出excel  add by ljd 20210709
+        type: boolean
       description:
         description: Struct中文名称
         type: string
@@ -675,10 +678,10 @@ definitions:
   system.Field:
     properties:
       beHide:
-        description: 隐藏  add by ljd 20210709 增加隐藏
+        description: 隐藏  add by ljd 20210709
         type: boolean
       beQuickEdit:
-        description: 快速排序  add by ljd 20210709 增加隐藏
+        description: 快速排序  add by ljd 20210709
         type: boolean
       columnName:
         description: 数据库字段
@@ -1930,6 +1933,29 @@ paths:
       summary: 分页获取CmsCat列表
       tags:
       - CmsCat
+  /cmsCat/quickEdit:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 快速更新
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/autocode.CmsCat'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"更新成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 快速更新
+      tags:
+      - QuickEdit
   /cmsCat/updateCmsCat:
     put:
       consumes:

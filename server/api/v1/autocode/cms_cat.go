@@ -2,13 +2,13 @@ package autocode
 
 import (
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/autocode"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
-    autocodeReq "github.com/flipped-aurora/gin-vue-admin/server/model/autocode/request"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
-    "github.com/flipped-aurora/gin-vue-admin/server/service"
-    "github.com/gin-gonic/gin"
-    "go.uber.org/zap"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/autocode"
+	autocodeReq "github.com/flipped-aurora/gin-vue-admin/server/model/autocode/request"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
+	"github.com/flipped-aurora/gin-vue-admin/server/service"
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 type CmsCatApi struct {
@@ -30,7 +30,7 @@ func (cmsCatApi *CmsCatApi) CreateCmsCat(c *gin.Context) {
 	var cmsCat autocode.CmsCat
 	_ = c.ShouldBindJSON(&cmsCat)
 	if err := cmsCatService.CreateCmsCat(cmsCat); err != nil {
-        global.GVA_LOG.Error("创建失败!", zap.Any("err", err))
+		global.GVA_LOG.Error("创建失败!", zap.Any("err", err))
 		response.FailWithMessage("创建失败", c)
 	} else {
 		response.OkWithMessage("创建成功", c)
@@ -50,7 +50,7 @@ func (cmsCatApi *CmsCatApi) DeleteCmsCat(c *gin.Context) {
 	var cmsCat autocode.CmsCat
 	_ = c.ShouldBindJSON(&cmsCat)
 	if err := cmsCatService.DeleteCmsCat(cmsCat); err != nil {
-        global.GVA_LOG.Error("删除失败!", zap.Any("err", err))
+		global.GVA_LOG.Error("删除失败!", zap.Any("err", err))
 		response.FailWithMessage("删除失败", c)
 	} else {
 		response.OkWithMessage("删除成功", c)
@@ -68,9 +68,9 @@ func (cmsCatApi *CmsCatApi) DeleteCmsCat(c *gin.Context) {
 // @Router /cmsCat/deleteCmsCatByIds [delete]
 func (cmsCatApi *CmsCatApi) DeleteCmsCatByIds(c *gin.Context) {
 	var IDS request.IdsReq
-    _ = c.ShouldBindJSON(&IDS)
+	_ = c.ShouldBindJSON(&IDS)
 	if err := cmsCatService.DeleteCmsCatByIds(IDS); err != nil {
-        global.GVA_LOG.Error("批量删除失败!", zap.Any("err", err))
+		global.GVA_LOG.Error("批量删除失败!", zap.Any("err", err))
 		response.FailWithMessage("批量删除失败", c)
 	} else {
 		response.OkWithMessage("批量删除成功", c)
@@ -90,7 +90,7 @@ func (cmsCatApi *CmsCatApi) UpdateCmsCat(c *gin.Context) {
 	var cmsCat autocode.CmsCat
 	_ = c.ShouldBindJSON(&cmsCat)
 	if err := cmsCatService.UpdateCmsCat(cmsCat); err != nil {
-        global.GVA_LOG.Error("更新失败!", zap.Any("err", err))
+		global.GVA_LOG.Error("更新失败!", zap.Any("err", err))
 		response.FailWithMessage("更新失败", c)
 	} else {
 		response.OkWithMessage("更新成功", c)
@@ -110,7 +110,7 @@ func (cmsCatApi *CmsCatApi) FindCmsCat(c *gin.Context) {
 	var cmsCat autocode.CmsCat
 	_ = c.ShouldBindQuery(&cmsCat)
 	if err, recmsCat := cmsCatService.GetCmsCat(cmsCat.ID); err != nil {
-        global.GVA_LOG.Error("查询失败!", zap.Any("err", err))
+		global.GVA_LOG.Error("查询失败!", zap.Any("err", err))
 		response.FailWithMessage("查询失败", c)
 	} else {
 		response.OkWithData(gin.H{"recmsCat": recmsCat}, c)
@@ -131,20 +131,18 @@ func (cmsCatApi *CmsCatApi) GetCmsCatList(c *gin.Context) {
 
 	var pageInfo autocodeReq.CmsCatSearch
 	_ = c.ShouldBindQuery(&pageInfo)
-	if err, list, total := cmsCatService.GetCmsCatInfoList(pageInfo,createdAtBetween); err != nil {
-	    global.GVA_LOG.Error("获取失败!", zap.Any("err", err))
-        response.FailWithMessage("获取失败", c)
-    } else {
-        response.OkWithDetailed(response.PageResult{
-            List:     list,
-            Total:    total,
-            Page:     pageInfo.Page,
-            PageSize: pageInfo.PageSize,
-        }, "获取成功", c)
-    }
+	if err, list, total := cmsCatService.GetCmsCatInfoList(pageInfo, createdAtBetween); err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Any("err", err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
 }
-
-
 
 // QuickEdit 快速更新
 // @Tags QuickEdit
@@ -152,9 +150,9 @@ func (cmsCatApi *CmsCatApi) GetCmsCatList(c *gin.Context) {
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body autocode.CmsAd true "快速更新"
+// @Param data body autocode.CmsCat true "快速更新"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
-// @Router  /cmsCat/quickEdit [post] 
+// @Router  /cmsCat/quickEdit [post]
 func (cmsCatApi *CmsCatApi) QuickEdit(c *gin.Context) {
 	var quickEdit request.QuickEdit
 	_ = c.ShouldBindJSON(&quickEdit)
