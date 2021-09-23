@@ -5,27 +5,28 @@
        <el-avatar v-else :size="24" :src="require('@/assets/noBody.png')" />
      </template>
      <template v-if="picType === 'img'"> 	 
-	     <el-image lazy class="image-div" fit="fill" :src="file" :preview-src-list="fileList" /> 
+	     <el-image lazy class="image-div" fit="fill" :src="file" :preview-src-list="fileList" hide-on-click-modal="true"/> 
      </template>
      <template v-if="picType === 'file'">      
-         <el-image lazy class="image-div" fit="fill" :src="file" :preview-src-list="fileList" /> 
-     </template>
-	   <span class="imgtxt" @click="openChooseImg">重新上传</span>  
-	   
-   </div>
-    <ChooseImg ref="chooseImg" @enter-img="enterImg" />
+         <el-image lazy class="image-div" fit="fill" :src="file" :preview-src-list="fileList" hide-on-click-modal="true"/> 
+     </template> 
+    
+    <el-link  v-if="beEdit == '1'" icon="el-icon-edit" @click="openChooseImg">重新上传</el-link>   
+     
+   </div> 
+    <MediaLib ref="chooseImg" @enter-img="enterImg" />  
  </template>
  
  <script>
  import { ref } from 'vue'
  import { mapGetters } from 'vuex'
- import ChooseImg from '@/components/chooseImg/index.vue'
+ import MediaLib from '@/components/mediaLib/index.vue'
   import { isEmpty } from '@/utils/utils'
  const path = import.meta.env.VITE_BASE_API
  export default {
    name: 'ImageView',
    components: {
-     ChooseImg
+     MediaLib
    },
    props: {
      picType: {
@@ -39,15 +40,33 @@
        default: ''
      },
 	 beEdit: {
-	   type: Number,
+	   type: String,
 	   required: false,
-	   default: 0
+	   default:'0'
 	 }
    },
    data() {
      return {
        path: path + '/'
      }
+   },
+   methods: {
+          openChooseImg() {
+                console.log("1111");
+               this.$refs.chooseImg.open()
+          },
+          enterImg(url) {
+                 console.log("222");
+                 console.log(url);
+            // const res = await setUserInfo({ headerImg: url, ID: this.userInfo.ID })
+            // if (res.code === 0) {
+            //   this.ResetUserInfo({ headerImg: url })
+            //   this.$message({
+            //     type: 'success',
+            //     message: '设置成功'
+            //   })
+            // }
+          } 
    },
    computed: {
      ...mapGetters('user', ['userInfo']),
@@ -84,23 +103,7 @@
 		}
 		 return [url];
 		
-	 },
-	 openChooseImg() {
-		 console.log("1111");
-	     //this.$refs.chooseImg.open()
-	 },
-	 enterImg(url) {
-		 console.log("222");
-		 console.log(url);
-	   // const res = await setUserInfo({ headerImg: url, ID: this.userInfo.ID })
-	   // if (res.code === 0) {
-	   //   this.ResetUserInfo({ headerImg: url })
-	   //   this.$message({
-	   //     type: 'success',
-	   //     message: '设置成功'
-	   //   })
-	   // }
-	 },
+	 } 
    }
  }
  </script>

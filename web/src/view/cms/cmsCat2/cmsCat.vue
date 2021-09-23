@@ -89,7 +89,7 @@
          <!-- add by ljd 20210709,增加id 排序功能等  -->
        <el-table-column label="ID" min-width="60" prop="ID" sortable="custom" />  
              
-                 <!-- BeQuickEdit -->  
+                 <!-- BeQuickEdit -->
                     <el-table-column label="父ID" prop="pid" width="120"   sortable="custom" >
                     <template #default="scope">
                         <el-popover trigger="click" placement="top"  width = "280">  
@@ -113,9 +113,9 @@
                     </el-table-column> 
            
         
-              
-                  <el-table-column label="群组id" prop="groupId" width="120"    />  
-               
+             
+                  <el-table-column label="群组id" prop="groupId" width="120"    />
+                 
            
         
              
@@ -135,7 +135,7 @@
            
         
              
-                 <!-- BeQuickEdit -->  
+                 <!-- BeQuickEdit -->
                     <el-table-column label="名称" prop="name" width="120"   >
                     <template #default="scope">
                         <el-popover trigger="click" placement="top"  width = "280">  
@@ -148,22 +148,18 @@
                           </template>
                         </el-popover>
                     </template>
-                     </el-table-column>              
-                 
+                </el-table-column>   
+             
+                  <el-table-column label="配图" prop="thumb" width="120" >
+				  <template #default="scope">
+				    <ImageView pic-type="img" :pic-src="scope.row.thumb" />
+				  </template>
+                  </el-table-column>
            
         
              
-                  <el-table-column label="配图" prop="thumb" width="120"   >
-                      <template #default="scope">
-                        <ImageView pic-type="img" :pic-src="scope.row.thumb" />
-                      </template>
-                  </el-table-column>  
-               
-           
-        
-              
-                  <el-table-column label="排序" prop="sort" width="120"    />  
-               
+                  <el-table-column label="排序" prop="sort" width="120"    />
+                 
            
         
              
@@ -173,14 +169,14 @@
                     </el-table-column> 
            
         
-              
-                  <el-table-column label="描述" prop="desc" width="120"    />  
-               
+             
+                  <el-table-column label="描述" prop="desc" width="120"    />
+                 
            
         
-              
-                  <el-table-column label="关键词" prop="keywords" width="120"    />  
-               
+             
+                  <el-table-column label="关键词" prop="keywords" width="120"    />
+                 
            
         
            <!-- add by ljd 20210720, 隐藏字段   alias -->         
@@ -201,7 +197,7 @@
                     </template>  
                     </el-table-column> 
            
-         
+        
 
       <el-table-column label="日期" width="180" prop="created_at" sortable="custom" >
         <template #default="scope">{{ formatDate(scope.row.CreatedAt)}}</template>
@@ -218,7 +214,7 @@
       layout="total, sizes, prev, pager, next, jumper"
       :current-page="page"
       :page-size="pageSize"
-      :page-sizes="[10,30, 50, 100]"
+      :page-sizes="[10, 30, 50, 100]"
       :style="{float:'right',padding:'20px'}"
       :total="total"
       @current-change="handleCurrentChange"
@@ -249,14 +245,17 @@
               
                   <el-input v-model="formData.name" clearable placeholder="请输入" />
               </el-form-item>
+			  
         <el-form-item label="配图:">
-              
-                  <ImageView pic-type="img" :be-edit="1" :pic-src="formData.thumb" /> 
-              </el-form-item>
+			 <ImageView pic-type="img" :be-edit="1" :pic-src="formData.thumb" /> 
+        </el-form-item>
+	 
+			  
+			  
         <el-form-item label="排序:">
               
-                        <el-input v-model.number="formData.sort" clearable placeholder="请输入" />
-                    </el-form-item>
+          <el-input v-model.number="formData.sort" clearable placeholder="请输入" />
+           </el-form-item>
         <el-form-item label="是否导航:">
               
                   <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" v-model="formData.beNav" clearable ></el-switch>
@@ -302,13 +301,14 @@ import { formatTimeToStr } from '@/utils/date'
 import infoList from '@/mixins/infoList'
 import { toSQLLine } from '@/utils/stringFun'
 import ImageView from '@/components/mediaLib/imageView.vue'
-import MediaLib  from '@/components/mediaLib/index.vue'
+ import MediaLib  from '@/components/mediaLib/index.vue'
+//import ChooseImg from '@/components/chooseImg/index.vue'
 export default {
   name: 'CmsCat',
   mixins: [infoList],
   components: {
     ImageView,
-   	MediaLib
+	MediaLib
   },
   data() {
     return {
@@ -328,6 +328,7 @@ export default {
           groupId: 0,
           mediaType: 0,
           name: '',
+          thumb: '',
           sort: 0,
           beNav: false,
           desc: '',
@@ -443,6 +444,7 @@ export default {
           groupId: 0,
           mediaType: 0,
           name: '',
+          thumb: '',
           sort: 0,
           beNav: false,
           desc: '',

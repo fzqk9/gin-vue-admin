@@ -20,6 +20,7 @@
           <el-input v-model="formData.name" clearable placeholder="请输入" />
         </el-form-item>
         <el-form-item label="配图:">
+          <el-input v-model="formData.thumb" clearable placeholder="请输入" />
         </el-form-item>
         <el-form-item label="排序:">
           <el-input v-model.number="formData.sort" clearable placeholder="请输入" />
@@ -71,6 +72,7 @@ export default {
         groupId: 0,
         mediaType: 0,
         name: '',
+        thumb: '',
         sort: 0,
         beNav: false,
         desc: '',

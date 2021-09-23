@@ -132,8 +132,8 @@
                 {{- else if eq .FieldType "bool" }}
                     <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{if .OrderBy}} sortable="custom"{{end}}  >                        
                         <template #default="scope" ><el-switch v-model="scope.row.{{.FieldJson}}" @change="quickEdit_do('{{.ColumnName}}',scope.row.ID,scope.row.{{.FieldJson}},scope)"/></template> 
-                    </el-table-column>
-                 {{- else }}
+                    </el-table-column> 
+                {{- else }}  
                     <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{if .OrderBy}} sortable="custom"{{end}} >
                     <template #default="scope">
                         <el-popover trigger="click" placement="top"  width = "280">  
@@ -158,13 +158,19 @@
                 {{- else if eq .FieldType "bool" }}
                 <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{if .OrderBy}} sortable="custom"{{end}}  >
                   <template #default="scope">{{"{{formatBoolean(scope.row."}}{{.FieldJson}}{{")}}"}}</template>
-                </el-table-column> {{- else }}
+                </el-table-column>
+                 {{- else if eq .FieldType "image" }}
+                  <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{if .OrderBy}} sortable="custom"{{end}} >
+                      <template #default="scope">
+                        <ImageView pic-type="img" :pic-src="scope.row.{{.FieldJson}}" />
+                      </template>
+                  </el-table-column>
+                {{- else }} 
                   <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{if .OrderBy}} sortable="custom"{{end}}  />
-                {{ end -}} 
-
+                {{- end }}  
               {{end}} 
           {{end}} 
-      {{ end}}  
+      {{ end}}   
 
       <el-table-column label="日期" width="180" prop="created_at" sortable="custom" >
         <template #default="scope">{{ "{{ formatDate(scope.row.CreatedAt)}}" }}</template>
@@ -181,7 +187,7 @@
       layout="total, sizes, prev, pager, next, jumper"
       :current-page="page"
       :page-size="pageSize"
-      :page-sizes="[10, 20, 50, 100]"
+      :page-sizes="[10,30, 50, 100]"
       :style="{float:'right',padding:'20px'}"
       :total="total"
       @current-change="handleCurrentChange"
@@ -197,6 +203,9 @@
               {{ end -}}
               {{ if eq .FieldType "string" }}
                   <el-input v-model="formData.{{.FieldJson}}" clearable placeholder="请输入" />
+              {{ end -}}
+               {{ if eq .FieldType "image" }}
+                  <ImageView pic-type="img" :be-edit="1" :pic-src="formData.{{.FieldJson}}" /> 
               {{ end -}}
               {{ if eq .FieldType "int" }}
                     {{- if .DictType}}
@@ -218,7 +227,7 @@
        </el-form-item>
        {{- end }}
      </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer" class="el-dialog__footer">
         <el-button @click="closeDialog">取 消</el-button>
         <el-button type="primary" @click="enterDialog">确 定</el-button>
       </div>
@@ -239,9 +248,15 @@ import {
 import { formatTimeToStr } from '@/utils/date'
 import infoList from '@/mixins/infoList'
 import { toSQLLine } from '@/utils/stringFun'
+import ImageView from '@/components/mediaLib/imageView.vue'
+import MediaLib  from '@/components/mediaLib/index.vue'
 export default {
   name: '{{.StructName}}',
   mixins: [infoList],
+  components: {
+    ImageView,
+   	MediaLib
+  },
   data() {
     return {
       listApi: get{{ .StructName }}List,
@@ -317,7 +332,7 @@ export default {
   // 条件搜索前端看此方法
     onSubmit() {
       this.page = 1
-      this.pageSize = 20
+      this.pageSize = 10
       {{- range .Fields}} {{- if eq .FieldType "bool" }}
       if (this.searchInfo.{{.FieldJson}} === ""){
         this.searchInfo.{{.FieldJson}}=null
