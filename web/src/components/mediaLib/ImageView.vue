@@ -5,10 +5,25 @@
        <el-avatar v-else :size="24" :src="require('@/assets/noBody.png')" />
      </template>
      <template v-if="picType === 'img'"> 
-       <img :src="file"  class="file" >
+	 
+	  <div class="demo-image__preview">
+	     <el-image lazy
+	       style="width: 100px; height: 100px"
+	       :src="file"
+	       :preview-src-list="fileList"
+	     >
+	     </el-image>
+	   </div> 
      </template>
      <template v-if="picType === 'file'">
-       <img :src="file" class="file">
+      <div class="demo-image__preview">
+         <el-image lazy
+           style="width: 100px; height: 100px"
+           :src="file"
+           :preview-src-list="fileList" 
+         >
+         </el-image>
+       </div> 
      </template>
    </span>
  </template>
@@ -52,14 +67,26 @@
        }
      },
      file() {   
-	  // console.log(this.picSrc); 
-	   if (isEmpty(this.picSrc))
-	       return "/img/no.png";
-       if (this.picSrc && this.picSrc.slice(0, 4) !== 'http') {
-         return this.path + this.picSrc
+	  // console.log(this.picSrc);
+	   let url =  this.picSrc;
+	   if (isEmpty(url))
+	       url = "/img/no.png";
+       else if (url && url.slice(0, 4) !== 'http') {
+         url =  this.path + url
        }
-       return this.picSrc
-     }
+       return url
+     },
+	 fileList()
+	 { 
+		let url =  this.picSrc;
+		if (isEmpty(url))
+		    url = "/img/no.png";
+		else if (url && url.slice(0, 4) !== 'http') {
+		  url =  this.path + url
+		}
+		 return [url];
+		
+	 }
    }
  }
  </script>
