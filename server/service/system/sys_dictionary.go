@@ -102,6 +102,6 @@ func (dictionaryService *DictionaryService) GetSysDictionaryInfoList(info reques
 	if err != nil {
 		return
 	}
-	err = db.Limit(limit).Offset(offset).Find(&sysDictionarys).Error
+	err = db.Order("id desc").Limit(limit).Offset(offset).Find(&sysDictionarys).Error
 	return err, sysDictionarys, total
 }

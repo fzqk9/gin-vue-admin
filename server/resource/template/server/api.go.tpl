@@ -15,7 +15,7 @@ type {{.StructName}}Api struct {
 }
 
 var {{.Abbreviation}}Service = service.ServiceGroupApp.AutoCodeServiceGroup.{{.StructName}}Service
-var commDbService = service.ServiceGroupApp.CommonServiceGroup.CommDbService
+ 
 
 // Create{{.StructName}} 创建{{.StructName}}
 // @Tags {{.StructName}}
