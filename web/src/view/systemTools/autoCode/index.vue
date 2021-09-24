@@ -154,6 +154,11 @@
               </el-popover> 
       	  </template> 
       	  </el-table-column> 
+		  <el-table-column prop="beQuickEdit" label="是否快编" width="130" >
+		        		  <template #default="scope" >
+		        		      <el-switch v-model="scope.row.beQuickEdit" /> 
+		        		  </template>
+		   </el-table-column> 
       	  <el-table-column prop="orderBy" label="是否排序" width="130"  >
       		  <template #default="scope" >
       			  <el-switch v-model="scope.row.orderBy" /> 
@@ -162,11 +167,7 @@
       		  <template #default="scope" >
       			  <el-switch v-model="scope.row.beHide" /> 
       		  </template> </el-table-column>
-      	  <el-table-column prop="beQuickEdit" label="是否快编" width="130" >
-      		  <template #default="scope" >
-      		      <el-switch v-model="scope.row.beQuickEdit" /> 
-      		  </template>
-      	   </el-table-column> 
+      	 
 	   
       <el-table-column label="操作" width="300">
         <template #default="scope">

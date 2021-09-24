@@ -22,7 +22,8 @@
  import { mapGetters } from 'vuex'
  import MediaLib from '@/components/mediaLib/index.vue'
   import { isEmpty } from '@/utils/utils'
- const path = import.meta.env.VITE_BASE_API
+// const path = import.meta.env.VITE_BASE_PATH+":"+ import.meta.env.VITE_SERVER_PORT "/"
+ const path =  "http://127.0.0.1:8888"
  export default {
    name: 'ImageView',
    components: {
@@ -91,6 +92,7 @@
        else if (url && url.slice(0, 4) !== 'http') {
          url =  this.path + url
        }
+	   console.log(url);
        return url
      },
 	 fileList()

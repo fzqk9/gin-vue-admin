@@ -46,7 +46,7 @@
                 
           <el-form-item label="存储位置" prop="driver">                
                     <el-select v-model="searchInfo.driver" placeholder="请选择" clearable>
-                      <el-option v-for="(item,key) in media_typeOptions" :key="key" :label="item.label" :value="item.value"></el-option>
+                      <el-option v-for="(item,key) in driverOptions" :key="key" :label="item.label" :value="item.value"></el-option>
                     </el-select>
                 </el-form-item>
                 
@@ -158,19 +158,21 @@
                     <template #default="scope">  
                     <el-popover trigger="click" placement="top"  width = "280">  
                           <el-select v-model="scope.row.driver" placeholder="请选择"  @change="quickEdit_do('driver',scope.row.ID,scope.row.driver,scope)">
-                              <el-option v-for="(item,key) in media_typeOptions" :key="key" :label="item.label" :value="item.value"></el-option>
+                              <el-option v-for="(item,key) in driverOptions" :key="key" :label="item.label" :value="item.value"></el-option>
                           </el-select> 
                           <template #reference>
-                              <div class="quickEdit" > {{filterDict(scope.row.driver,"media_type")}} </div>
+                              <div class="quickEdit" > {{filterDict(scope.row.driver,"driver")}} </div>
                           </template>
                        </el-popover>
                     </template>  
                     </el-table-column> 
            
         
-              
-                  <el-table-column label="文件路径" prop="path" width="120"   sortable="custom"  />  
-               
+           <el-table-column label="配图" prop="path" width="120"   >
+               <template #default="scope">
+                 <ImageView pic-type="img" :pic-src="scope.row.path" />
+               </template>
+           </el-table-column>  
            
         
               
@@ -183,15 +185,11 @@
                
            
         
-              
-                  <el-table-column label="md5值" prop="md5" width="120"   sortable="custom"  />  
-               
-           
+           <!-- add by ljd 20210720, 隐藏字段   md5 -->         
+          
         
-              
-                  <el-table-column label="sha散列值" prop="sha1" width="120"   sortable="custom"  />  
-               
-           
+           <!-- add by ljd 20210720, 隐藏字段   sha1 -->         
+          
         
              
                  <!-- BeQuickEdit -->  
@@ -211,15 +209,11 @@
                  
            
         
-              
-                  <el-table-column label="下载次数" prop="download" width="120"   sortable="custom"  />  
-               
-           
+           <!-- add by ljd 20210720, 隐藏字段   download -->         
+          
         
-              
-                  <el-table-column label="使用次数" prop="usedTime" width="120"   sortable="custom"  />  
-               
-           
+           <!-- add by ljd 20210720, 隐藏字段   usedTime -->         
+          
          
 
       <el-table-column label="日期" width="180" prop="created_at" sortable="custom" >
@@ -273,7 +267,7 @@
         <el-form-item label="存储位置:">
               
                         <el-select v-model="formData.driver" placeholder="请选择" clearable>
-                          <el-option v-for="(item,key) in media_typeOptions" :key="key" :label="item.label" :value="item.value" />
+                          <el-option v-for="(item,key) in driverOptions" :key="key" :label="item.label" :value="item.value" />
                         </el-select>
                     </el-form-item>
         <el-form-item label="文件路径:">
@@ -351,7 +345,7 @@ export default {
           
       media_typeOptions: [],
           
-      media_typeOptions: [],
+      driverOptions: [],
           
       formData: {
         guid: '',
@@ -409,7 +403,7 @@ export default {
       
     await this.getDict('media_type')
       
-    await this.getDict('media_type')
+    await this.getDict('driver')
       
   },
   methods: {

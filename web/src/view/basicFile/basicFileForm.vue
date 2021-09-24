@@ -23,7 +23,7 @@
         </el-form-item>
         <el-form-item label="存储位置:">
           <el-select v-model="formData.driver" placeholder="请选择" clearable>
-            <el-option v-for="(item,key) in media_typeOptions" :key="key" :label="item.label" :value="item.value" />
+            <el-option v-for="(item,key) in driverOptions" :key="key" :label="item.label" :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="文件路径:">
@@ -74,7 +74,7 @@ export default {
       type: '',
       moduleOptions: [],
       media_typeOptions: [],
-      media_typeOptions: [],
+      driverOptions: [],
       formData: {
         guid: '',
         userId: 0,
@@ -106,7 +106,7 @@ export default {
     }
     await this.getDict('module')
     await this.getDict('media_type')
-    await this.getDict('media_type')
+    await this.getDict('driver')
   },
   methods: {
     async save() {
