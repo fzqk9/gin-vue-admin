@@ -5,8 +5,8 @@ export default {
   data() {
     return {
       page: 1,
-      total: 10,
-      pageSize: 10,
+      total: 20,
+      pageSize: 20,
       tableData: [],
       searchInfo: {}
     }
