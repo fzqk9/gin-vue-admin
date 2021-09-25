@@ -20,7 +20,7 @@
  <script>
  import { ref } from 'vue'
  import { mapGetters } from 'vuex'
- import MediaLib from '@/components/mediaLib/index.vue'
+ import MediaLib from '@/components/mediaLib/mediaLib.vue'
   import { isEmpty } from '@/utils/utils'
 // const path = import.meta.env.VITE_BASE_PATH+":"+ import.meta.env.VITE_SERVER_PORT "/"
  const path =  "http://127.0.0.1:8888"

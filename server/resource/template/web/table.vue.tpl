@@ -249,7 +249,7 @@ import { formatTimeToStr } from '@/utils/date'
 import infoList from '@/mixins/infoList'
 import { toSQLLine } from '@/utils/stringFun'
 import ImageView from '@/components/mediaLib/imageView.vue'
-import MediaLib  from '@/components/mediaLib/index.vue'
+import MediaLib  from '@/components/mediaLib/mediaLib.vue'
 export default {
   name: '{{.StructName}}',
   mixins: [infoList],

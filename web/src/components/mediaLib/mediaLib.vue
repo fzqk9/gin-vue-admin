@@ -1,6 +1,7 @@
 <template>
-  <el-dialog  v-model="drawer" width="80%" title="媒体库2">
-    <!----------查询form------------------ -->
+  <el-dialog  v-model="drawer" width="80%" title="媒体库">
+    <template #title> 
+    
       <div class="search-term">
         <el-form :inline="true" :model="searchInfo" class="demo-form-inline"> 
       
@@ -33,8 +34,10 @@
           </el-form-item>
         </el-form>
       </div>
+   </template>
     <div class="media">
       <el-image
+        lazy  
         v-for="(item,key) in tableData"
         :key="key"
         class="header-img-box-list"
@@ -46,8 +49,22 @@
             <i class="el-icon-picture-outline" />
           </div>
         </template>
-      </el-image>
+      </el-image> 
+      
     </div>
+       <template #footer>  
+              <el-pagination
+                layout="total, sizes, prev, pager, next, jumper"
+                :current-page="page"
+                :page-size="pageSize"
+                :page-sizes="[10,30, 50, 100]"
+                :style="{float:'right',padding:'20px'}"
+                :total="total"
+                @current-change="handleCurrentChange"
+                @size-change="handleSizeChange"
+              />
+              <label >&nbsp;</label>
+           </template>
   </el-dialog >
 </template>
 
@@ -69,7 +86,7 @@
 const path =  "http://127.0.0.1:8888"// process.env.VUE_APP_BASE_API
 import { getFileList } from '@/api/fileUploadAndDownload'
 export default {
-   name: 'BasicFile',
+   name: 'MediaLib',
    mixins: [infoList],
   props: {
     target: {
@@ -159,15 +176,23 @@ export default {
   flex-wrap:wrap;
   .header-img-box-list {
     margin-top: 20px;
-    width: 120px;
+    width: 100px;
     margin-left: 20px;
-    height: 120px;
+    height: 100px;
     border: 1px dashed #ccc;
     border-radius: 20px;
     text-align: center;
     line-height: 180px;
     cursor: pointer;
+} 
 }
-}
+ .imgtxt {
+   display: flex; 
+   font-size: 14px;
+   margin-top: 0px;
+   cursor: pointer;
+   text-decoration:underline;
+   color:#409EFF
+ }
 
 </style>
