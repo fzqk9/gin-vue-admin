@@ -58,10 +58,10 @@
                this.$refs.mediaLib.open()
           },
           selectOneImg(obj) {
-                 console.log("222 selectOneImg"); 
+              //   console.log("222 selectOneImg"); 
                  this.imageData.url =obj.url; 
                  this.imageData.guid =obj.guid; 
-                 console.log(this.imageData); 
+               //  console.log(this.imageData); 
                 // console.log(guid);
             // const res = await setUserInfo({ headerImg: url, ID: this.userInfo.ID })
             // if (res.code === 0) {
