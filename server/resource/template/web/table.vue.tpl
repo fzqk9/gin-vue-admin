@@ -272,19 +272,22 @@ export default {
       formData: {
         {{range .Fields}}
           {{- if eq .FieldType "bool" -}}
-        {{.FieldJson}}: false,
+               {{.FieldJson}}: false,
           {{ end -}}
           {{- if eq .FieldType "string" -}}
-        {{.FieldJson}}: '',
+               {{.FieldJson}}: '',
           {{ end -}}
           {{- if eq .FieldType "int" -}}
-        {{.FieldJson}}: 0,
+              {{.FieldJson}}: 0,
           {{ end -}}
           {{- if eq .FieldType "time.Time" -}}
-        {{.FieldJson}}: new Date(),
+                {{.FieldJson}}: new Date(),
+         {{ end -}}
+         {{- if eq .FieldType "float64" -}}
+              {{.FieldJson}}: 0,
           {{ end -}}
-          {{- if eq .FieldType "float64" -}}
-        {{.FieldJson}}: 0,
+           {{- if eq .FieldType "image" -}}
+              {{.FieldJson}}: "",
           {{ end -}}
         {{ end }}
       }, 

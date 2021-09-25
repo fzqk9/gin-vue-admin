@@ -44,15 +44,11 @@
 	   type: String,
 	   required: false,
 	   default:'0'
-	 },
-     picGuid: {
-       type: String,
-       required: false,
-       default: ''
-     },
+	 } 
    },
    data() {
-     return {
+     return { 
+       imageData:new Object(),
        path: path + '/'
      }
    },
@@ -62,11 +58,10 @@
                this.$refs.mediaLib.open()
           },
           selectOneImg(obj) {
-                 console.log("222 selectOneImg");
-                 console.log(obj); 
-                 this.picSrc =obj.url;
-                 this.picGuid =obj.guid; 
-               
+                 console.log("222 selectOneImg"); 
+                 this.imageData.url =obj.url; 
+                 this.imageData.guid =obj.guid; 
+                 console.log(this.imageData); 
                 // console.log(guid);
             // const res = await setUserInfo({ headerImg: url, ID: this.userInfo.ID })
             // if (res.code === 0) {

@@ -249,9 +249,8 @@
               
                   <el-input v-model="formData.name" clearable placeholder="请输入" />
               </el-form-item>
-        <el-form-item label="配图:">
-              
-                  <ImageView pic-type="img" :be-edit="1" :pic-src="formData.thumb" /> 
+        <el-form-item label="配图:"> 
+                  <ImageView ref="imageView_thumb" pic-type="img" :be-edit="1" :pic-src="formData.thumb" /> 
               </el-form-item>
         <el-form-item label="排序:">
               
@@ -323,7 +322,7 @@ export default {
       statusOptions: [],
           
       formData: {
-        pid: 0,
+          pid: 0,
           beSys: false,
           groupId: 0,
           mediaType: 0,
@@ -333,6 +332,7 @@ export default {
           desc: '',
           keywords: '',
           alias: '',
+           status: 0,
           status: 0,
           
       }, 
@@ -438,7 +438,7 @@ export default {
     closeDialog() {
       this.dialogFormVisible = false
       this.formData = {
-        pid: 0,
+          pid: 0,
           beSys: false,
           groupId: 0,
           mediaType: 0,
@@ -449,7 +449,7 @@ export default {
           keywords: '',
           alias: '',
           status: 0,
-          
+          thumb:""
       }
     },
     async deleteCmsCat(row) {
@@ -465,7 +465,10 @@ export default {
         this.getTableData()
       }
     },
-    async enterDialog() {
+    async enterDialog() { 
+      // console.log(this.$refs.imageView_thumb);
+      console.log(this.$refs.imageView_thumb.imageData);
+      this.formData.thumb = this.$refs.imageView_thumb.imageData.url;
       let res
       switch (this.type) {
         case "create":
@@ -521,6 +524,8 @@ export default {
         }) 
         // this.getTableData()
       }
+    },
+    excel(){ 
     }
   },
 }
