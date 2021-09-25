@@ -1,7 +1,6 @@
 <template>
-  <el-dialog  v-model="drawer" width="80%" title="媒体库">
+  <el-dialog  v-model="showDialog" width="80%" title="媒体库">
     <template #title> 
-    
       <div class="search-term">
         <el-form :inline="true" :model="searchInfo" class="demo-form-inline"> 
       
@@ -42,7 +41,7 @@
         :key="key"
         class="header-img-box-list"
         :src="(item.path && item.path.slice(0, 4) !== 'http')?path+item.path:item.path"
-        @click="chooseImg(item.url,target,targetKey)"
+        @click="selectImg(item.path,item.guid)"
       >
         <template #error>
           <div class="header-img-box-list">
@@ -57,7 +56,7 @@
                 layout="total, sizes, prev, pager, next, jumper"
                 :current-page="page"
                 :page-size="pageSize"
-                :page-sizes="[10,30, 50, 100]"
+                :page-sizes="[10,20, 50, 100]"
                 :style="{float:'right',padding:'20px'}"
                 :total="total"
                 @current-change="handleCurrentChange"
@@ -77,7 +76,7 @@
       findBasicFile,
       getBasicFileList,
       quickEdit
-    } from '@/api/basicFile' //  此处请自行替换地址
+    } from '@/api/basicFile'  
     import { formatTimeToStr } from '@/utils/date'
     import infoList from '@/mixins/infoList'
     import { toSQLLine } from '@/utils/stringFun'
@@ -88,6 +87,7 @@ import { getFileList } from '@/api/fileUploadAndDownload'
 export default {
    name: 'MediaLib',
    mixins: [infoList],
+  emits: ['selectOneImg'],
   props: {
     target: {
       type: Object,
@@ -100,7 +100,7 @@ export default {
   },
   data() {
     return {
-      drawer: false,
+      showDialog: false,
       picList: [],
       path: path,
       //---------------
@@ -142,17 +142,21 @@ export default {
   //  // await this.getDict('driver') 
   // },
   methods: {
-    chooseImg(url, target, targetKey) {
-      if (target && targetKey) {
-        target[targetKey] = url
-      }
-      this.$emit('enter-img', url)
-      this.drawer = false
+    selectImg(url,guid) {
+      // if (target && targetKey) {
+      //   target[targetKey] = url
+      // }
+      // this.$emit("setSonFn",this.message)
+      var obj = new Object();
+      obj["url"]=url;
+      obj["guid"]=guid; 
+      this.$emit('selectOneImg',obj); 
+      this.showDialog = false
     },
     async open() {
      // const res = await getFileList({ page: 1, pageSize: 9999 })
      // this.picList = res.data.list
-      this.drawer = true
+      this.showDialog = true
       await this.getDict('module')
       await this.getDict('media_type')
       await this.getTableData()   

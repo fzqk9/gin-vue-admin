@@ -14,7 +14,7 @@
     <el-link  v-if="beEdit == '1'" icon="el-icon-edit" @click="openChooseImg">重新上传</el-link>   
      
    </div> 
-    <MediaLib ref="chooseImg" @enter-img="enterImg" />  
+    <MediaLib ref="mediaLib" @select-one-img="selectOneImg" />  
  </template>
  
  <script>
@@ -28,7 +28,7 @@
    name: 'ImageView',
    components: {
      MediaLib
-   },
+   }, 
    props: {
      picType: {
        type: String,
@@ -44,7 +44,12 @@
 	   type: String,
 	   required: false,
 	   default:'0'
-	 }
+	 },
+     picGuid: {
+       type: String,
+       required: false,
+       default: ''
+     },
    },
    data() {
      return {
@@ -53,12 +58,16 @@
    },
    methods: {
           openChooseImg() {
-                console.log("1111");
-               this.$refs.chooseImg.open()
+               console.log("1111");
+               this.$refs.mediaLib.open()
           },
-          enterImg(url) {
-                 console.log("222");
-                 console.log(url);
+          selectOneImg(obj) {
+                 console.log("222 selectOneImg");
+                 console.log(obj); 
+                 this.picSrc =obj.url;
+                 this.picGuid =obj.guid; 
+               
+                // console.log(guid);
             // const res = await setUserInfo({ headerImg: url, ID: this.userInfo.ID })
             // if (res.code === 0) {
             //   this.ResetUserInfo({ headerImg: url })
@@ -85,7 +94,8 @@
        }
      },
      file() {   
-	  // console.log(this.picSrc);
+       console.log( "重新计算 file =  ");
+	   console.log(this.picSrc);
 	   let url =  this.picSrc;
 	   if (isEmpty(url))
 	       url = "/img/no.png";
