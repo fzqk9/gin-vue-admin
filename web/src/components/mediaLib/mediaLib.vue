@@ -40,7 +40,7 @@
         v-for="(item,key) in tableData"
         :key="key"
         class="header-img-box-list"
-        :src="(item.path && item.path.slice(0, 4) !== 'http')?path+item.path:item.path"
+        :src="(item.path && item.path.slice(0, 4) !== 'http')? path+item.path:item.path"
         @click="selectImg(item.path,item.guid)"
       >
         <template #error>
@@ -82,7 +82,7 @@
     import { toSQLLine } from '@/utils/stringFun'
  
     
-const path =  "http://127.0.0.1:8888"// process.env.VUE_APP_BASE_API
+const path =  import.meta.env.VITE_BASE_API// process.env.VUE_APP_BASE_API
 import { getFileList } from '@/api/fileUploadAndDownload'
 export default {
    name: 'MediaLib',
@@ -102,7 +102,7 @@ export default {
     return {
       showDialog: false,
       picList: [],
-      path: path,
+      path: path+"/",
       //---------------
       listApi: getBasicFileList,
       dialogFormVisible: false,
