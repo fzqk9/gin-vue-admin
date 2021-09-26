@@ -467,8 +467,8 @@ export default {
     },
     async enterDialog() { 
       // console.log(this.$refs.imageView_thumb);
-      console.log(this.$refs.imageView_thumb.imageData);
-      this.formData.thumb = this.$refs.imageView_thumb.imageData.url;
+      console.log(this.$refs.imageView_thumb.guid);
+      this.formData.thumb = this.$refs.imageView_thumb.guid;
       let res
       switch (this.type) {
         case "create":

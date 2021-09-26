@@ -81,8 +81,9 @@
  				console.log("selectOneImg");
 				console.log(obj);
 				this.url = this.getUrl(obj.url);
+				this.url = this.getUrl(obj.url);
 				this.urlList = this.getUrlList(obj.url); 
- 				this.guid = obj.guid; 
+ 				this.guid = obj.url; 
  			},
  			getUrl(url) {
  				 
