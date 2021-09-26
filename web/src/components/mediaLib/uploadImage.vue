@@ -1,8 +1,6 @@
 
-<template>
-  <div>
+<template> 
     <el-upload
-      class="image-uploader"
       :action="`${path}/fileUploadAndDownload/upload`"
       :headers="{ 'x-token': token }"
       :show-file-list="false"
@@ -10,19 +8,14 @@
       :before-upload="beforeImageUpload"
       :multiple="false"
     >
-      <img v-if="imageUrl" :src="showImageUrl" class="image">
-      <i v-else class="el-icon-plus image-uploader-icon" />
-	  <a v-show="imageUrl" >删除</a>
-	   
-    </el-upload>
-  </div>
+      <el-button size="mini" type="primary">上传图片</el-button>
+    </el-upload> 
 </template>
 
 <script>
-const path = process.env.VUE_APP_BASE_API
+const path = import.meta.env.VITE_BASE_API
 import { mapGetters } from 'vuex'
 import ImageCompress from '@/utils/image'
-import { isEmpty } from '@/utils/utils'
 export default {
   name: 'UploadImage',
   model: {
@@ -36,16 +29,12 @@ export default {
     },
     fileSize: {
       type: Number,
-      default: 2048 // 1M 超出后执行压缩
+      default: 2048 // 2M 超出后执行压缩
     },
     maxWH: {
       type: Number,
-      default: 1920 // 图片长宽上限 // 1920
-    },
-	openType: {
-	  type: Number,
-	  default: 1 //  1= upload 或 2 = mediaLib
-	}
+      default: 1920 // 图片长宽上限
+    }
   },
   data() {
     return {
@@ -54,27 +43,28 @@ export default {
   },
   computed: {
     ...mapGetters('user', ['userInfo', 'token']),
-    showImageUrl() {   
-		//console.log("isEmpty====",this.imageUrl); 
-		//console.log(isEmpty(this.imageUrl)); 
-		return (this.imageUrl && this.imageUrl.slice(0, 4) !== 'http') ? path + this.imageUrl : this.imageUrl
+    showImageUrl() {
+      return (this.imageUrl && this.imageUrl.slice(0, 4) !== 'http') ? path + this.imageUrl : this.imageUrl
     }
   },
   methods: {
     beforeImageUpload(file) {
-	  console.log("beforeImageUpload = " ,this.openType);
-	
+      const isJPG = file.type === 'image/jpeg'
+      const isPng = file.type === 'image/png'
+      if (!isJPG && !isPng) {
+        this.$message.error('上传头像图片只能是 jpg或png 格式!')
+        return false
+      }
+
       const isRightSize = file.size / 1024 < this.fileSize
       if (!isRightSize) {
         // 压缩
-		 console.log("需要压缩 file.size = " ,file.size );
         const compress = new ImageCompress(file, this.fileSize, this.maxWH)
         return compress.compress()
       }
       return isRightSize
     },
     handleImageSuccess(res) {
-		console.log("handleImageSuccess=",res);
       // this.imageUrl = URL.createObjectURL(file.raw);
       const { data } = res
       if (data.file) {
@@ -89,7 +79,7 @@ export default {
 <style lang="scss" scoped>
 .image-uploader {
   border: 1px dashed #d9d9d9;
-  width: 40px;
+  width: 180px;
   border-radius: 6px;
   cursor: pointer;
   position: relative;
@@ -101,14 +91,14 @@ export default {
 .image-uploader-icon {
   font-size: 28px;
   color: #8c939d;
-  width: 38px;
-  height: 38px;
-  line-height: 38px;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
   text-align: center;
 }
 .image {
-  width: 38px;
-  height: 38px;
+  width: 178px;
+  height: 178px;
   display: block;
 }
 </style>

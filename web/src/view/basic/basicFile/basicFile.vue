@@ -176,8 +176,14 @@
            
         
               
-                  <el-table-column label="文件类型" prop="ext" width="120"   sortable="custom"  />  
-               
+                  <el-table-column label="文件类型" prop="ext" width="80"   sortable="custom"  >
+					  <template #default="scope">
+					    <el-tag
+					      :type="scope.row.ext === 'jpg' ? 'primary' : 'success'"
+					      disable-transitions
+					    >{{ scope.row.ext }}</el-tag>
+					  </template>
+                </el-table-column>
            
         
               

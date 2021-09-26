@@ -1,5 +1,7 @@
 package request
 
+import "github.com/flipped-aurora/gin-vue-admin/server/global"
+
 // Paging common input parameter structure
 type PageInfo struct {
 	Page     int `json:"page" form:"page"`         // 页码
@@ -17,6 +19,14 @@ type QuickEdit struct {
 	Table string `json:"table" form:"table"` //
 	Field string `json:"field" form:"field"` //
 	Value string `json:"value" form:"value"` //
+}
+
+type FileUpload struct {
+	global.GVA_MODEL
+	Name string `json:"name" gorm:"comment:文件名"` // 文件名
+	Url  string `json:"url" gorm:"comment:文件地址"` // 文件地址
+	Tag  string `json:"tag" gorm:"comment:文件标签"` // 文件标签
+	Key  string `json:"key" gorm:"comment:编号"`   // 编号
 }
 
 // Find by id structure

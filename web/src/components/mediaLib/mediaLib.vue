@@ -27,11 +27,19 @@
                         <el-option v-for="(item,key) in media_typeOptions" :key="key" :label="item.label" :value="item.value"></el-option>
                       </el-select>
                   </el-form-item> 
-          <el-form-item>
-            <el-button size="mini" type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
-             
+          <el-form-item> 
+            <el-button size="mini" type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button> 
           </el-form-item>
+		  <el-form-item> 
+		<uploadImage
+		  v-model="imageUrl"
+		  :file-size="512"
+		  :max-w-h="1080"  
+		  @on-success="uploadImageOk" 
+		/>  
+		 </el-form-item>
         </el-form>
+	
       </div>
    </template>
     <div class="media">
@@ -51,6 +59,7 @@
       </el-image> 
       
     </div>
+	
        <template #footer>  
               <el-pagination
                 layout="total, sizes, prev, pager, next, jumper"
@@ -80,12 +89,16 @@
     import { formatTimeToStr } from '@/utils/date'
     import infoList from '@/mixins/infoList'
     import { toSQLLine } from '@/utils/stringFun'
- 
-    
+	import UploadImage from '@/components/mediaLib/uploadImage.vue'
+    //import { getFileList } from '@/api/fileUploadAndDownload'
 const path =  import.meta.env.VITE_BASE_API// process.env.VUE_APP_BASE_API
-import { getFileList } from '@/api/fileUploadAndDownload'
+
+
 export default {
    name: 'MediaLib',
+   components: {
+   	UploadImage
+   },
    mixins: [infoList],
   emits: ['selectOneImg'],
   props: {
@@ -168,8 +181,10 @@ export default {
       this.pageSize = 30              
       this.getTableData()
     },
-    
-    
+    uploadImageOk() {
+      this.page = 1 
+      this.getTableData()
+    } 
   }
 }
 </script>
