@@ -20,7 +20,7 @@ type CommonFileService struct {
 //@param: header *multipart.FileHeader, noSave string
 //@return: err error, file model.ExaFileUploadAndDownload
 
-func (e *CommonFileService) UploadFile(header *multipart.FileHeader, noSave string) (err error, file request.FileUpload) {
+func (e *CommonFileService) UploadFile(header *multipart.FileHeader, noSave string, media_type *int, module *int) (err error, file request.FileUpload) {
 	oss := upload.NewOss()
 	filePath, key, uploadErr := oss.UploadFile(header)
 	if uploadErr != nil {
@@ -37,10 +37,12 @@ func (e *CommonFileService) UploadFile(header *multipart.FileHeader, noSave stri
 		}
 		// 保存到数据库表 basic_file
 		basicFile := autocode.BasicFile{
-			Path: filePath,
-			Guid: utils.GUID(),
-			Name: header.Filename,
-			Ext:  s[len(s)-1],
+			Path:      filePath,
+			Guid:      utils.GUID(),
+			Name:      header.Filename,
+			Ext:       s[len(s)-1],
+			MediaType: media_type,
+			Module:    module,
 		}
 		basicFS := new(autocodeSev.BasicFileService)
 		return basicFS.CreateBasicFile(basicFile), f

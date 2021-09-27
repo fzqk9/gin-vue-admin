@@ -17,26 +17,32 @@
                 </el-form-item>
               
             <el-form-item label="模块名" prop="module">                
-                      <el-select v-model="searchInfo.module" placeholder="请选择" clearable>
+                      <el-select  @change="module_change" @clear="module_clear"  v-model="searchInfo.module" placeholder="请选择" clearable>
                         <el-option v-for="(item,key) in moduleOptions" :key="key" :label="item.label" :value="item.value"></el-option>
                       </el-select>
                   </el-form-item>
                   
             <el-form-item label="媒体类型" prop="mediaType">                
-                      <el-select v-model="searchInfo.mediaType" placeholder="请选择" clearable>
-                        <el-option v-for="(item,key) in media_typeOptions" :key="key" :label="item.label" :value="item.value"></el-option>
+                      <el-select @change="mediaType_change" @clear="mediaType_clear" v-model="searchInfo.mediaType" placeholder="请选择" clearable>
+                        <el-option v-for="(item,key) in media_typeOptions" :key="key" :label="item.label" :value="item.value" ></el-option>
                       </el-select>
                   </el-form-item> 
           <el-form-item> 
             <el-button size="mini" type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button> 
           </el-form-item>
 		  <el-form-item> 
-		<uploadImage
-		  v-model="imageUrl"
-		  :file-size="512"
-		  :max-w-h="1080"  
-		  @on-success="uploadImageOk" 
-		/>  
+		  
+	 <el-upload
+	   :action="`${path}/commFile/upload`"
+	   :data="uploadData"
+	   :headers="{ 'x-token': token }"
+	   :show-file-list="false"
+	   :on-success="handleImageSuccess"
+	   :before-upload="beforeImageUpload"
+	   :multiple="false"
+	 >
+	   <el-button size="mini" type="primary">上传图片</el-button>
+	 </el-upload> 
 		 </el-form-item>
         </el-form>
 	
@@ -91,7 +97,10 @@
     import { toSQLLine } from '@/utils/stringFun'
 	import UploadImage from '@/components/mediaLib/uploadImage.vue'
     //import { getFileList } from '@/api/fileUploadAndDownload'
-const path =  import.meta.env.VITE_BASE_API// process.env.VUE_APP_BASE_API
+	//图片上传--------------
+	import { mapGetters } from 'vuex'
+	import ImageCompress from '@/utils/image'
+     const path =  import.meta.env.VITE_BASE_API// process.env.VUE_APP_BASE_API
 
 
 export default {
@@ -113,6 +122,7 @@ export default {
   },
   data() {
     return {
+	  uploadData:{module:-1,media_type:0},
       showDialog: false,
       picList: [],
       path: path+"/",
@@ -154,6 +164,9 @@ export default {
   //   await this.getTableData()   
   //  // await this.getDict('driver') 
   // },
+  computed: {
+    ...mapGetters('user', ['userInfo', 'token']) 
+  },
   methods: {
     selectImg(url,guid) {
       // if (target && targetKey) {
@@ -183,7 +196,66 @@ export default {
       this.pageSize = 30              
       this.getTableData()
     },
+	
+	//------图片上传 ----------------------------
+	module_change(v)
+	{ 
+		this.uploadData.module = v;
+		console.log("this.uploadData.module",this.uploadData.module)
+	},
+	module_clear()
+	{
+		this.uploadData.module = -1;
+		console.log("this.uploadData.module",this.uploadData.module)
+	},
+	mediaType_change(v)
+	{
+		console.log("this.uploadData.media_type",this.uploadData.media_type)
+		this.uploadData.media_type = v;
+	},
+	mediaType_clear()
+	{ 
+		this.uploadData.media_type = -1;
+		console.log("this.uploadData.media_type",this.uploadData.media_type)
+	},
+	
+	beforeImageUpload(file) {
+		console.log("this.uploadData.module",this.uploadData.module)
+		if (this.uploadData.module ==-1)
+		{
+			this.$message.error('请选择上传的模块')
+			return false
+		}
+		if (this.uploadData.media_type ==-1)
+		{
+			this.$message.error('请选择文件类型')
+			return false
+		}
+	  const isJPG = file.type === 'image/jpeg'
+	  const isPng = file.type === 'image/png'
+	  if (!isJPG && !isPng) {
+	    this.$message.error('上传头像图片只能是 jpg或png 格式!')
+	    return false
+	  }
+	
+	  const isRightSize = file.size / 1024 < this.fileSize
+	  if (!isRightSize) {
+	    // 压缩
+	    const compress = new ImageCompress(file, this.fileSize, this.maxWH)
+	    return compress.compress()
+	  }
+	  return isRightSize
+	},
+	handleImageSuccess(res) {
+	  // this.imageUrl = URL.createObjectURL(file.raw);
+	  const { data } = res
+	  if (data.file) {
+	    this.$emit('change', data.file.url)
+	    this.$emit('on-success')
+	  }
+	},	
     uploadImageOk() {
+      console.log("上传完成。。。。");		 
       this.page = 1 
       this.getTableData()
     } 
