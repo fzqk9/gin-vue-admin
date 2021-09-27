@@ -1,7 +1,7 @@
 
 <template> 
     <el-upload
-      :action="`${path}/fileUploadAndDownload/upload`"
+      :action="`${path}/commFile/upload`"
       :headers="{ 'x-token': token }"
       :show-file-list="false"
       :on-success="handleImageSuccess"

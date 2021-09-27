@@ -5,11 +5,14 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
+	"github.com/flipped-aurora/gin-vue-admin/server/service"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
-type CommDbApi struct {
+var commonDbService = service.ServiceGroupApp.CommonServiceGroup.CommDbService
+
+type CommonDbApi struct {
 }
 
 // QuickEdit 更新QuickEdit
@@ -21,11 +24,11 @@ type CommDbApi struct {
 // @Param data body autocode.CmsAd true "更新 QuickEdit"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /cmsAd/updateCmsAd [put]
-func (CommDbApi *CommDbApi) QuickEdit(c *gin.Context) {
+func (CommonDbApi *CommonDbApi) QuickEdit(c *gin.Context) {
 	var quickEdit request.QuickEdit
 	_ = c.ShouldBindJSON(&quickEdit)
 	var_dump.Dump(quickEdit)
-	if err := commDbService.QuickEdit(quickEdit); err != nil {
+	if err := commonDbService.QuickEdit(quickEdit); err != nil {
 		global.GVA_LOG.Error("更新失败!", zap.Any("err", err))
 		response.FailWithMessage("更新失败", c)
 	} else {
