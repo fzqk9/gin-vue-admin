@@ -12,7 +12,7 @@ import (
 type CommonFileApi struct {
 }
 
-var commonFileService = service.ServiceGroupApp.CommonServiceGroup.CommFileService
+var commonFileService = service.ServiceGroupApp.CommonServiceGroup.CommonFileService
 
 // @Tags UploadFile
 // @Summary 上传文件

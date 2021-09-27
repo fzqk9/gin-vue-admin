@@ -11,7 +11,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/utils/upload"
 )
 
-type CommFileService struct {
+type CommonFileService struct {
 }
 
 //@author: [ljd]
@@ -20,7 +20,7 @@ type CommFileService struct {
 //@param: header *multipart.FileHeader, noSave string
 //@return: err error, file model.ExaFileUploadAndDownload
 
-func (e *CommFileService) UploadFile(header *multipart.FileHeader, noSave string) (err error, file request.FileUpload) {
+func (e *CommonFileService) UploadFile(header *multipart.FileHeader, noSave string) (err error, file request.FileUpload) {
 	oss := upload.NewOss()
 	filePath, key, uploadErr := oss.UploadFile(header)
 	if uploadErr != nil {
