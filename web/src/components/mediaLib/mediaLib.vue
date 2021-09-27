@@ -4,10 +4,10 @@
       <div class="search-term">
         <el-form :inline="true" :model="searchInfo" class="demo-form-inline"> 
       
-        <!-- <el-form-item label="唯一id">
+        <el-form-item label="唯一id">
                   <el-input placeholder="搜索条件" v-model="searchInfo.guid" clearable />
           </el-form-item>
-              
+         <!--      
             <el-form-item label="用户id">
                         <el-input placeholder="搜索条件" v-model="searchInfo.userId" clearable />
                     </el-form-item> -->
@@ -172,6 +172,8 @@ export default {
       this.showDialog = true
       await this.getDict('module')
       await this.getDict('media_type')
+	  this.searchInfo.orderKey = toSQLLine("ID")
+	  this.searchInfo.orderDesc = true
       await this.getTableData()   
     },
     //------------------
