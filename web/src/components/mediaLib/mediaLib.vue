@@ -234,7 +234,7 @@ export default {
 	  const isJPG = file.type === 'image/jpeg'
 	  const isPng = file.type === 'image/png'
 	  if (!isJPG && !isPng) {
-	    this.$message.error('上传头像图片只能是 jpg或png 格式!')
+	    this.$message.error('上传图片只能是 jpg或png 格式!')
 	    return false
 	  }
 	
@@ -247,18 +247,20 @@ export default {
 	  return isRightSize
 	},
 	handleImageSuccess(res) {
+       console.log(" handleImageSuccess")
+         console.log(res) 
 	  // this.imageUrl = URL.createObjectURL(file.raw);
 	  const { data } = res
 	  if (data.file) {
 	    this.$emit('change', data.file.url)
 	    this.$emit('on-success')
 	  }
-	},	
-    uploadImageOk() {
-      console.log("上传完成。。。。");		 
-      this.page = 1 
+      this.page = 1
+      this.pageSize = 20
+      this.searchInfo.orderKey = toSQLLine("ID")
+      this.searchInfo.orderDesc = true
       this.getTableData()
-    } 
+	}  
   }
 }
 </script>

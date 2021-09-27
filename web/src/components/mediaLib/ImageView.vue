@@ -1,11 +1,11 @@
 <template>
  	<div>
  		<template v-if="picType === 'img'">
- 			<el-image lazy class="image-div" fit="fill" :src="url" :preview-src-list="urlList"
+ 			<el-image class="image-div" fit="fill" :src="url" :preview-src-list="urlList"
  				hide-on-click-modal="true" />
  		</template>
  		<template v-if="picType === 'file'">
- 			<el-image lazy class="image-div" fit="fill" :src="url" :preview-src-list="urlList"
+ 			<el-image class="image-div" fit="fill" :src="url" :preview-src-list="urlList"
  				hide-on-click-modal="true" />
  		</template>
  		<!-- <template v-if="picType === 'avatar'">
