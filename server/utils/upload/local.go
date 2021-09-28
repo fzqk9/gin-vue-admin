@@ -6,6 +6,7 @@ import (
 	"mime/multipart"
 	"os"
 	"path"
+	"strconv"
 	"strings"
 	"time"
 
@@ -25,7 +26,7 @@ type Local struct{}
 //@param: file *multipart.FileHeader
 //@return: string, string, error
 
-func (*Local) UploadFile(file *multipart.FileHeader, module string) (string, string, error) {
+func (*Local) UploadFile(file *multipart.FileHeader, module int) (string, string, error) {
 	// 读取文件后缀
 	ext := path.Ext(file.Filename)
 	// 读取文件名并加密
@@ -37,7 +38,7 @@ func (*Local) UploadFile(file *multipart.FileHeader, module string) (string, str
 	// filename := name + "_" + time.Now().Format("20060102150405") + ext
 
 	//filename := name + "_" + time.Now().Format("20060102150405") + ext
-	path := global.GVA_CONFIG.Local.Path + "/" + module +
+	path := global.GVA_CONFIG.Local.Path + "/" + strconv.Itoa(module) +
 		"/" + time.Now().Format("20060102")
 
 	// 尝试创建此路径

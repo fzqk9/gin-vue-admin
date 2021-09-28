@@ -237,13 +237,19 @@ export default {
 	    this.$message.error('上传图片只能是 jpg或png 格式!')
 	    return false
 	  }
-	
+	  if (isJPG)
+	    this.uploadData.ext = "jpg";
+      else if (isPng)  this.uploadData.ext = "png";	
+	  this.uploadData.size = Math.round(file.size / 1024);	  //四舍五入（小数部分）
+	  
 	  const isRightSize = file.size / 1024 < this.fileSize
 	  if (!isRightSize) {
 	    // 压缩
 	    const compress = new ImageCompress(file, this.fileSize, this.maxWH)
+		
 	    return compress.compress()
-	  }
+	  } 
+	  
 	  return isRightSize
 	},
 	handleImageSuccess(res) {
