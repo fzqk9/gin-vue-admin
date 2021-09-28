@@ -5,6 +5,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/autocode"
 	autoCodeReq "github.com/flipped-aurora/gin-vue-admin/server/model/autocode/request"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
+	"github.com/flipped-aurora/gin-vue-admin/server/service"
 )
 
 type CmsCatService struct {
@@ -99,12 +100,12 @@ func (cmsCatService *CmsCatService) GetCmsCatInfoList(info autoCodeReq.CmsCatSea
 		err = db.Limit(limit).Offset(offset).Find(&cmsCats).Error
 	}
 	//更新图片path
+	var fileSev = service.ServiceGroupApp.CommonServiceGroup.CommonFileService
 	for i, v := range cmsCats {
 		//fmt.Printf("修改方法2 value:=%s\n", v)
 		//修改(有效)
 		v.MapData = make(map[string]string)
-		v.MapData["test"] = "123213 --test"
-		v.MapData[v.Thumb] = v.Thumb + "--test"
+		v.MapData[v.Thumb] = fileSev.GetPathByGuid(v.Thumb)
 		cmsCats[i] = v
 	}
 
