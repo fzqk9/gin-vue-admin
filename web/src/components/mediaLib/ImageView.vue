@@ -83,7 +83,7 @@
 				this.url = this.getUrl(obj.url);
 				this.url = this.getUrl(obj.url);
 				this.urlList = this.getUrlList(obj.url); 
- 				this.guid = obj.url; 
+ 				this.guid = obj.guid; 
  			},
  			getUrl(url) {
  				 

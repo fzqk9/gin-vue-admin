@@ -403,8 +403,6 @@ export default {
   },
   
   async created() {
-    this.searchInfo.orderKey = toSQLLine("ID")
-    this.searchInfo.orderDesc = true
     await this.getTableData()
     
     await this.getDict('module')
@@ -418,7 +416,7 @@ export default {
   // 条件搜索前端看此方法
     onSubmit() {
       this.page = 1
-      this.pageSize = 20              
+      this.pageSize = 10              
       this.getTableData()
     },
     handleSelectionChange(val) {

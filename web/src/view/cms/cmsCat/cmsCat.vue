@@ -1,7 +1,7 @@
  <!--修改 by ljd 20210725， bool datatime DictType字段 的查询填充数据 --> 
 
 <template>
-  <div>  
+  <div v-loading.fullscreen.lock="fullscreenLoading">  
   <!----------查询form------------------ -->
     <div class="search-term">
       <el-form :inline="true" :model="searchInfo" class="demo-form-inline"> 
@@ -154,9 +154,11 @@
         
              
                   <el-table-column label="配图" prop="thumb" width="120"   >
-                      <template #default="scope">
-                        <ImageView pic-type="img" :pic-src="scope.row.thumb" />
-                      </template>
+                     <template #default="scope">
+                        <!-- <ImageView pic-type="img" :pic-src="scope.row.thumb" /> -->
+						 <el-image   :src="scope.row.map_data.e760369d377a4c38b6b6fd5981a7f51e"  />
+                      </template> 
+					 
                   </el-table-column>  
                
            
