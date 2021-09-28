@@ -1,10 +1,11 @@
 package common
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
-	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/autocode"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
 	"github.com/flipped-aurora/gin-vue-admin/server/service"
 	"github.com/gin-gonic/gin"
@@ -25,14 +26,17 @@ var commonFileService = service.ServiceGroupApp.CommonServiceGroup.CommonFileSer
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"上传成功"}"
 // @Router /fileUploadAndDownload/upload [post]
 func (commonFileApi *CommonFileApi) UploadFile(c *gin.Context) {
-	//fmt.Println("1111111111")
-	var file request.FileUpload
-	noSave := c.DefaultQuery("noSave", "0")
-	media_type := c.DefaultQuery("media_type", "0")
-	module := c.DefaultQuery("module", "0")
-
+	module := c.DefaultPostForm("module", "0")
+	media_type := c.DefaultPostForm("media_type", "0") // 此方法可以设置默认值
+	//noSave := c.DefaultQuery("noSave", "0")
+	//media_type := c.DefaultQuery("media_type", "0")
+	//module := c.DefaultQuery("module", "0")
+	fmt.Println("media_type=%s", media_type)
+	fmt.Println("module=%s", module)
 	i, err := strconv.Atoi(media_type)
 	j, err := strconv.Atoi(module)
+
+	var file autocode.BasicFile
 	var pMediaType *int
 	var pModule *int
 	pMediaType = &i

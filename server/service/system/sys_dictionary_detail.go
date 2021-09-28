@@ -85,3 +85,14 @@ func (dictionaryDetailService *DictionaryDetailService) GetSysDictionaryDetailIn
 	err = db.Order("sort asc,id asc").Limit(limit).Offset(offset).Find(&sysDictionaryDetails).Error
 	return err, sysDictionaryDetails, total
 }
+
+//@author: ljd
+//@function: GetNameByValue
+//@description: 根据val获取字典 label
+//@param: dictType int, val int
+//@return: err error, sysDictionaryDetail model.SysDictionaryDetail
+func (dictionaryDetailService *DictionaryDetailService) GetNameByValue(dictType int, val int) (string, error) {
+	var sysDictionaryDetail system.SysDictionaryDetail
+	err := global.GVA_DB.Where("sys_dictionary_id = ? AND value=?", dictType, val).First(&sysDictionaryDetail).Error
+	return sysDictionaryDetail.Label, err
+}
