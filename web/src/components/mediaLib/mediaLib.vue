@@ -230,15 +230,31 @@ export default {
 	//获取文件sha1值
 	async getFileSha1(file) { 		
 		let hash = await sha1(file);
-		console.log("文件 sha1 = ", hash)
+		 console.log("文件 sha1 = ", hash)
 		this.uploadData.sha1 = hash;  
 		return hash;
 	},
-	beforeImageUpload(file) {
-		  const _this = this
-		  this.getFileSha1(file);
-		
-         console.log("this.uploadData.sha1 = ",this.uploadData.sha1)
+	async getFileMd5(file) {
+		 const _this = this;
+		 var fileReader = new FileReader();
+		  var dataFile = file;
+		  let blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice
+		  var spark = new SparkMD5.ArrayBuffer();
+			//获取文件二进制数据
+		  fileReader.readAsArrayBuffer(dataFile)
+		  // 下面要注意的是 fileReader.onload 回调方法是异步的，
+			// 需要用到await 把它变成同步的，不然文件上传的时候是拿不到md5的值的
+		  await new Promise((resolve, reject) => {
+				fileReader.onload = function(e) {
+				spark.append(e.target.result.slice(0, 10 * 1024 * 1024));
+				const md5 = spark.end()
+				 _this.uploadData.md5 = md5;
+				 console.log(" 文件 md5 = ", md5);
+				resolve()
+			  }
+		  }) 
+	},
+	 beforeImageUpload(file) { 
 		 console.log("this.uploadData.module",this.uploadData.module)
 		if (this.uploadData.module ==-1)
 		{
@@ -250,12 +266,19 @@ export default {
 			this.$message.error('请选择文件类型')
 			return false
 		}
-	  const isJPG = file.type === 'image/jpeg'
-	  const isPng = file.type === 'image/png'
-	  if (!isJPG && !isPng) {
-	    this.$message.error('上传图片只能是 jpg或png 格式!')
-	    return false
-	  }
+		const isJPG = file.type === 'image/jpeg'
+		const isPng = file.type === 'image/png'
+		if (!isJPG && !isPng) {
+		  this.$message.error('上传图片只能是 jpg或png 格式!')
+		  return false
+		}
+		
+	  this.getFileSha1(file); 
+      console.log("this.uploadData.sha1 = ",this.uploadData.sha1) 
+	  this.getFileMd5(file);
+	  console.log("this.uploadData.md5 = ",this.uploadData.md5) 
+	  // 判断是否有重复的 sha1 文件
+
 	  if (isJPG)
 	    this.uploadData.ext = "jpg";
       else if (isPng)  this.uploadData.ext = "png";	
@@ -264,11 +287,9 @@ export default {
 	  const isRightSize = file.size / 1024 < this.fileSize
 	  if (!isRightSize) {
 	    // 压缩
-	    const compress = new ImageCompress(file, this.fileSize, this.maxWH)
-		
-	    return compress.compress()
+	     const compress = new ImageCompress(file, this.fileSize, this.maxWH)		
+	     return compress.compress()
 	  } 
-	  
 	  return isRightSize
 	},
 	handleImageSuccess(res) {
