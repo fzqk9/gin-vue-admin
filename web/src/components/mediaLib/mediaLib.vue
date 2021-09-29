@@ -100,6 +100,8 @@
 	//图片上传--------------
 	import { mapGetters } from 'vuex'
 	import ImageCompress from '@/utils/image'
+	import SparkMD5 from 'spark-md5'
+	import sha1 from 'sha1-file-web';
      const path =  import.meta.env.VITE_BASE_API// process.env.VUE_APP_BASE_API
 
 
@@ -122,7 +124,14 @@ export default {
   },
   data() {
     return {
-	  uploadData:{module:-1,media_type:0},
+		uploadData: {
+			module:-1,
+			media_type:0,
+			size:0,
+			ext:"",
+			md5:"",
+			sha1:""
+		},
       showDialog: false,
       picList: [],
       path: path+"/",
@@ -218,9 +227,19 @@ export default {
 		this.uploadData.media_type = -1;
 		console.log("this.uploadData.media_type",this.uploadData.media_type)
 	},
-	
+	//获取文件sha1值
+	async getFileSha1(file) { 		
+		let hash = await sha1(file);
+		console.log("文件 sha1 = ", hash)
+		this.uploadData.sha1 = hash;  
+		return hash;
+	},
 	beforeImageUpload(file) {
-		console.log("this.uploadData.module",this.uploadData.module)
+		  const _this = this
+		  this.getFileSha1(file);
+		
+         console.log("this.uploadData.sha1 = ",this.uploadData.sha1)
+		 console.log("this.uploadData.module",this.uploadData.module)
 		if (this.uploadData.module ==-1)
 		{
 			this.$message.error('请选择上传的模块')

@@ -155,7 +155,7 @@
              
                   <el-table-column label="配图" prop="thumb" width="120"   >
                      <template #default="scope">
-                        <ImageView pic-type="img" :pic-src="getMapData(scope.row.thumb,scope.row.map_data)" /> -->
+                        <ImageView pic-type="img" :pic-src="getMapData(scope.row.thumb,scope.row.map_data)" />  
 						<!-- http://localhost:8080/api/uploads/file/1/20210928/e760369d377a4c38b6b6fd5981a7f51e.jpg -->
 						<!-- <image   src="getMapData(scope.row.thumb,scope.row.map_data)" class="fileImg"></image> -->
                       </template> 
