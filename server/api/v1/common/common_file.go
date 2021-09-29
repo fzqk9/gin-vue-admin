@@ -29,6 +29,8 @@ func (commonFileApi *CommonFileApi) UploadFile(c *gin.Context) {
 	media_type := c.DefaultPostForm("media_type", "0") // 此方法可以设置默认值
 	size := c.DefaultPostForm("size", "0")
 	ext := c.DefaultPostForm("ext", "")
+	md5 := c.DefaultPostForm("md5", "")
+	sha1 := c.DefaultPostForm("sha1", "")
 	media_type_v, err := strconv.Atoi(media_type)
 	module_v, err := strconv.Atoi(module)
 	size_v, err := strconv.Atoi(size)
@@ -38,6 +40,8 @@ func (commonFileApi *CommonFileApi) UploadFile(c *gin.Context) {
 		Ext:       ext,
 		MediaType: &media_type_v,
 		Module:    &module_v,
+		Md5:       md5,
+		Sha1:      sha1,
 	}
 
 	_, header, err := c.Request.FormFile("file")

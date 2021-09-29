@@ -42,6 +42,10 @@ func (cmsCatService *CmsCatService) UpdateCmsCat(cmsCat autocode.CmsCat) (err er
 // Author [piexlmax](https://github.com/piexlmax)
 func (cmsCatService *CmsCatService) GetCmsCat(id uint) (err error, cmsCat autocode.CmsCat) {
 	err = global.GVA_DB.Where("id = ?", id).First(&cmsCat).Error
+	cmsCat.MapData = make(map[string]string)
+	var path string
+	_, path = commFileService.GetPathByGuid(cmsCat.Thumb)
+	cmsCat.MapData[cmsCat.Thumb] = path
 	return
 }
 

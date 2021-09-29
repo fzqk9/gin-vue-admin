@@ -49,7 +49,7 @@
             
             
           <el-form-item label="状态" prop="status">                
-                    <el-select v-model="searchInfo.status" placeholder="请选择" clearable>
+                <el-select v-model="searchInfo.status" placeholder="请选择" clearable>
                       <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value"></el-option>
                     </el-select>
                 </el-form-item>
@@ -247,7 +247,7 @@
                   <el-input v-model="formData.name" clearable placeholder="请输入" />
               </el-form-item>
         <el-form-item label="配图:"> 
-                  <ImageView ref="imageView_thumb" pic-type="img" :be-edit="1" :pic-src="formData.thumb" /> 
+                  <ImageView ref="imageView_thumb" pic-type="img" :be-edit="1" :pic-src="getMapData(formData.thumb,formData.map_data)" /> 
               </el-form-item>
         <el-form-item label="排序:">
               
@@ -329,8 +329,8 @@ export default {
           desc: '',
           keywords: '',
           alias: '',
-           status: 0,
           status: 0,
+          mapData: {},
           
       }, 
       shortcuts: [
@@ -426,6 +426,7 @@ export default {
     },
     async updateCmsCat(row) {
       const res = await findCmsCat({ ID: row.ID })
+      console.log(res.data)
       this.type = 'update'
       if (res.code === 0) {
         this.formData = res.data.recmsCat
@@ -465,6 +466,7 @@ export default {
     async enterDialog() { 
       // console.log(this.$refs.imageView_thumb);
       console.log(this.$refs.imageView_thumb.guid);
+      //更新图片guid
       this.formData.thumb = this.$refs.imageView_thumb.guid;
       let res
       switch (this.type) {

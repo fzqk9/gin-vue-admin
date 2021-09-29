@@ -14,6 +14,8 @@ export default {
   methods: {
 	  //add by ljd 20210929 这里的代码混合到vue3 里面 ，跟js代码互不能访问
 	 getMapData :function(key,map){ 
+         console.log(key)
+         console.log(map)
 	  	let s = map[key] 
 	  	return "http://localhost:8080/api/"+s 
 	  },
