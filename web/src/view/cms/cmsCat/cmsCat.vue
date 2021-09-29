@@ -1,7 +1,7 @@
  <!--修改 by ljd 20210725， bool datatime DictType字段 的查询填充数据 --> 
 
 <template>
-  <div v-loading.fullscreen.lock="fullscreenLoading">  
+  <div >  
   <!----------查询form------------------ -->
     <div class="search-term">
       <el-form :inline="true" :model="searchInfo" class="demo-form-inline"> 
@@ -155,19 +155,14 @@
              
                   <el-table-column label="配图" prop="thumb" width="120"   >
                      <template #default="scope">
-                        <!-- <ImageView pic-type="img" :pic-src="scope.row.thumb" /> -->
-						 <el-image   :src="scope.row.map_data.e760369d377a4c38b6b6fd5981a7f51e"  />
+                        <ImageView pic-type="img" :pic-src="getMapData(scope.row.thumb,scope.row.map_data)" /> -->
+						<!-- http://localhost:8080/api/uploads/file/1/20210928/e760369d377a4c38b6b6fd5981a7f51e.jpg -->
+						<!-- <image   src="getMapData(scope.row.thumb,scope.row.map_data)" class="fileImg"></image> -->
                       </template> 
 					 
-                  </el-table-column>  
-               
-           
-        
+                  </el-table-column>   
               
                   <el-table-column label="排序" prop="sort" width="120"    />  
-               
-           
-        
              
                  <!-- BeQuickEdit -->
                     <el-table-column label="是否导航" prop="beNav" width="120"    >                        
@@ -299,7 +294,7 @@ import {
   getCmsCatList,
   quickEdit
 } from '@/api/cmsCat' //  此处请自行替换地址
-import { formatTimeToStr } from '@/utils/date'
+import { formatTimeToStr } from '@/utils/date'  
 import infoList from '@/mixins/infoList'
 import { toSQLLine } from '@/utils/stringFun'
 import ImageView from '@/components/mediaLib/imageView.vue'
@@ -534,4 +529,9 @@ export default {
 </script>
 
 <style>
+	.fileImg{
+	    width: 80px;
+	    height: 80px;
+	    position: relative;
+	}
 </style>

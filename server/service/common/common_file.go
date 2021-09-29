@@ -4,9 +4,7 @@ import (
 	"mime/multipart"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
-
 	"github.com/flipped-aurora/gin-vue-admin/server/model/autocode"
-	autocodeSev "github.com/flipped-aurora/gin-vue-admin/server/service/autocode"
 	"github.com/flipped-aurora/gin-vue-admin/server/utils/upload"
 )
 
@@ -50,14 +48,17 @@ func (e *CommonFileService) UploadFile(header *multipart.FileHeader, basicFile a
 		driver = 4
 	}
 	basicFile.Driver = &driver
-	basicFS := new(autocodeSev.BasicFileService)
-	return basicFS.CreateBasicFile(basicFile), basicFile
+	err = global.GVA_DB.Create(&basicFile).Error
+	return err, basicFile
 }
 
-func (e *CommonFileService) GetPathByGuid(guid string) (path string) {
+func (e *CommonFileService) GetPathByGuid(guid string) (err error, path string) {
 	//basicFS := new(autocodeSev.BasicFileService)
 	// 先从 redis 获取 ，没有则读取数据库 ，缓存2小时
-	var basicFile autocode.BasicFile
-	_ = global.GVA_DB.Where("guid = ?", guid).First(&basicFile).Error
-	return basicFile.Path
+	basicFile := autocode.BasicFile{}
+	err = global.GVA_DB.Where("guid = ?", guid).First(&basicFile).Error
+	if err != nil {
+		return err, ""
+	}
+	return err, basicFile.Path
 }

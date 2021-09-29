@@ -11,3 +11,4 @@ type ApiGroup struct {
 }
 
 var commDbService = service.ServiceGroupApp.CommonServiceGroup.CommonDbService
+var commFileService = service.ServiceGroupApp.CommonServiceGroup.CommonFileService

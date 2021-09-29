@@ -12,6 +12,11 @@ export default {
     }
   },
   methods: {
+	  //add by ljd 20210929 这里的代码混合到vue3 里面 ，跟js代码互不能访问
+	 getMapData :function(key,map){ 
+	  	let s = map[key] 
+	  	return "http://localhost:8080/api/"+s 
+	  },
     formatBoolean: function(bool) {
       if (bool !== null) {
         return bool ? '是' : '否'
