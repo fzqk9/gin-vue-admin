@@ -40,9 +40,9 @@ func (basicFileService *BasicFileService) UpdateBasicFile(basicFile autocode.Bas
 }
 
 // GetBasicFile 根据id获取BasicFile记录
-// Author [piexlmax](https://github.com/piexlmax)
-func (basicFileService *BasicFileService) GetBasicFile(id uint) (err error, basicFile autocode.BasicFile) {
-	err = global.GVA_DB.Where("id = ?", id).First(&basicFile).Error
+// Author  有修改的 LJD
+func (basicFileService *BasicFileService) GetBasicFile(key string, val string) (err error, basicFile autocode.BasicFile) {
+	err = global.GVA_DB.Where(key, val).First(&basicFile).Error
 	return
 }
 

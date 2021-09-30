@@ -254,43 +254,62 @@ export default {
 			  }
 		  }) 
 	},
-	 beforeImageUpload(file) { 
-		 console.log("this.uploadData.module",this.uploadData.module)
-		if (this.uploadData.module ==-1)
-		{
-			this.$message.error('请选择上传的模块')
-			return false
-		}
-		if (this.uploadData.media_type ==-1)
-		{
-			this.$message.error('请选择文件类型')
-			return false
-		}
-		const isJPG = file.type === 'image/jpeg'
-		const isPng = file.type === 'image/png'
-		if (!isJPG && !isPng) {
-		  this.$message.error('上传图片只能是 jpg或png 格式!')
-		  return false
-		}
-		
-	  this.getFileSha1(file); 
-      console.log("this.uploadData.sha1 = ",this.uploadData.sha1) 
-	  this.getFileMd5(file);
-	  console.log("this.uploadData.md5 = ",this.uploadData.md5) 
-	  // 判断是否有重复的 sha1 文件
-
-	  if (isJPG)
-	    this.uploadData.ext = "jpg";
-      else if (isPng)  this.uploadData.ext = "png";	
-	  this.uploadData.size = Math.round(file.size / 1024);	  //四舍五入（小数部分）
-	  
-	  const isRightSize = file.size / 1024 < this.fileSize
-	  if (!isRightSize) {
-	    // 压缩
-	     const compress = new ImageCompress(file, this.fileSize, this.maxWH)		
-	     return compress.compress()
-	  } 
-	  return isRightSize
+	 async beforeImageUpload(file) {  
+		console.log("this.uploadData.module",this.uploadData.module) 
+	
+			console.log(" Promise media_type",this.uploadData.media_type)
+			if (this.uploadData.module ==-1)
+			{
+				this.$message.error('请选择上传的模块')
+				return reject("error")  
+			}
+			if (this.uploadData.media_type ==-1)
+			{
+				this.$message.error('请选择文件类型')
+				return reject("error")  
+			}
+			const isJPG = file.type === 'image/jpeg'
+			const isPng = file.type === 'image/png'
+			if (!isJPG && !isPng) {
+			  this.$message.error('上传图片只能是 jpg或png 格式!')
+			  return reject("error")  
+			}
+			if (isJPG) this.uploadData.ext = "jpg";
+			else if (isPng) this.uploadData.ext = "png";	
+			
+			 await this.getFileSha1(file);
+			 console.log("this.uploadData.sha1 = ",this.uploadData.sha1)   
+			 await this.getFileMd5(file);
+			 console.log("this.uploadData.md5 = ",this.uploadData.md5) 
+			  //判断是否有重复的 sha1 文件
+			 const res = await findBasicFile({ sha1:this.uploadData.sha1}) 
+			   console.log(" res = ",res) 
+			 if (res.code === 0) {
+				  console.log(" res = ",res.data.basicFile) 
+				  if (res.data.basicFile.guid!="")  
+				  {
+					   this.$message.error('已存在相同的文件') 
+					  //  return reject("error")  
+				  }  
+			 } 
+		  this.uploadData.size = Math.round(file.size / 1024);	  //四舍五入（小数部分）		  
+		  const isRightSize =this.uploadData.size < this.fileSize
+		    console.log(" isRightSize = ",isRightSize) 
+		  if (!isRightSize) {
+			// 压缩
+			  console.log(" 压缩 ") 
+			 const compress = new ImageCompress(file, this.fileSize, this.maxWH)		
+			 let isOk =  compress.compress()
+			  console.log(" 压缩 isOk",isOk) 
+			 if (isOk) 
+			      return resolve("ok")
+			 else {
+				this.$message.error('文件压缩后太大')  
+				return reject("error")  
+			 }
+		  } 
+		    console.log(" resolve =ok ") 
+		  return resolve("ok") 	 
 	},
 	handleImageSuccess(res) {
        console.log(" handleImageSuccess")

@@ -1,21 +1,25 @@
 package autocode
 
 import (
+	"errors"
+	"strconv"
+
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/autocode"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
-    autocodeReq "github.com/flipped-aurora/gin-vue-admin/server/model/autocode/request"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
-    "github.com/flipped-aurora/gin-vue-admin/server/service"
-    "github.com/gin-gonic/gin"
-    "go.uber.org/zap"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/autocode"
+	autocodeReq "github.com/flipped-aurora/gin-vue-admin/server/model/autocode/request"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
+	"github.com/flipped-aurora/gin-vue-admin/server/service"
+	"github.com/flipped-aurora/gin-vue-admin/server/utils"
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 type BasicFileApi struct {
 }
 
 var basicFileService = service.ServiceGroupApp.AutoCodeServiceGroup.BasicFileService
- 
 
 // CreateBasicFile 创建BasicFile
 // @Tags BasicFile
@@ -30,7 +34,7 @@ func (basicFileApi *BasicFileApi) CreateBasicFile(c *gin.Context) {
 	var basicFile autocode.BasicFile
 	_ = c.ShouldBindJSON(&basicFile)
 	if err := basicFileService.CreateBasicFile(basicFile); err != nil {
-        global.GVA_LOG.Error("创建失败!", zap.Any("err", err))
+		global.GVA_LOG.Error("创建失败!", zap.Any("err", err))
 		response.FailWithMessage("创建失败", c)
 	} else {
 		response.OkWithMessage("创建成功", c)
@@ -50,7 +54,7 @@ func (basicFileApi *BasicFileApi) DeleteBasicFile(c *gin.Context) {
 	var basicFile autocode.BasicFile
 	_ = c.ShouldBindJSON(&basicFile)
 	if err := basicFileService.DeleteBasicFile(basicFile); err != nil {
-        global.GVA_LOG.Error("删除失败!", zap.Any("err", err))
+		global.GVA_LOG.Error("删除失败!", zap.Any("err", err))
 		response.FailWithMessage("删除失败", c)
 	} else {
 		response.OkWithMessage("删除成功", c)
@@ -68,9 +72,9 @@ func (basicFileApi *BasicFileApi) DeleteBasicFile(c *gin.Context) {
 // @Router /basicFile/deleteBasicFileByIds [delete]
 func (basicFileApi *BasicFileApi) DeleteBasicFileByIds(c *gin.Context) {
 	var IDS request.IdsReq
-    _ = c.ShouldBindJSON(&IDS)
+	_ = c.ShouldBindJSON(&IDS)
 	if err := basicFileService.DeleteBasicFileByIds(IDS); err != nil {
-        global.GVA_LOG.Error("批量删除失败!", zap.Any("err", err))
+		global.GVA_LOG.Error("批量删除失败!", zap.Any("err", err))
 		response.FailWithMessage("批量删除失败", c)
 	} else {
 		response.OkWithMessage("批量删除成功", c)
@@ -90,7 +94,7 @@ func (basicFileApi *BasicFileApi) UpdateBasicFile(c *gin.Context) {
 	var basicFile autocode.BasicFile
 	_ = c.ShouldBindJSON(&basicFile)
 	if err := basicFileService.UpdateBasicFile(basicFile); err != nil {
-        global.GVA_LOG.Error("更新失败!", zap.Any("err", err))
+		global.GVA_LOG.Error("更新失败!", zap.Any("err", err))
 		response.FailWithMessage("更新失败", c)
 	} else {
 		response.OkWithMessage("更新成功", c)
@@ -109,11 +113,27 @@ func (basicFileApi *BasicFileApi) UpdateBasicFile(c *gin.Context) {
 func (basicFileApi *BasicFileApi) FindBasicFile(c *gin.Context) {
 	var basicFile autocode.BasicFile
 	_ = c.ShouldBindQuery(&basicFile)
-	if err, rebasicFile := basicFileService.GetBasicFile(basicFile.ID); err != nil {
-        global.GVA_LOG.Error("查询失败!", zap.Any("err", err))
+	var key, val string
+	if !utils.IsEmpty(basicFile.ID) {
+		key = "id"
+		val = strconv.Itoa(int(basicFile.ID))
+	} else if !utils.IsEmpty(basicFile.Sha1) {
+		key = "sha1"
+		val = basicFile.Sha1
+	}
+	// 示例来说明record not found的错误，
+	// 1）传入接收检索结果的变量只能为Struct类型或Slice类型；
+	// 2）当传入变量为Struc类型时，如果检索出来的数据为0条，会抛出ErrRecordNotFound错误；
+	//3）当传入变量为Slice类型时，任何条件下均不会抛出ErrRecordNotFound错误
+	err, basicFile := basicFileService.GetBasicFile(key, val)
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		//fmt.Println("查询不到数据")
+		response.OkWithData(gin.H{"basicFile": basicFile}, c)
+	} else if err != nil {
+		global.GVA_LOG.Error("查询失败!", zap.Any("err", err))
 		response.FailWithMessage("查询失败", c)
 	} else {
-		response.OkWithData(gin.H{"rebasicFile": rebasicFile}, c)
+		response.OkWithData(gin.H{"basicFile": basicFile}, c)
 	}
 }
 
@@ -131,20 +151,18 @@ func (basicFileApi *BasicFileApi) GetBasicFileList(c *gin.Context) {
 
 	var pageInfo autocodeReq.BasicFileSearch
 	_ = c.ShouldBindQuery(&pageInfo)
-	if err, list, total := basicFileService.GetBasicFileInfoList(pageInfo,createdAtBetween); err != nil {
-	    global.GVA_LOG.Error("获取失败!", zap.Any("err", err))
-        response.FailWithMessage("获取失败", c)
-    } else {
-        response.OkWithDetailed(response.PageResult{
-            List:     list,
-            Total:    total,
-            Page:     pageInfo.Page,
-            PageSize: pageInfo.PageSize,
-        }, "获取成功", c)
-    }
+	if err, list, total := basicFileService.GetBasicFileInfoList(pageInfo, createdAtBetween); err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Any("err", err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
 }
-
-
 
 // QuickEdit 快速更新
 // @Tags QuickEdit
@@ -152,9 +170,9 @@ func (basicFileApi *BasicFileApi) GetBasicFileList(c *gin.Context) {
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body autocode.BasicFile true "快速更新BasicFile" 
+// @Param data body autocode.BasicFile true "快速更新BasicFile"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
-// @Router  /basicFile/quickEdit [post] 
+// @Router  /basicFile/quickEdit [post]
 func (basicFileApi *BasicFileApi) QuickEdit(c *gin.Context) {
 	var quickEdit request.QuickEdit
 	_ = c.ShouldBindJSON(&quickEdit)
