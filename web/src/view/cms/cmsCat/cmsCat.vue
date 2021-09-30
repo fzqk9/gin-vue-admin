@@ -155,9 +155,9 @@
              
                   <el-table-column label="配图" prop="thumb" width="120"   >
                      <template #default="scope">
-                        <ImageView pic-type="img" :pic-src="getMapData(scope.row.thumb,scope.row.map_data)" />  
+                        <ImageView pic-type="img" :pic-src="getMapData(scope.row.thumb,scope.row.mapData)" />  
 						<!-- http://localhost:8080/api/uploads/file/1/20210928/e760369d377a4c38b6b6fd5981a7f51e.jpg -->
-						<!-- <image   src="getMapData(scope.row.thumb,scope.row.map_data)" class="fileImg"></image> -->
+						<!-- <image   src="getmapData(scope.row.thumb,scope.row.mapData)" class="fileImg"></image> -->
                       </template> 
 					 
                   </el-table-column>   
@@ -247,7 +247,7 @@
                   <el-input v-model="formData.name" clearable placeholder="请输入" />
               </el-form-item>
         <el-form-item label="配图:"> 
-                  <ImageView ref="imageView_thumb" pic-type="img" :be-edit="1" :pic-src="getMapData(formData.thumb,formData.map_data)" /> 
+                  <ImageView ref="imageView_thumb" pic-type="img" :be-edit="1" :pic-src="getMapData(formData.thumb,formData.mapData)" /> 
               </el-form-item>
         <el-form-item label="排序:">
               
@@ -468,15 +468,18 @@ export default {
       console.log(this.$refs.imageView_thumb.guid);
       //更新图片guid
       this.formData.thumb = this.$refs.imageView_thumb.guid;
+	  delete this.formData.mapData
+	  delete this.formData.CreatedAt
+	  delete this.formData.UpdatedAt
       let res
       switch (this.type) {
-        case "create":
+        case "create": 
           res = await createCmsCat(this.formData)
           break
-        case "update":
+        case "update": 
           res = await updateCmsCat(this.formData)
           break
-        default:
+        default: 
           res = await createCmsCat(this.formData)
           break
       }
