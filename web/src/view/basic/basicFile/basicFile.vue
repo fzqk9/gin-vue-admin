@@ -91,18 +91,9 @@
     >
       <el-table-column type="selection" width="55" />
          <!-- add by ljd 20210709,增加id 排序功能等  -->
-       <el-table-column label="ID" min-width="60" prop="ID" sortable="custom" />  
-              
-                  <el-table-column label="唯一id" prop="guid" width="120"   sortable="custom"  />  
-               
-           
-        
-              
-                  <el-table-column label="用户id" prop="userId" width="120"   sortable="custom"  />  
-               
-           
-        
-             
+       <el-table-column label="ID" min-width="60" prop="ID" sortable="custom" />                
+	  <el-table-column label="唯一id" prop="guid" width="120"   sortable="custom"   />  
+	  <el-table-column label="用户id" prop="userId" width="120"   sortable="custom"  />  
                  <!-- BeQuickEdit -->  
                     <el-table-column label="文件名" prop="name" width="120"   sortable="custom" >
                     <template #default="scope">
@@ -124,14 +115,15 @@
                  <!-- BeQuickEdit -->
                     <el-table-column label="模块名" prop="module" width="120"  sortable="custom" >
                     <template #default="scope">  
-                    <el-popover trigger="click" placement="top"  width = "280">  
+					 <div > {{filterDict(scope.row.module,"module")}} </div>
+                   <!-- <el-popover trigger="click" placement="top"  width = "280">  
                           <el-select v-model="scope.row.module" placeholder="请选择"  @change="quickEdit_do('module',scope.row.ID,scope.row.module,scope)">
                               <el-option v-for="(item,key) in moduleOptions" :key="key" :label="item.label" :value="item.value"></el-option>
                           </el-select> 
                           <template #reference>
                               <div class="quickEdit" > {{filterDict(scope.row.module,"module")}} </div>
                           </template>
-                       </el-popover>
+                       </el-popover> -->
                     </template>  
                     </el-table-column> 
            
@@ -156,14 +148,15 @@
                  <!-- BeQuickEdit -->
                     <el-table-column label="存储位置" prop="driver" width="120"  sortable="custom" >
                     <template #default="scope">  
-                    <el-popover trigger="click" placement="top"  width = "280">  
+					 <div   > {{filterDict(scope.row.driver,"driver")}} </div>
+                    <!-- <el-popover trigger="click" placement="top"  width = "280">  
                           <el-select v-model="scope.row.driver" placeholder="请选择"  @change="quickEdit_do('driver',scope.row.ID,scope.row.driver,scope)">
                               <el-option v-for="(item,key) in driverOptions" :key="key" :label="item.label" :value="item.value"></el-option>
                           </el-select> 
                           <template #reference>
                               <div class="quickEdit" > {{filterDict(scope.row.driver,"driver")}} </div>
                           </template>
-                       </el-popover>
+                       </el-popover> -->
                     </template>  
                     </el-table-column> 
            

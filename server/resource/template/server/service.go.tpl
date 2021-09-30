@@ -5,6 +5,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/autocode"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
     autoCodeReq "github.com/flipped-aurora/gin-vue-admin/server/model/autocode/request"
+     "github.com/flipped-aurora/gin-vue-admin/server/utils"
 )
 
 type {{.StructName}}Service struct {
@@ -94,16 +95,15 @@ func ({{.Abbreviation}}Service *{{.StructName}}Service)Get{{.StructName}}InfoLis
 	err = db.Count(&total).Error
 	//err = db.Limit(limit).Offset(offset).Find(&{{.Abbreviation}}s).Error
     //修改 by ljd  增加查询排序 
-     if order != "" {
+     OrderStr := "id desc"
+     if !utils.IsEmpty(order) {
 		var OrderStr string
 		if desc {
 			OrderStr = order + " desc"
 		} else {
 			OrderStr = order
-		}
-        err = db.Order(OrderStr).Limit(limit).Offset(offset).Find(&{{.Abbreviation}}s).Error 
-	} else {
-		err = db.Limit(limit).Offset(offset).Find(&{{.Abbreviation}}s).Error
-	}
+		} 
+	}  
+     err = db.Order(OrderStr).Limit(limit).Offset(offset).Find(&{{.Abbreviation}}s).Error 
 	return err, {{.Abbreviation}}s, total
 }

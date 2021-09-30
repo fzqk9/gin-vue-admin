@@ -5,6 +5,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/autocode"
 	autoCodeReq "github.com/flipped-aurora/gin-vue-admin/server/model/autocode/request"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
+	"github.com/flipped-aurora/gin-vue-admin/server/utils"
 )
 
 type BasicFileService struct {
@@ -87,16 +88,14 @@ func (basicFileService *BasicFileService) GetBasicFileInfoList(info autoCodeReq.
 	err = db.Count(&total).Error
 	//err = db.Limit(limit).Offset(offset).Find(&basicFiles).Error
 	//修改 by ljd  增加查询排序
-	if order != "" {
-		var OrderStr string
+	OrderStr := "id desc"
+	if !utils.IsEmpty(order) {
 		if desc {
 			OrderStr = order + " desc"
 		} else {
 			OrderStr = order
 		}
-		err = db.Order(OrderStr).Limit(limit).Offset(offset).Find(&basicFiles).Error
-	} else {
-		err = db.Limit(limit).Offset(offset).Find(&basicFiles).Error
 	}
+	err = db.Order(OrderStr).Limit(limit).Offset(offset).Find(&basicFiles).Error
 	return err, basicFiles, total
 }

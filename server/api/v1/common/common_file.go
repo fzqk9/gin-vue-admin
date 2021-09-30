@@ -34,7 +34,6 @@ func (commonFileApi *CommonFileApi) UploadFile(c *gin.Context) {
 	media_type_v, err := strconv.Atoi(media_type)
 	module_v, err := strconv.Atoi(module)
 	size_v, err := strconv.Atoi(size)
-
 	basicFile := autocode.BasicFile{
 		Size:      &size_v,
 		Ext:       ext,
@@ -43,7 +42,6 @@ func (commonFileApi *CommonFileApi) UploadFile(c *gin.Context) {
 		Md5:       md5,
 		Sha1:      sha1,
 	}
-
 	_, header, err := c.Request.FormFile("file")
 	if err != nil {
 		global.GVA_LOG.Error("接收文件失败!", zap.Any("err", err))
