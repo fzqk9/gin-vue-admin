@@ -5,6 +5,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/autocode"
 	autoCodeReq "github.com/flipped-aurora/gin-vue-admin/server/model/autocode/request"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
+	"github.com/flipped-aurora/gin-vue-admin/server/utils"
 )
 
 type CmsCatService struct {
@@ -42,10 +43,10 @@ func (cmsCatService *CmsCatService) UpdateCmsCat(cmsCat autocode.CmsCat) (err er
 // Author [piexlmax](https://github.com/piexlmax)
 func (cmsCatService *CmsCatService) GetCmsCat(id uint) (err error, cmsCat autocode.CmsCat) {
 	err = global.GVA_DB.Where("id = ?", id).First(&cmsCat).Error
-	cmsCat.MapData = make(map[string]string)
-	var path string
-	_, path = commFileService.GetPathByGuid(cmsCat.Thumb)
-	cmsCat.MapData[cmsCat.Thumb] = path
+	if !utils.IsEmpty(cmsCat.Thumb) {
+		cmsCat.MapData = make(map[string]string)
+		_, cmsCat.MapData[cmsCat.Thumb] = commFileService.GetPathByGuid(cmsCat.Thumb)
+	}
 	return
 }
 
@@ -106,9 +107,11 @@ func (cmsCatService *CmsCatService) GetCmsCatInfoList(info autoCodeReq.CmsCatSea
 	//更新图片path
 	for i, v := range cmsCats {
 		v.MapData = make(map[string]string)
-		var path string
-		_, path = commFileService.GetPathByGuid(v.Thumb)
-		v.MapData[v.Thumb] = path
+		if utils.IsEmpty(v.Thumb) {
+			v.MapData[""] = ""
+		} else {
+			_, v.MapData[v.Thumb] = commFileService.GetPathByGuid(v.Thumb)
+		}
 		cmsCats[i] = v
 	}
 	return err, cmsCats, total

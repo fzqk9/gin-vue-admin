@@ -34,7 +34,7 @@ export const isEmpty = (obj) => {
    	} else if (typeof (obj) == "object") {
    		// Object {}
    		// 普通对象使用 for...in 判断，有 key 即为 fobjlse       
-   		if (this.isEmptyObject(obj))
+   		if (isEmptyObject(obj))
    			return true;
    	} else {
    		// objrrobjy
