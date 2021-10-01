@@ -40,6 +40,7 @@
 	   :on-success="handleImageSuccess"
 	   :before-upload="beforeImageUpload"
 	   :multiple="false"
+       :auto-upload="true"
 	 >
 	   <el-button size="mini" type="primary">上传图片</el-button>
 	 </el-upload> 
@@ -124,6 +125,9 @@ export default {
   },
   data() {
     return {
+        //------图片上传--------------------
+        fileSize:2048, // 不需压缩的文件大小 2048k
+        maxWH:1920, //压缩最大宽高
 		uploadData: {
 			module:-1,
 			media_type:0,
@@ -132,6 +136,7 @@ export default {
 			md5:"",
 			sha1:""
 		},
+       //---------------------- 
       showDialog: false,
       picList: [],
       path: path+"/",
@@ -255,8 +260,9 @@ export default {
 		  }) 
 	},
 	 async beforeImageUpload(file) {  
-		console.log("this.uploadData.module",this.uploadData.module) 
-	
+        
+		   console.log("this.uploadData.module",this.uploadData.module) 
+	      
 			console.log(" Promise media_type",this.uploadData.media_type)
 			if (this.uploadData.module ==-1)
 			{
@@ -285,32 +291,38 @@ export default {
 			 const res = await findBasicFile({ sha1:this.uploadData.sha1}) 
 			   console.log(" res = ",res) 
 			 if (res.code === 0) {
-				  console.log(" res = ",res.data.basicFile) 
+				  
+                  console.log(" res = ",res.data.basicFile) 
 				  if (res.data.basicFile.guid!="")  
-				  {
+				  { 
+                      console.log(" 已存在相同的文件 path = ",res.data.basicFile.path) 
 					   this.$message.error('已存在相同的文件') 
-					  //  return reject("error")  
+                       this.handleGetByGuid(res.data.basicFile.guid);
+					   return reject("error")  
 				  }  
 			 } 
 		  this.uploadData.size = Math.round(file.size / 1024);	  //四舍五入（小数部分）		  
 		  const isRightSize =this.uploadData.size < this.fileSize
-		    console.log(" isRightSize = ",isRightSize) 
+		  console.log(" this.uploadData.size = ",this.uploadData.size , " this.fileSize = ",this.fileSize) 
 		  if (!isRightSize) {
 			// 压缩
-			  console.log(" 压缩 ") 
+			  console.log(" 压缩 isRightSize") 
 			 const compress = new ImageCompress(file, this.fileSize, this.maxWH)		
-			 let isOk =  compress.compress()
-			  console.log(" 压缩 isOk",isOk) 
-			 if (isOk) 
-			      return resolve("ok")
-			 else {
-				this.$message.error('文件压缩后太大')  
-				return reject("error")  
-			 }
+			 return compress.compress()  
 		  } 
-		    console.log(" resolve =ok ") 
-		  return resolve("ok") 	 
+		  console.log(" resolve =ok ") 
+		  return new Promise(resolve => { return resolve(file) });
 	},
+    
+      handleGetByGuid(guid) {
+          this.page = 1
+          this.pageSize = 20
+          this.searchInfo.guid = guid
+          this.searchInfo.mediaType = undefined
+          this.searchInfo.module = undefined
+          this.getTableData()
+    },
+            
 	handleImageSuccess(res) {
        console.log(" handleImageSuccess")
          console.log(res) 
