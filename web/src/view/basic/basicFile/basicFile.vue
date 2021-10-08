@@ -239,12 +239,10 @@
     <!---------- 编辑弹窗------------------ -->
     <el-dialog :before-close="closeDialog" v-model="dialogFormVisible" title="弹窗操作">
       <el-form :model="formData" label-position="right" label-width="80px">
-        <el-form-item label="唯一id:">
-              
+        <el-form-item label="唯一id:"> 
                   <el-input v-model="formData.guid" clearable placeholder="请输入" />
               </el-form-item>
-        <el-form-item label="用户id:">
-              
+        <el-form-item label="用户id:"> 
                         <el-input v-model.number="formData.userId" clearable placeholder="请输入" />
                     </el-form-item>
         <el-form-item label="文件名:">
@@ -347,7 +345,7 @@ export default {
       driverOptions: [],
           
       formData: {
-        guid: '',
+         guid: '',
           userId: 0,
           name: '',
           module: 0,
@@ -454,7 +452,8 @@ export default {
       const res = await findBasicFile({ ID: row.ID })
       this.type = 'update'
       if (res.code === 0) {
-        this.formData = res.data.rebasicFile
+		//console.log(" res.data =",res.data);
+        this.formData = res.data.basicFile
         this.dialogFormVisible = true
       }
     },
