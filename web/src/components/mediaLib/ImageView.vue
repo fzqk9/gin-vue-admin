@@ -1,9 +1,9 @@
 <template>
  <div>  
    <el-image class="image-div" fit="fill" :src="myUrl" :preview-src-list="myList" hide-on-click-modal/> 
-   <el-link v-if="beEdit == '1'" icon="el-icon-edit" @click="openChooseImg">重新上传</el-link>
+   <el-link v-if="beEdit" icon="el-icon-edit" @click="openChooseImg">重新上传</el-link>
  </div>
- <template  v-if="beEdit == '1'">
+ <template  v-if="beEdit">
  	 <MediaLib ref="mediaLib" @select-one-img="selectOneImg" />
  </template>
  </template>
@@ -43,9 +43,9 @@
  				default: ''
  			},
  			beEdit: {
- 				type: String,
+ 				type: Boolean,
  				required: false,
- 				default: '0'
+ 				default: false
  			}
  		},
  		data() {

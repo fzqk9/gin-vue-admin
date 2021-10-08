@@ -154,7 +154,7 @@ export default {
       driverOptions: [],
           
       formData: {
-        guid: '',
+          guid: '',
           userId: 0,
           name: '',
           module: 0,
@@ -201,6 +201,7 @@ export default {
       await this.getDict('media_type')
 	  this.searchInfo.orderKey = toSQLLine("ID")
 	  this.searchInfo.orderDesc = true
+	  this.searchInfo.guid = ""
       await this.getTableData()   
     },
     //------------------
@@ -314,7 +315,7 @@ export default {
 		  return new Promise(resolve => { return resolve(file) });
 	},
     
-      handleGetByGuid(guid) {
+   handleGetByGuid(guid) {
           this.page = 1
           this.pageSize = 20
           this.searchInfo.guid = guid

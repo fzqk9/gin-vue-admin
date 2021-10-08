@@ -242,7 +242,7 @@
       <el-input v-model="formData.name" clearable placeholder="请输入" />
               </el-form-item>
         <el-form-item label="配图:"> 
-                <ImageView ref="imageView_thumb" :be-edit="1" :url="getMapData(formData.thumb,formData.mapData)" /> 
+                <ImageView ref="imageView_thumb"  be-edit :url="getMapData(formData.thumb,formData.mapData)" /> 
               </el-form-item>
         <el-form-item label="排序:">
               
