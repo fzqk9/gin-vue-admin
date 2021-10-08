@@ -42,6 +42,9 @@ func (e *FileUploadAndDownloadService) FindFile(id uint) (error, example.ExaFile
 func (e *FileUploadAndDownloadService) DeleteFile(file example.ExaFileUploadAndDownload) (err error) {
 	var fileFromDb example.ExaFileUploadAndDownload
 	err, fileFromDb = e.FindFile(file.ID)
+	if err != nil {
+		return
+	}
 	oss := upload.NewOss()
 	if err = oss.DeleteFile(fileFromDb.Key); err != nil {
 		return errors.New("文件删除失败")
@@ -59,9 +62,12 @@ func (e *FileUploadAndDownloadService) DeleteFile(file example.ExaFileUploadAndD
 func (e *FileUploadAndDownloadService) GetFileRecordInfoList(info request.PageInfo) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
-	db := global.GVA_DB
+	db := global.GVA_DB.Model(&example.ExaFileUploadAndDownload{})
 	var fileLists []example.ExaFileUploadAndDownload
-	err = db.Find(&fileLists).Count(&total).Error
+	err = db.Count(&total).Error
+	if err != nil {
+		return
+	}
 	err = db.Limit(limit).Offset(offset).Order("updated_at desc").Find(&fileLists).Error
 	return err, fileLists, total
 }
@@ -74,7 +80,8 @@ func (e *FileUploadAndDownloadService) GetFileRecordInfoList(info request.PageIn
 
 func (e *FileUploadAndDownloadService) UploadFile(header *multipart.FileHeader, noSave string) (err error, file example.ExaFileUploadAndDownload) {
 	oss := upload.NewOss()
-	filePath, key, uploadErr := oss.UploadFile(header)
+	module := 0
+	filePath, key, uploadErr := oss.UploadFile(header, module)
 	if uploadErr != nil {
 		panic(err)
 	}

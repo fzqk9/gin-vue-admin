@@ -154,16 +154,21 @@ func (autoCodeService *AutoCodeService) PreviewTemp(autoCode system.AutoCodeStru
 //@return: err error
 
 func (autoCodeService *AutoCodeService) CreateTemp(autoCode system.AutoCodeStruct, ids ...uint) (err error) {
+	// 增加判断: 重复创建struct
+	// if autoCode.AutoMoveFile && AutoCodeHistoryServiceApp.Repeat(autoCode.StructName) {
+	// 	return RepeatErr
+	// }
 	dataList, fileList, needMkdir, err := autoCodeService.getNeedList(&autoCode)
 	if err != nil {
 		return err
 	}
+	fmt.Println("aaa111")
 	meta, _ := json.Marshal(autoCode)
 	// 写入文件前，先创建文件夹
 	if err = utils.CreateDir(needMkdir...); err != nil {
 		return err
 	}
-
+	fmt.Println("aaa222")
 	// 生成文件
 	for _, value := range dataList {
 		f, err := os.OpenFile(value.autoCodePath, os.O_CREATE|os.O_WRONLY, 0755)
@@ -188,7 +193,9 @@ func (autoCodeService *AutoCodeService) CreateTemp(autoCode system.AutoCodeStruc
 		idBf.WriteString(strconv.Itoa(int(id)))
 		idBf.WriteString(";")
 	}
+
 	if autoCode.AutoMoveFile { // 判断是否需要自动转移
+		fmt.Println("aaa3333")
 		Init()
 		for index := range dataList {
 			autoCodeService.addAutoMoveFile(&dataList[index])
@@ -216,12 +223,14 @@ func (autoCodeService *AutoCodeService) CreateTemp(autoCode system.AutoCodeStruc
 			}()
 		}
 	} else { // 打包
+		fmt.Println("aaa4444")
 		if err = utils.ZipFiles("./ginvueadmin.zip", fileList, ".", "."); err != nil {
 			return err
 		}
 	}
 	if autoCode.AutoMoveFile || autoCode.AutoCreateApiToSql {
 		if autoCode.TableName != "" {
+			fmt.Println("bbbb111")
 			err = AutoCodeHistoryServiceApp.CreateAutoCodeHistory(
 				string(meta),
 				autoCode.StructName,
@@ -232,6 +241,7 @@ func (autoCodeService *AutoCodeService) CreateTemp(autoCode system.AutoCodeStruc
 				idBf.String(),
 			)
 		} else {
+			fmt.Println("bbbb2222")
 			err = AutoCodeHistoryServiceApp.CreateAutoCodeHistory(
 				string(meta),
 				autoCode.StructName,
@@ -304,8 +314,9 @@ func (autoCodeService *AutoCodeService) GetDB() (err error, DBNames []request.DB
 //@return: err error, Columns []request.ColumnReq
 
 func (autoCodeService *AutoCodeService) GetColumn(tableName string, dbName string) (err error, Columns []request.ColumnReq) {
-	err = global.GVA_DB.Raw("SELECT COLUMN_NAME column_name,DATA_TYPE data_type,CASE DATA_TYPE WHEN 'longtext' THEN c.CHARACTER_MAXIMUM_LENGTH WHEN 'varchar' THEN c.CHARACTER_MAXIMUM_LENGTH WHEN 'double' THEN CONCAT_WS( ',', c.NUMERIC_PRECISION, c.NUMERIC_SCALE ) WHEN 'decimal' THEN CONCAT_WS( ',', c.NUMERIC_PRECISION, c.NUMERIC_SCALE ) WHEN 'int' THEN c.NUMERIC_PRECISION WHEN 'bigint' THEN c.NUMERIC_PRECISION ELSE '' END AS data_type_long,COLUMN_COMMENT column_comment FROM INFORMATION_SCHEMA.COLUMNS c WHERE table_name = ? AND table_schema = ?", tableName, dbName).Scan(&Columns).Error
+	err = global.GVA_DB.Raw("SELECT COLUMN_NAME column_name,DATA_TYPE data_type,CASE DATA_TYPE WHEN 'longtext' THEN c.CHARACTER_MAXIMUM_LENGTH WHEN 'varchar' THEN c.CHARACTER_MAXIMUM_LENGTH WHEN 'double' THEN CONCAT_WS( ',', c.NUMERIC_PRECISION, c.NUMERIC_SCALE ) WHEN 'decimal' THEN CONCAT_WS( ',', c.NUMERIC_PRECISION, c.NUMERIC_SCALE ) WHEN 'int' THEN c.NUMERIC_PRECISION WHEN 'bigint' THEN c.NUMERIC_PRECISION ELSE '' END AS data_type_long,COLUMN_COMMENT column_comment FROM INFORMATION_SCHEMA.COLUMNS c WHERE table_name = ? AND table_schema = ? order by ordinal_position", tableName, dbName).Scan(&Columns).Error
 	return err, Columns
+
 }
 
 func (autoCodeService *AutoCodeService) DropTable(tableName string) error {
@@ -401,6 +412,12 @@ func (autoCodeService *AutoCodeService) AutoCreateApi(a *system.AutoCodeStruct) 
 			Description: "获取" + a.Description + "列表",
 			ApiGroup:    a.Abbreviation,
 			Method:      "GET",
+		}, // add by ljd  20210913
+		{
+			Path:        "/" + a.Abbreviation + "/" + "quickEdit",
+			Description: "快速编辑" + a.Description,
+			ApiGroup:    a.Abbreviation,
+			Method:      "POST",
 		},
 	}
 	err = global.GVA_DB.Transaction(func(tx *gorm.DB) error {
@@ -483,6 +500,15 @@ func (autoCodeService *AutoCodeService) getNeedList(autoCode *system.AutoCodeStr
 
 // injectionCode 封装代码注入
 func injectionCode(structName string, bf *strings.Builder) error {
+
+	//先清除注入
+	for _, meta := range injectionPaths {
+		code := fmt.Sprintf(meta.structNameF, structName)
+		//先清除注入 by ljd 20210913
+		utils.AutoClearCode(meta.path, code)
+		//bf.WriteString(fmt.Sprintf("%s@%s@%s;", meta.path, meta.funcName, code))
+	}
+
 	for _, meta := range injectionPaths {
 		code := fmt.Sprintf(meta.structNameF, structName)
 		if err := utils.AutoInjectionCode(meta.path, meta.funcName, code); err != nil {

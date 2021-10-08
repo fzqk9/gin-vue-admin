@@ -1,6 +1,6 @@
 <template>
   <div class="system">
-    <el-form ref="form" :model="config" label-width="100px" class="system">
+    <el-form ref="form" :model="config" label-width="100px">
       <!--  System start  -->
       <h2>系统配置</h2>
       <el-form-item label="环境值">
@@ -10,7 +10,7 @@
         <el-input v-model.number="config.system.addr" />
       </el-form-item>
       <el-form-item label="数据库类型">
-        <el-select v-model="config.system.dbType">
+        <el-select v-model="config.system.dbType" style="width:100%">
           <el-option value="mysql" />
           <el-option value="sqlite" />
           <el-option value="sqlserver" />
@@ -18,7 +18,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="Oss类型">
-        <el-select v-model="config.system.ossType">
+        <el-select v-model="config.system.ossType" style="width:100%">
           <el-option value="local" />
           <el-option value="qiniu" />
           <el-option value="tencent-cos" />
@@ -299,12 +299,11 @@
         </el-form-item>
       </template>
       <!--  ossType end  -->
-
-      <el-form-item>
-        <el-button type="primary" @click="update">立即更新</el-button>
-        <el-button type="primary" @click="reload">重启服务（开发中）</el-button>
-      </el-form-item>
     </el-form>
+    <div class="gva-btn-list">
+      <el-button type="primary" size="mini" @click="update">立即更新</el-button>
+      <el-button type="primary" size="mini" @click="reload">重启服务（开发中）</el-button>
+    </div>
   </div>
 </template>
 
@@ -374,11 +373,14 @@ export default {
 
 <style lang="scss">
 .system {
+  background: #fff;
+  padding:12px;
+  border-radius: 2px;
   h2 {
     padding: 10px;
     margin: 10px 0;
     font-size: 16px;
-    box-shadow: -4px 1px 3px 0px #e7e8e8;
+    box-shadow: -4px 0px 0px 0px #e7e8e8;
   }
 }
 </style>

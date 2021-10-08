@@ -3,6 +3,8 @@ package utils
 import (
 	"crypto/md5"
 	"encoding/hex"
+
+	uuid "github.com/gofrs/uuid"
 )
 
 //@author: [piexlmax](https://github.com/piexlmax)
@@ -11,8 +13,26 @@ import (
 //@param: str []byte
 //@return: string
 
-func MD5V(str []byte) string {
+func MD5V(str []byte, b ...byte) string {
 	h := md5.New()
 	h.Write(str)
-	return hex.EncodeToString(h.Sum(nil))
+	return hex.EncodeToString(h.Sum(b))
+}
+
+func GUID() string {
+	u2, err := uuid.NewV4()
+	if err != nil {
+		//log.Fatalf("failed to generate UUID: %v", err)
+	}
+	var s = hex.EncodeToString(u2.Bytes())
+	return s
+}
+func UUID() string {
+	u2, err := uuid.NewV4()
+	if err != nil {
+		//log.Fatalf("failed to generate UUID: %v", err)
+	}
+	var s = hex.EncodeToString(u2.Bytes())
+	return s
+
 }

@@ -95,3 +95,20 @@ export const get{{.StructName}}List = (params) => {
     params
   })
 }
+
+
+// @Tags {{.StructName}}
+// @Summary 快速编辑
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body model.{{.StructName}} true "快速编辑"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
+// @Router /{{.Abbreviation}}/quickEdit [post]
+export const quickEdit = (data) => {
+  return service({
+    url: '/{{.Abbreviation}}/quickEdit',
+    method: 'post',
+    data
+  })
+}

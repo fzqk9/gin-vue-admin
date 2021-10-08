@@ -1,17 +1,34 @@
 import { getDict } from '@/utils/dictionary'
+import { isEmpty } from '@/utils/utils'
 import { formatTimeToStr } from '@/utils/date'
 
 export default {
   data() {
     return {
       page: 1,
-      total: 10,
-      pageSize: 10,
+      total: 20,
+      pageSize: 20,
       tableData: [],
       searchInfo: {}
     }
   },
   methods: {
+	  //add by ljd 20210929 这里的代码混合到vue3 里面 ，跟js代码互不能访问
+	 getMapData :function(key,map){ 
+       //  console.log(key);
+       //  console.log(map);
+		 if (isEmpty(map)) return "";
+		 if (isEmpty(key)) return "";
+	   	let s = map[key];
+	  	return  s 
+	  },
+	  getMapDataList:function(key,map){  
+	      if (isEmpty(map)) return [];
+	      if (isEmpty(key)) return [];
+	      let s = map[key];
+		  let a =[s]; 
+	      return a;
+	 },
     formatBoolean: function(bool) {
       if (bool !== null) {
         return bool ? '是' : '否'
@@ -27,10 +44,14 @@ export default {
         return ''
       }
     },
-    filterDict(value, type) {
-      const rowLabel = this[type + 'Options'] && this[type + 'Options'].filter(item => item.value === value)
+    filterDict(value, type) { 
+	  //const rowLabel = this[type + 'Options'] && this[type + 'Options'].filter(item => item.value === value) 
+     // by ljd 20210914   === 号 存在问题 ， 
+	  //console.log(this[type + 'Options']);
+	  const rowLabel = this[type + 'Options'] && this[type + 'Options'].filter(item => item.value == value) 
       return rowLabel && rowLabel[0] && rowLabel[0].label
     },
+	 
     async getDict(type) {
       const dicts = await getDict(type)
       this[type + 'Options'] = dicts
@@ -44,10 +65,25 @@ export default {
       this.page = val
       this.getTableData()
     },
+     // 判断一个查询对象是否有空属性  add by ljd 20210718
+	 obj_attr_is_null(obj){      
+		  for (const key in obj) {
+		    if (obj.hasOwnProperty(key)) {
+		      if (obj[key] === null || obj[key] === '') {
+		        console.log('为空='+key)
+				delete obj[key]  
+		      }else{
+		        console.log('不为空')
+		      }
+		    }
+		  }
+	 },
     // @params beforeFunc function 请求发起前执行的函数 默认为空函数
     // @params afterFunc function 请求完成后执行的函数 默认为空函数
     async getTableData(beforeFunc = () => {}, afterFunc = () => {}) {
       beforeFunc()
+	  //判断一个查询对象是否有空属性    add by ljd 20210718  
+	  this.obj_attr_is_null(this.searchInfo);  
       const table = await this.listApi({ page: this.page, pageSize: this.pageSize, ...this.searchInfo })
       if (table.code === 0) {
         this.tableData = table.data.list

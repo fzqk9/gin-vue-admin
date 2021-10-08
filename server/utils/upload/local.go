@@ -6,6 +6,7 @@ import (
 	"mime/multipart"
 	"os"
 	"path"
+	"strconv"
 	"strings"
 	"time"
 
@@ -25,22 +26,31 @@ type Local struct{}
 //@param: file *multipart.FileHeader
 //@return: string, string, error
 
-func (*Local) UploadFile(file *multipart.FileHeader) (string, string, error) {
+func (*Local) UploadFile(file *multipart.FileHeader, module int) (string, string, error) {
 	// 读取文件后缀
 	ext := path.Ext(file.Filename)
 	// 读取文件名并加密
-	name := strings.TrimSuffix(file.Filename, ext)
-	name = utils.MD5V([]byte(name))
+	//name := strings.TrimSuffix(file.Filename, ext)
+	//name = utils.MD5V([]byte(name))
+
+	name := utils.GUID()
 	// 拼接新文件名
-	filename := name + "_" + time.Now().Format("20060102150405") + ext
+	// filename := name + "_" + time.Now().Format("20060102150405") + ext
+
+	//filename := name + "_" + time.Now().Format("20060102150405") + ext
+	path := global.GVA_CONFIG.Local.Path + "/" + strconv.Itoa(module) +
+		"/" + time.Now().Format("20060102")
+
 	// 尝试创建此路径
-	mkdirErr := os.MkdirAll(global.GVA_CONFIG.Local.Path, os.ModePerm)
+	//mkdirErr := os.MkdirAll(global.GVA_CONFIG.Local.Path, os.ModePerm)
+	mkdirErr := os.MkdirAll(path, os.ModePerm)
 	if mkdirErr != nil {
 		global.GVA_LOG.Error("function os.MkdirAll() Filed", zap.Any("err", mkdirErr.Error()))
 		return "", "", errors.New("function os.MkdirAll() Filed, err:" + mkdirErr.Error())
 	}
 	// 拼接路径和文件名
-	p := global.GVA_CONFIG.Local.Path + "/" + filename
+	//path := global.GVA_CONFIG.Local.Path + "/" + filename
+	path = path + "/" + name + ext
 
 	f, openError := file.Open() // 读取文件
 	if openError != nil {
@@ -49,10 +59,9 @@ func (*Local) UploadFile(file *multipart.FileHeader) (string, string, error) {
 	}
 	defer f.Close() // 创建文件 defer 关闭
 
-	out, createErr := os.Create(p)
+	out, createErr := os.Create(path)
 	if createErr != nil {
 		global.GVA_LOG.Error("function os.Create() Filed", zap.Any("err", createErr.Error()))
-
 		return "", "", errors.New("function os.Create() Filed, err:" + createErr.Error())
 	}
 	defer out.Close() // 创建文件 defer 关闭
@@ -62,7 +71,7 @@ func (*Local) UploadFile(file *multipart.FileHeader) (string, string, error) {
 		global.GVA_LOG.Error("function io.Copy() Filed", zap.Any("err", copyErr.Error()))
 		return "", "", errors.New("function io.Copy() Filed, err:" + copyErr.Error())
 	}
-	return p, filename, nil
+	return path, name, nil
 }
 
 //@author: [piexlmax](https://github.com/piexlmax)

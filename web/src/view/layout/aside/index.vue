@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-scrollbar style="height:calc(100vh - 64px)">
+    <el-scrollbar style="height:calc(100vh - 60px)">
       <transition :duration="{ enter: 800, leave: 100 }" mode="out-in" name="el-fade-in-linear">
         <el-menu
           :collapse="isCollapse"
@@ -67,7 +67,7 @@ export default {
       const query = {}
       const params = {}
       ele.route.parameters &&
-      ele.route.parameters.map(item => {
+      ele.route.parameters.forEach(item => {
         if (item.type === 'query') {
           query[item.key] = item.value
         } else {

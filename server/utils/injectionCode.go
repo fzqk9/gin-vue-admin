@@ -73,11 +73,13 @@ func AutoInjectionCode(filepath string, funcName string, codeData string) error 
 	if endCommentPos == srcDataLen {
 		return fmt.Errorf("comment:%s not found", endComment)
 	}
-
-	// 在指定函数名，且函数中startComment和endComment都存在时，进行区间查重
+	fmt.Println("文件 filepath codeData = ", filepath, codeData)
+	fmt.Println("文件 filepath codeData = ", filepath, codeData)
+	//在指定函数名，且函数中startComment和endComment都存在时，进行区间查重
+	// 这里部分不能查找出来， 有待优化 by  ljd 20210913
 	if (codeStartPos != -1 && codeEndPos <= srcDataLen) && (startCommentPos != -1 && endCommentPos != srcDataLen) && expectedFunction != nil {
 		if exist := checkExist(&srcData, startCommentPos, endCommentPos, expectedFunction.Body, codeData); exist {
-			fmt.Printf("文件 %s 待插入数据 %s 已存在\n", filepath, codeData)
+			fmt.Printf("文件 %s 待插入20210913数据 %s 已存在\n", filepath, codeData)
 			return nil // 这里不需要返回错误？
 		}
 	}
@@ -117,6 +119,8 @@ func AutoInjectionCode(filepath string, funcName string, codeData string) error 
 }
 
 func checkExist(srcData *[]byte, startPos int, endPos int, blockStmt *ast.BlockStmt, target string) bool {
+
+	fmt.Println("检测是否存在 checkExist  target = ", target)
 	for _, list := range blockStmt.List {
 		switch stmt := list.(type) {
 		case *ast.ExprStmt:
@@ -124,6 +128,8 @@ func checkExist(srcData *[]byte, startPos int, endPos int, blockStmt *ast.BlockS
 				int(callExpr.Pos()) > startPos && int(callExpr.End()) < endPos {
 				text := string((*srcData)[int(callExpr.Pos()-1):int(callExpr.End())])
 				key := strings.TrimSpace(text)
+				fmt.Println("key = ", key)
+				fmt.Println("target = ", target)
 				if key == target {
 					return true
 				}

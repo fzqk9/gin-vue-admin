@@ -11,12 +11,15 @@ import '@/permission'
 import { store } from '@/store/index'
 
 import { auth } from '@/directive/auth'
+ 
 
 import App from './App.vue'
 const app = createApp(App)
 run(app)
 auth(app)
 app.config.productionTip = false
-app.use(store).use(router).use(ElementPlus, { locale: zhCn }).mount('#app')
+app.use(store).use(router)
+.use(ElementPlus, { locale: zhCn }) 
+.mount('#app')
 
 export default app

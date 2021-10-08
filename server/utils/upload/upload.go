@@ -12,7 +12,7 @@ import (
 //@description: OSS接口
 
 type OSS interface {
-	UploadFile(file *multipart.FileHeader) (string, string, error)
+	UploadFile(file *multipart.FileHeader, module int) (string, string, error)
 	DeleteFile(key string) error
 }
 
