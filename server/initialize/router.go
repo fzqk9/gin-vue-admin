@@ -26,7 +26,9 @@ func Routers() *gin.Engine {
 	//Router.Static("/static", "./dist/static")   // dist里面的静态资源
 	//Router.StaticFile("/", "./dist/index.html") // 前端网页入口页面
 
-	Router.StaticFS(global.GVA_CONFIG.Local.Path, http.Dir(global.GVA_CONFIG.Local.Path)) // 为用户头像和文件提供静态地址
+	//Router.StaticFS(global.GVA_CONFIG.Local.Path, http.Dir(global.GVA_CONFIG.Local.Path)) // 为用户头像和文件提供静态地址
+	Router.StaticFS("res/sys", http.Dir("res/sys"))   // 为用户头像和文件提供静态地址
+	Router.StaticFS("res/user", http.Dir("res/user")) // 为用户头像和文件提供静态地址
 	// Router.Use(middleware.LoadTls())  // 打开就能玩https了
 	global.GVA_LOG.Info("use middleware logger")
 	// 跨域

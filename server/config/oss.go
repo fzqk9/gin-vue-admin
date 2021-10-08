@@ -1,8 +1,9 @@
 package config
 
 type Local struct {
-	Path    string `mapstructure:"path" json:"path" yaml:"path"`             // 本地文件路径
-	BaseUrl string `mapstructure:"base-url" json:"base-url" yaml:"base-url"` // 本地文件URL
+	Path     string `mapstructure:"path" json:"path" yaml:"path"`                // 本地文件 系统文件上传
+	PathUser string `mapstructure:"path-user" json:"path-user" yaml:"path-user"` // 本地文件 -用户上传
+	BaseUrl  string `mapstructure:"base-url" json:"base-url" yaml:"base-url"`    // 本地文件URL
 }
 
 type Qiniu struct {

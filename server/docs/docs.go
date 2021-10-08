@@ -4116,9 +4116,6 @@ var doc = `{
                 "webApi": {
                     "type": "string"
                 },
-                "webFlow": {
-                    "type": "string"
-                },
                 "webForm": {
                     "type": "string"
                 },

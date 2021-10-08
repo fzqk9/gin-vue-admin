@@ -1,8 +1,13 @@
-<<<<<<< HEAD
  
-=======
 
-  参见 https://www.gin-vue-admin.com/docs/first_master
+## 2. 使用说明
+
+```
+- node版本 > v12.18.3
+- golang版本 >= v1.16
+- IDE推荐：Goland
+- 初始化项目： 不同版本数据库初始化不通 参见 https://www.gin-vue-admin.com/docs/first_master
+>>>>>>> upstream/master
 - 替换掉项目中的七牛云公钥，私钥，仓名和默认url地址，以免发生测试文件数据错乱
 ```
 
@@ -150,4 +155,4 @@ swag init
 - 表单生成器：表单生成器借助  。
 - 代码生成器：后台基础逻辑以及简单curd的代码生成器。
  
->>>>>>> gva-vue3
+ 
