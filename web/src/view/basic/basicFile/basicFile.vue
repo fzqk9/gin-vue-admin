@@ -163,7 +163,7 @@
         
            <el-table-column label="配图" prop="path" width="120"   >
                <template #default="scope">
-                 <ImageView pic-type="img" :pic-src="scope.row.path" />
+                 <ImageView  :url="scope.row.path"  />
                </template>
            </el-table-column>  
            

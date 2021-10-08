@@ -1,11 +1,11 @@
 
  
 export const isEmpty = (obj) => {
-	console.log("isEmpty====");
-	 console.log(obj);
+	//console.log("isEmpty====");
+	// console.log(obj);
    if (obj === undefined) { // 只能用 === 运算来测试某个值是否是未定义的
-   		return true;// 
-		console.log("为undefined");
+        //console.log("为undefined");
+   		return true;//  
    	} 
    	if (obj == null) { // 等同于 obj === undefined || obj === null
    		// console.log("为null");

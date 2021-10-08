@@ -7,7 +7,7 @@ aliyun-oss:
   base-path: yourBasePath
 autocode:
   transfer-restart: true
-  root: D://work_go//go-cms-fork
+  root:  C://work_go//go-cms-fork
  # root: C://work_go//go-cms-fork  D://work_go//go-cms-fork
   server: /server
   server-api: /api/v1/autocode
@@ -42,6 +42,7 @@ jwt:
   expires-time: 604800
   buffer-time: 86400
 local:
+  base-url: http://localhost:8888/
   path: uploads/file
 mysql:
   path: 127.0.0.1:53306

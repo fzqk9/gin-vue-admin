@@ -148,17 +148,12 @@
                           </template>
                         </el-popover>
                     </template>
-                     </el-table-column>              
-                 
-           
-        
+                     </el-table-column>     
              
                   <el-table-column label="配图" prop="thumb" width="120"   >
                      <template #default="scope">
-                        <ImageView pic-type="img" :pic-src="getMapData(scope.row.thumb,scope.row.mapData)" />  
-						<!-- http://localhost:8080/api/uploads/file/1/20210928/e760369d377a4c38b6b6fd5981a7f51e.jpg -->
-						<!-- <image   src="getmapData(scope.row.thumb,scope.row.mapData)" class="fileImg"></image> -->
-                      </template> 
+                        <ImageView  :url="getMapData(scope.row.thumb,scope.row.mapData)" />  
+				     </template> 
 					 
                   </el-table-column>   
               
@@ -244,10 +239,10 @@
                     </el-form-item>
         <el-form-item label="名称:">
               
-                  <el-input v-model="formData.name" clearable placeholder="请输入" />
+      <el-input v-model="formData.name" clearable placeholder="请输入" />
               </el-form-item>
         <el-form-item label="配图:"> 
-                  <ImageView ref="imageView_thumb" pic-type="img" :be-edit="1" :pic-src="getMapData(formData.thumb,formData.mapData)" /> 
+                <ImageView ref="imageView_thumb" :be-edit="1" :url="getMapData(formData.thumb,formData.mapData)" /> 
               </el-form-item>
         <el-form-item label="排序:">
               
@@ -307,7 +302,7 @@ export default {
    	MediaLib
   },
   data() {
-    return {
+    return { 
       listApi: getCmsCatList,
       dialogFormVisible: false,
       type: '',
@@ -465,9 +460,9 @@ export default {
     },
     async enterDialog() { 
       // console.log(this.$refs.imageView_thumb);
-      console.log(this.$refs.imageView_thumb.guid);
+      console.log(this.$refs.imageView_thumb.myGuid);
       //更新图片guid
-      this.formData.thumb = this.$refs.imageView_thumb.guid;
+      this.formData.thumb = this.$refs.imageView_thumb.myGuid;
 	  delete this.formData.mapData
 	  delete this.formData.CreatedAt
 	  delete this.formData.UpdatedAt

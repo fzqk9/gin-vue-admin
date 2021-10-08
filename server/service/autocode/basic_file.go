@@ -97,5 +97,11 @@ func (basicFileService *BasicFileService) GetBasicFileInfoList(info autoCodeReq.
 		}
 	}
 	err = db.Order(OrderStr).Limit(limit).Offset(offset).Find(&basicFiles).Error
+	//更新图片path
+	for i, v := range basicFiles {
+		v.Path = global.GVA_CONFIG.Local.BaseUrl + v.Path
+		basicFiles[i] = v
+	}
+
 	return err, basicFiles, total
 }
