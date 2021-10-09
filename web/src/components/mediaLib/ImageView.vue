@@ -1,6 +1,6 @@
 <template>
  <div>  
-   <el-image class="image-div" fit="fill" :src="myUrl" :preview-src-list="myList" hide-on-click-modal/> 
+   <el-image class="image-div"  lazy fit="fill" :src="myUrl" :preview-src-list="myList" hide-on-click-modal/> 
    <el-link v-if="beEdit" icon="el-icon-edit" @click="openChooseImg">重新上传</el-link>
  </div>
  <template  v-if="beEdit">

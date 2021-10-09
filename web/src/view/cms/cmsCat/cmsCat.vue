@@ -57,7 +57,7 @@
           
         <el-form-item>
           <el-button size="mini" type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
-          <el-button size="mini" type="primary" icon="el-icon-plus" @click="openDialog">新增</el-button>
+          <el-button size="mini" type="primary" icon="el-icon-plus" @click="goEditForm(0)">新增</el-button>
          
            <el-button size="mini" type="primary" icon="el-icon-plus" @click="excel">导出</el-button>
         
@@ -201,7 +201,7 @@
       
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button plain size="mini" type="primary" icon="el-icon-edit" class="table-button" @click="updateCmsCat(scope.row)">编辑</el-button>
+          <el-button plain size="mini" type="primary" icon="el-icon-edit" class="table-button" @click="goEditForm(scope.row.ID)">编辑</el-button>
           <el-button plain size="mini" type="danger" icon="el-icon-delete"  @click="deleteRow(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -303,6 +303,7 @@ export default {
   },
   data() {
     return { 
+	  isNewWindow:false,
       listApi: getCmsCatList,
       dialogFormVisible: false,
       type: '',
@@ -419,15 +420,15 @@ export default {
         this.getTableData()
       }
     },
-    async updateCmsCat(row) {
-      const res = await findCmsCat({ ID: row.ID })
-      console.log(res.data)
-      this.type = 'update'
-      if (res.code === 0) {
-        this.formData = res.data.recmsCat
-        this.dialogFormVisible = true
-      }
-    },
+    // async updateCmsCat(row) {
+    //   const res = await findCmsCat({ ID: row.ID })
+    //   console.log(res.data)
+    //   this.type = 'update'
+    //   if (res.code === 0) {
+    //     this.formData = res.data.recmsCat
+    //     this.dialogFormVisible = true
+    //   }
+    // },
     closeDialog() {
       this.dialogFormVisible = false
       this.formData = {
@@ -458,6 +459,32 @@ export default {
         this.getTableData()
       }
     },
+	//编辑或新增form
+	async goEditForm(id) {
+		console.log("id===",id);
+	  if (this.isNewWindow)
+	  {
+		  if (id >0) {
+			this.$router.push({ name: 'cmsCatForm', params: {id:id}})
+		  } else {
+			this.$router.push({ name: 'cmsCatForm' ,params: {id:id}})
+		  }
+	  }else
+	  {
+		 if (id >0) {
+			  const res = await findCmsCat({ID:id})
+			  console.log(res.data)
+			  this.type = 'update'
+			  if (res.code === 0) 
+			     this.formData = res.data.cmsCat 
+		 }else
+		 {
+			this.type = 'create' 
+		 }
+		  this.dialogFormVisible = true
+	  }
+	},	
+	//编辑或新增 返回保存
     async enterDialog() { 
       // console.log(this.$refs.imageView_thumb);
       console.log(this.$refs.imageView_thumb.myGuid);
@@ -487,10 +514,21 @@ export default {
         this.getTableData()
       }
     },
-    openDialog() {
-      this.type = 'create'
-      this.dialogFormVisible = true
-    },
+	
+	// async updateCmsCat(row) {
+	//   const res = await findCmsCat({ ID: row.ID })
+	//   console.log(res.data)
+	//   this.type = 'update'
+	//   if (res.code === 0) {
+	//     this.formData = res.data.recmsCat
+	//     this.dialogFormVisible = true
+	//   }
+	// },
+	// openDialog() {
+	//   this.type = 'create'
+	//   this.dialogFormVisible = true
+	// },
+	
     //  add by ljd 20210709, 排序 
     sortChange({ prop, order }) {
       if (prop) {

@@ -46,7 +46,7 @@ local:
   path: res/sys
   path-user: res/user
 mysql:
-  path: 120.24.150.47:53306
+  path: 127.0.0.1:53306
   #path: 120.24.150.47:53306
   config: charset=utf8mb4&parseTime=True&loc=Local
   db-name: go-cms

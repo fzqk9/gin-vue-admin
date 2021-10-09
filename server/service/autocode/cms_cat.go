@@ -92,18 +92,16 @@ func (cmsCatService *CmsCatService) GetCmsCatInfoList(info autoCodeReq.CmsCatSea
 	err = db.Count(&total).Error
 	//err = db.Limit(limit).Offset(offset).Find(&cmsCats).Error
 	//修改 by ljd  增加查询排序
-	if order != "" {
-		var OrderStr string
+	//修改 by ljd  增加查询排序
+	OrderStr := "id desc"
+	if !utils.IsEmpty(order) {
 		if desc {
 			OrderStr = order + " desc"
 		} else {
 			OrderStr = order
 		}
-		err = db.Order(OrderStr).Limit(limit).Offset(offset).Find(&cmsCats).Error
-	} else {
-		err = db.Limit(limit).Offset(offset).Find(&cmsCats).Error
 	}
-
+	err = db.Order(OrderStr).Limit(limit).Offset(offset).Find(&cmsCats).Error
 	//更新图片path
 	for i, v := range cmsCats {
 		v.MapData = make(map[string]string)

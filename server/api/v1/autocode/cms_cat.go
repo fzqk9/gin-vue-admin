@@ -108,11 +108,11 @@ func (cmsCatApi *CmsCatApi) UpdateCmsCat(c *gin.Context) {
 func (cmsCatApi *CmsCatApi) FindCmsCat(c *gin.Context) {
 	var cmsCat autocode.CmsCat
 	_ = c.ShouldBindQuery(&cmsCat)
-	if err, recmsCat := cmsCatService.GetCmsCat(cmsCat.ID); err != nil {
+	if err, reCmsCat := cmsCatService.GetCmsCat(cmsCat.ID); err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Any("err", err))
 		response.FailWithMessage("查询失败", c)
 	} else {
-		response.OkWithData(gin.H{"recmsCat": recmsCat}, c)
+		response.OkWithData(gin.H{"cmsCat": reCmsCat}, c)
 	}
 }
 
