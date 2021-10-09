@@ -376,6 +376,7 @@ export default {
     this.getDb();
     this.setFdMap();
     const id = this.$route.params.id;
+	console.log("this.$route.params.id = ",id);
     if (id) {
       this.getAutoCodeJson(id);
     };

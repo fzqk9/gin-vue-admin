@@ -462,7 +462,7 @@ export default {
 	//编辑或新增form
 	async goEditForm(id) {
 		console.log("id===",id);
-	  if (this.isNewWindow)
+	  if (this.isNewWindow==false)
 	  {
 		  if (id >0) {
 			this.$router.push({ name: 'cmsCatForm', params: {id:id}})

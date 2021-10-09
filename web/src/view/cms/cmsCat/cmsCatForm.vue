@@ -82,14 +82,18 @@ export default {
     }
   },
   async created() {
+	
     // 建议通过url传参获取目标数据ID 调用 find方法进行查询数据操作 从而决定本页面是create还是update 以下为id作为url参数示例
-    if (this.$route.query.id) {
-      const res = await findCmsCat({ ID: this.$route.query.id })
+     let id = this.$route.params.id
+	  console.log("this.$route.params.id = ",id);
+	 if (id > 0) {
+		 
+      const res = await findCmsCat({ ID:id})
       if (res.code === 0) {
-        this.formData = res.data.recmsCat
+        this.formData = res.data.cmsCat
         this.type = 'update'
       }
-    } else {
+    } else { 
       this.type = 'create'
     }
     await this.getDict('media_type')
@@ -112,8 +116,10 @@ export default {
       if (res.code === 0) {
         this.$message({
           type: 'success',
-          message: '创建/更改成功'
+          message: '创建/更改成功',
+		  
         })
+		 emitter.emit('closeThisPage') 
       }
     },
     back() {
