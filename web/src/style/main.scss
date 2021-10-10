@@ -1368,7 +1368,9 @@ $mainHight: 100vh;
 .justify-content-flex-end {
     justify-content: flex-end;
 }
-
+/** 
+ * add  by linjd --------------------- 
+ */
 .quickEdit{
     cursor: pointer;
     text-decoration:underline ;
@@ -1378,4 +1380,9 @@ $mainHight: 100vh;
     cursor: pointer;
     text-decoration:underline dotted;
     color:#409EFF
-}
+} 
+ .mce-notification {display: none !important;}
+ .tox-notifications-container {display: none !important;}    
+/** 
+ * add  by linjd --------------------- 
+ */ 

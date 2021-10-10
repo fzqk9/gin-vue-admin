@@ -13,13 +13,15 @@ import auth from '@/directive/auth'
 import '@/permission'
 import { store } from '@/store/index'
 
+//import Editor from '@tinymce/tinymce-vue' 
+
 import App from './App.vue'
 const app = createApp(App)
 app.config.productionTip = false
 app.use(run)
   .use(auth)
   .use(store)
-  .use(router)
+  .use(router) 
   .use(ElementPlus, { locale: zhCn }).mount('#app')
 
 export default app

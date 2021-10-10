@@ -27,11 +27,15 @@
         <el-form-item label="是否导航:">
           <el-switch v-model="formData.beNav" active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" clearable ></el-switch>
         </el-form-item>
+        
+        
         <el-form-item label="描述:">
-          <el-input v-model="formData.desc" clearable placeholder="请输入" />
+         <!-- <el-input v-model="formData.desc" clearable placeholder="请输入" /> -->
+          <editor v-model="formData.desc"  api-key="API_KEY"  :init="editSetting" />
         </el-form-item>
         <el-form-item label="关键词:">
-          <el-input v-model="formData.keywords" clearable placeholder="请输入" />
+              <editor v-model="formData.keywords"  placeholder="请输入关键词"  :init="editSetting" />
+       <!--   <el-input v-model="formData.keywords" clearable placeholder="请输入" /> -->
         </el-form-item>
         <el-form-item label="别名:">
           <el-input v-model="formData.alias" clearable placeholder="请输入" />
@@ -56,10 +60,10 @@ import {
   updateCmsCat,
   findCmsCat
 } from '@/api/cmsCat' //  此处请自行替换地址
-import infoList from '@/mixins/infoList'
-import { emitter } from '@/utils/bus.js'
+import infoList from '@/mixins/infoList' 
+ 
 export default {
-  name: 'CmsCat',
+  name: 'CmsCat', 
   mixins: [infoList], 
   data() {
     return {
@@ -78,7 +82,7 @@ export default {
         keywords: '',
         alias: '',
         status: 0,
-      }
+      }       
     }
   },
   async created() {
@@ -131,5 +135,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+

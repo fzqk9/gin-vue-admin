@@ -1,15 +1,30 @@
 import { getDict } from '@/utils/dictionary'
 import { isEmpty } from '@/utils/utils'
 import { formatTimeToStr } from '@/utils/date'
-
+import tinymce from '@tinymce/tinymce-vue'
+import { emitter } from '@/utils/bus.js' 
 export default {
+   components: {
+       editor: tinymce
+   },
   data() {
     return {
       page: 1,
       total: 20,
       pageSize: 20,
       tableData: [],
-      searchInfo: {}
+      searchInfo: {},
+      editSetting: {
+             menubar: false,
+              toolbar: "undo redo  | formatselect alignleft aligncenter alignright alignjustify  indent outdent , \
+                    | link unlink | numlist bullist | image media table codesample | fontselect fontsizeselect forecolor backcolor | bold italic underline strikethrough | superscript subscript | removeformat |help code fullscreen",
+              toolbar_drawer: "sliding",
+              quickbars_selection_toolbar: "removeformat | bold italic underline strikethrough | fontsizeselect forecolor backcolor",
+              plugins: ['link image media table lists fullscreen quickbars', 
+                        'insertdatetime  paste code help wordcount codesample'],  
+             language: 'zh_CN', //本地化设置
+             height: 350
+         }
     }
   },
   methods: {
