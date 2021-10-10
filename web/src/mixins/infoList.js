@@ -1,6 +1,8 @@
 import { getDict } from '@/utils/dictionary'
 import { isEmpty } from '@/utils/utils'
 import { formatTimeToStr } from '@/utils/date'
+
+import { uploadFile } from '@/api/common_file'  
 import tinymce from '@tinymce/tinymce-vue'
 
 export default {
@@ -24,16 +26,53 @@ export default {
            statusbar: false, // 隐藏编辑器底部的状态栏
            elementpath: false, //禁用下角的当前标签路径
            paste_data_images: true, // 允许粘贴图像  
-           plugin_preview_width: 375, // 预览宽度 plugin_preview_height: 668,
-           //theme_advanced_buttons3_add : "preview", 
-           plugin_preview_height : "600",                   
+           plugin_preview_width:375, // 预览宽度 plugin_preview_height: 668,
+           plugin_preview_height:600,  
+           //theme_advanced_buttons3_add : "preview",                            
            toolbar: "undo redo  | formatselect alignleft aligncenter alignright alignjustify  indent outdent , \
                 | link unlink | numlist bullist | image media table codesample | fontselect fontsizeselect forecolor backcolor | bold italic underline strikethrough | superscript subscript | removeformat |help code fullscreen preview",
            toolbar_drawer: "sliding",
            quickbars_selection_toolbar: "removeformat | bold italic underline strikethrough | fontsizeselect forecolor backcolor",
            plugins: ['preview link image media table lists fullscreen quickbars', 
-                    'insertdatetime paste code help wordcount codesample'],  
-           
+                    'insertdatetime paste code help wordcount codesample'],
+           content_style: 'img {max-width:100% !important }',         
+            // init_instance_callback: editor => {
+            //     if (this.content) {
+            //         editor.setContent(this.content)
+            //     }
+            //     this.finishInit = true
+            //     editor.on('NodeChange Change SetContent KeyUp', () => {
+            //         this.hasChanged = true
+            //     })
+            // },
+             // 上传图片
+            //images_upload_url:"http://localhost:8081/api/commFile/upload",
+            images_upload_handler: (blobInfo, success, failure) => {
+               let formData = new FormData()
+               let file =  blobInfo.blob(); 
+               formData.append('file',file)
+              // console.log(formData.file)
+                // let formData = new Object();
+                
+                 formData.append('name',file.name)
+                 formData.append('size',file.size)
+                 formData.append('md5',"11111")
+                // formData.size  = file.size;
+                // formData.type  = file.type;
+                // formData.file = file.File; 
+                //console.log(file.File);
+                uploadFile(formData).then(res => {
+                    console.log(res)
+                    if (res.code == 0) {
+                        let file2 = res.data;
+                        success(file2.path);
+                        return
+                    }
+                    failure('上传失败')
+                }).catch(() => {
+                    failure('上传出错')
+                })
+            } 
          }
     }
   },

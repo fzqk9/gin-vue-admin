@@ -34,6 +34,7 @@ func (commonFileApi *CommonFileApi) UploadFile(c *gin.Context) {
 	media_type_v, err := strconv.Atoi(media_type)
 	module_v, err := strconv.Atoi(module)
 	size_v, err := strconv.Atoi(size)
+
 	basicFile := autocode.BasicFile{
 		Size:      &size_v,
 		Ext:       ext,
@@ -59,6 +60,7 @@ func (commonFileApi *CommonFileApi) UploadFile(c *gin.Context) {
 		response.FailWithMessage("修改数据库链接失败", c)
 		return
 	}
+	newBasicFile.Path = global.GVA_CONFIG.Local.BaseUrl + newBasicFile.Path
 	response.OkWithDetailed(newBasicFile, "上传成功", c)
 	//response.OkWithDetailed({File: file}, "上传成功", c)
 

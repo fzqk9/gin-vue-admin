@@ -467,7 +467,9 @@ export default {
 		  if (id >0) {
 			this.$router.push({ name: 'cmsCatForm', params: {id:id}})
 		  } else {
-			this.$router.push({ name: 'cmsCatForm' ,params: {id:id}})
+			//this.$router.push({ name: 'cmsCatForm' ,params: {id:id}})
+            this.type = 'create' 
+             this.dialogFormVisible = true
 		  }
 	  }else
 	  {
