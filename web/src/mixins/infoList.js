@@ -2,7 +2,7 @@ import { getDict } from '@/utils/dictionary'
 import { isEmpty } from '@/utils/utils'
 import { formatTimeToStr } from '@/utils/date'
 import tinymce from '@tinymce/tinymce-vue'
-import { emitter } from '@/utils/bus.js' 
+
 export default {
    components: {
        editor: tinymce
@@ -15,15 +15,25 @@ export default {
       tableData: [],
       searchInfo: {},
       editSetting: {
-             menubar: false,
-              toolbar: "undo redo  | formatselect alignleft aligncenter alignright alignjustify  indent outdent , \
-                    | link unlink | numlist bullist | image media table codesample | fontselect fontsizeselect forecolor backcolor | bold italic underline strikethrough | superscript subscript | removeformat |help code fullscreen",
-              toolbar_drawer: "sliding",
-              quickbars_selection_toolbar: "removeformat | bold italic underline strikethrough | fontsizeselect forecolor backcolor",
-              plugins: ['link image media table lists fullscreen quickbars', 
-                        'insertdatetime  paste code help wordcount codesample'],  
-             language: 'zh_CN', //本地化设置
-             height: 350
+           language: "zh_CN", //语言设置
+           height: 350, //高度
+           menubar: false, // 显示最上方menu菜单
+           toolbar: true, //false禁用工具栏（隐藏工具栏）
+           browser_spellcheck: true, // 拼写检查
+           branding: false, // 去水印
+           statusbar: false, // 隐藏编辑器底部的状态栏
+           elementpath: false, //禁用下角的当前标签路径
+           paste_data_images: true, // 允许粘贴图像  
+           plugin_preview_width: 375, // 预览宽度 plugin_preview_height: 668,
+           //theme_advanced_buttons3_add : "preview", 
+           plugin_preview_height : "600",                   
+           toolbar: "undo redo  | formatselect alignleft aligncenter alignright alignjustify  indent outdent , \
+                | link unlink | numlist bullist | image media table codesample | fontselect fontsizeselect forecolor backcolor | bold italic underline strikethrough | superscript subscript | removeformat |help code fullscreen preview",
+           toolbar_drawer: "sliding",
+           quickbars_selection_toolbar: "removeformat | bold italic underline strikethrough | fontsizeselect forecolor backcolor",
+           plugins: ['preview link image media table lists fullscreen quickbars', 
+                    'insertdatetime paste code help wordcount codesample'],  
+           
          }
     }
   },
