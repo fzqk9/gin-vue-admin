@@ -31,7 +31,7 @@
         
         <el-form-item label="描述:">
          <!-- <el-input v-model="formData.desc" clearable placeholder="请输入" /> -->
-          <editor v-model="formData.desc"  api-key="API_KEY"  :init="editSetting" />
+          <editor v-model="formData.desc" :init="editSetting" />
         </el-form-item>
         <el-form-item label="关键词:">
               <editor v-model="formData.keywords"  placeholder="请输入关键词"  :init="editSetting" />
