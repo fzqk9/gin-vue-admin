@@ -34,7 +34,7 @@
           <editor :value="formData.desc"   />
         </el-form-item>
         <el-form-item label="关键词:">
-              <editor :value="formData.keywords" />
+              <editor :value="formData.keywords" placeholder="请输入关键词"  />
        <!--   <el-input v-model="formData.keywords" clearable placeholder="请输入" /> -->
         </el-form-item>
         <el-form-item label="别名:">
@@ -106,6 +106,9 @@ export default {
   },
   methods: {
     async save() {
+       // 赋值  富文本 或 图片路径 
+        
+       //  
       let res
       switch (this.type) {
         case 'create':

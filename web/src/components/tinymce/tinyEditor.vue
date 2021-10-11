@@ -1,6 +1,6 @@
 <template> 
        <!-- <div :class="{fullscreen:fullscreen}" class="tinymce-container" style="width:1000px"> -->
-            <textarea :id="tinymceId" v-model="content" class="tinymce-textarea" />
+            <textarea :id="tinymceId" v-model="content" :placeholder="placeholder" class="tinymce-textarea" />
        <!-- </div> -->  
 	   	 <MediaLib ref="mediaLib" @select-one-img="selectOneImg" /> 
 </template> 
@@ -23,7 +23,11 @@
             value: {
                 type: String,
                 default: ''
-            }
+            },
+            placeholder:{
+                type: String,
+                default: '请输入'
+            },
         },
         data() {
             return {
