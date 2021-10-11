@@ -94,7 +94,7 @@
       quickEdit
     } from '@/api/basicFile'  
     import { formatTimeToStr } from '@/utils/date'
-    import infoList from '@/mixins/infoList_medialib'
+    import infoList from '@/mixins/infoList'
     import { toSQLLine } from '@/utils/stringFun'
 	import UploadImage from '@/components/mediaLib/uploadImage.vue'
     //import { getFileList } from '@/api/fileUploadAndDownload'

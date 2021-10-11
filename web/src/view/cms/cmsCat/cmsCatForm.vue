@@ -61,10 +61,11 @@ import {
   findCmsCat
 } from '@/api/cmsCat' //  此处请自行替换地址
 import infoList from '@/mixins/infoList' 
+import tinymce from '@/mixins/tinymce' 
 import { emitter } from '@/utils/bus.js' 
 export default {
   name: 'CmsCat', 
-  mixins: [infoList], 
+  mixins: [infoList,tinymce], 
   data() {
     return {
       type: '',

@@ -2,13 +2,7 @@ import { getDict } from '@/utils/dictionary'
 import { isEmpty } from '@/utils/utils'
 import { formatTimeToStr } from '@/utils/date'
 
-//import { uploadFile } from '@/api/common_file'  
-//import tinymce from '@tinymce/tinymce-vue' 
-import tinymce from '@/components/tinymce/tinyEditor.vue'
-export default {
-   components: {
-       editor: tinymce
-   },
+export default {   
   data() {
     return {
       page: 1,
