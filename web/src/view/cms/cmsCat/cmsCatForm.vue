@@ -31,10 +31,10 @@
         
         <el-form-item label="描述:">
          <!-- <el-input v-model="formData.desc" clearable placeholder="请输入" /> -->
-          <editor v-model="formData.desc" :init="editSetting" />
+          <editor :value="formData.desc"   />
         </el-form-item>
         <el-form-item label="关键词:">
-              <editor v-model="formData.keywords"  placeholder="请输入关键词"  :init="editSetting" />
+              <editor :value="formData.keywords" />
        <!--   <el-input v-model="formData.keywords" clearable placeholder="请输入" /> -->
         </el-form-item>
         <el-form-item label="别名:">

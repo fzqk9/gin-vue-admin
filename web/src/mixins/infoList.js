@@ -3,8 +3,8 @@ import { isEmpty } from '@/utils/utils'
 import { formatTimeToStr } from '@/utils/date'
 
 import { uploadFile } from '@/api/common_file'  
-import tinymce from '@tinymce/tinymce-vue' 
-//import tinymce from '@/components/tinymce/tinymce.vue'
+//import tinymce from '@tinymce/tinymce-vue' 
+import tinymce from '@/components/tinymce/tinyEditor2.vue'
 export default {
    components: {
        editor: tinymce

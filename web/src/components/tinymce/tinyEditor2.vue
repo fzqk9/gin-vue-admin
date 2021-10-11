@@ -33,9 +33,14 @@
        // async created() {
        //      this.init();
        //  },
+	   async mounted() {
+	       this.init()
+	   },
         watch: {
             value(val) {
-				this.content =val
+				this.content =val;
+				console.log("watch==========",val);  
+				
                 // if (!this.hasChange && this.hasInit) {
                 //     this.$nextTick(() =>
                 //     window.tinymce.get(this.tinymceId).setContent(val || ''))
@@ -89,21 +94,21 @@
 					           'insertdatetime paste code help wordcount codesample'],
 					  content_style: 'img {max-width:100% !important }',
 				   
-					// init_instance_callback: editor => {
-     //                if (_this.value) {
-     //                    editor.setContent(_this.value)
-     //                }
-     //                _this.hasInit = true
-     //                editor.on('NodeChange Change KeyUp SetContent', () => {
-     //                    this.hasChange = true
-     //                    this.$emit('input', editor.getContent())
-     //                })
-     //                },
-     //                setup(editor) {
-     //                    editor.on('FullscreenStateChanged', (e) => {
-     //                        _this.fullscreen = e.state
-     //                    })
-     //                }
+					 init_instance_callback: editor => {
+						if (_this.value) {
+							editor.setContent(_this.value)
+						}
+						_this.hasInit = true
+						editor.on('NodeChange Change KeyUp SetContent', () => {
+							this.hasChange = true
+							this.$emit('input', editor.getContent())
+						})
+                    },
+                    setup(editor) {
+                        editor.on('FullscreenStateChanged', (e) => {
+                            _this.fullscreen = e.state
+                        })
+                    }
                 })
             },
 			
@@ -143,17 +148,15 @@
                 }
             },
         },
-        async mounted() {
-            this.init()
+    
+        activated() {
+            if (window.tinymce) {
+                this.initTinymce()
+            }
         },
-        // activated() {
-        //     if (window.tinymce) {
-        //         this.initTinymce()
-        //     }
-        // },
-        // deactivated() {
-        //     this.destroyTinymce()
-        // },
+        deactivated() {
+            this.destroyTinymce()
+        },
         destroyed() {
             this.destroyTinymce()
         }
