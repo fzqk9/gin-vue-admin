@@ -1,20 +1,24 @@
-<template>
-    <div>
-        <div :class="{fullscreen:fullscreen}" class="tinymce-container" style="width:1000px">
+<template> 
+       <!-- <div :class="{fullscreen:fullscreen}" class="tinymce-container" style="width:1000px"> -->
             <textarea :id="tinymceId" v-model="content" class="tinymce-textarea" />
-        </div>
-    </div>
-</template>
-
-<script>
-    const tinymceCDN = window.location.origin + '/tinymce/tinymce.min.js'
-    // const tinymceCDN = 'https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js'
-    // import plugins from './plugins.js'
-    // import toolbar from './toolbar.js'
+       <!-- </div> -->  
+	   	 <MediaLib ref="mediaLib" @select-one-img="selectOneImg" /> 
+</template> 
+<script> 
+	import { ref } from 'vue'
     import load from './dynamicLoadScript.js'
-	import { uploadFile } from '@/api/common_file'  
+	import { uploadFile } from '@/api/common_file'
+    import MediaLib from '@/components/mediaLib/mediaLib.vue'
+	 const tinymceCDN = window.location.origin + '/tinymce/tinymce.min.js'
+	  
+	  // const tinymceCDN = 'https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js'
+	  // import plugins from './plugins.js'
+	  // import toolbar from './toolbar.js'
     export default {
         name: "Tinymce",
+		components: {
+			MediaLib
+		},
         props : {
             value: {
                 type: String,
@@ -27,8 +31,9 @@
                 hasInit: false,
                 tinymceId : 'vue-tinymce-' + +new Date() + ((Math.random() * 1000).toFixed(0) + ''),
                 fullscreen: false,
-                toolbar : [],
-                content : ''
+              //  mediaLibOpen : 0,
+                content : '',
+				
             }
         },
        // async created() {
@@ -38,6 +43,10 @@
 	       this.init()
 	   },
         watch: {
+			// mediaLibOpen(val) {
+			// 	 console.log("watch=====mediaLibOpen=====",val);  		  
+			// 	 if (val ==1 ) this.openChooseImg();
+			// },
             value(val) {
 				this.content =val;
 				this.setContent(val);
@@ -46,7 +55,7 @@
                 //     this.$nextTick(() =>
                 //     window.tinymce.get(this.tinymceId).setContent(val || ''))
                 // }
-            }
+            } 
         },
         methods: {
             init() {
@@ -60,6 +69,18 @@
                     this.initTinymce()
                 })
             },
+			openChooseImg() { 
+				this.$refs.mediaLib.open()
+			},
+			selectOneImg(obj) {
+				console.log("selectOneImg");
+				console.log(obj);
+			    window.tinymce.get(this.tinymceId).execCommand('mceInsertContent', false, '<img alt="Smiley face" height="80" width="80" src="'+obj.url+'"/>');
+				
+				 // this.myUrl = obj.url;
+				 // this.myList =[obj.url];
+				 // this.myGuid = obj.guid;
+			},
             initTinymce() {
                 const _this = this
                 window.tinymce.init({
@@ -119,10 +140,12 @@
 						editor.ui.registry.addButton("ImageLib", {
 						  icon: `shopping-cart`,
 						  onAction: function(_) {
-						 console.log("11111111");
+						   console.log("11111111");
+						    _this.openChooseImg();
+						   //_this.$refs.mediaLib.open();
+						  // _this.openChooseImg();
 						 //console.log('inserting image to editor: '+ r);
-						  editor.execCommand('mceInsertContent', false, '<img alt="Smiley face" height="42" width="42" src="https://www.88act.com/static/cms/img/index/logo.png"/>');
-					   // that.isShowCard = true;
+						   // that.isShowCard = true;
 						   // that.editor = editor;
 						  }
 						});
@@ -130,19 +153,12 @@
 					images_upload_handler: (blobInfo, success, failure) => {
 					   let formData = new FormData()
 					   let file =  blobInfo.blob(); 
-					   formData.append('file',file)
-					  // console.log(formData.file)
-					    // let formData = new Object();
-					    
-					     formData.append('name',file.name)
-					     formData.append('size',file.size)
-					     formData.append('md5',"11111")
-					    // formData.size  = file.size;
-					    // formData.type  = file.type;
-					    // formData.file = file.File; 
-					    //console.log(file.File);
+					   formData.append('file',file)  
+					   formData.append('name',file.name)
+					    formData.append('size',file.size)
+					    formData.append('media_type',2) 
 					    uploadFile(formData).then(res => {
-					        console.log(res)
+					       // console.log(res)
 					        if (res.code == 0) {
 					            let file2 = res.data;
 					            success(file2.path);
