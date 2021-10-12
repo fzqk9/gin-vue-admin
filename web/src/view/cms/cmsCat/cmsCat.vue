@@ -273,7 +273,7 @@
      </el-form>
       <div slot="footer" class="el-dialog__footer">
         <el-button @click="closeDialog">取 消</el-button>
-        <el-button type="primary" @click="enterDialog">确 定</el-button>
+        <el-button type="primary" @click="saveEditForm">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -282,7 +282,7 @@
 <script>
 import {
   createCmsCat,
-  deleteCmsCat,
+  //deleteCmsCat,
   deleteCmsCatByIds,
   updateCmsCat,
   findCmsCat,
@@ -290,30 +290,30 @@ import {
   quickEdit
 } from '@/api/cmsCat' //  此处请自行替换地址
 import { formatTimeToStr } from '@/utils/date'  
-import infoList from '@/mixins/infoList'
-import { toSQLLine } from '@/utils/stringFun'
+
+import infoList from '@/mixins/infoList' 
+import tinymce from '@/mixins/tinymce' 
+import editForm from '@/mixins/editForm' 
+
 import ImageView from '@/components/mediaLib/imageView.vue'
 import MediaLib  from '@/components/mediaLib/mediaLib.vue'
 export default {
   name: 'CmsCat',
-  mixins: [infoList],
+  mixins: [infoList,tinymce,editForm], 
   components: {
     ImageView,
    	MediaLib
   },
   data() {
     return { 
-	  isNewWindow:false,
-      listApi: getCmsCatList,
-      dialogFormVisible: false,
-      type: '',
-      deleteVisible: false,
-      multipleSelection: [],
-      
-      media_typeOptions: [],
-          
-      statusOptions: [],
-          
+	 // isNewWindow:false,
+	 //dialogFormVisible: false,
+	 // type: '',
+	  //deleteVisible: false,
+      listApi: getCmsCatList,  
+      multipleSelection: [],      
+      media_typeOptions: [],          
+      statusOptions: [],          
       formData: {
           pid: 0,
           beSys: false,
@@ -326,38 +326,8 @@ export default {
           keywords: '',
           alias: '',
           status: 0,
-          mapData: {},
-          
-      }, 
-      shortcuts: [
-                {
-                  text: '最近一周',
-                  value: () => {
-                    const end = new Date()
-                    const start = new Date()
-                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-                    return [start, end]
-                  },
-                },
-                {
-                  text: '最近一个月',
-                  value: () => {
-                    const end = new Date()
-                    const start = new Date()
-                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-                    return [start, end]
-                  },
-                },
-                {
-                  text: '最近三个月',
-                  value: () => {
-                    const end = new Date()
-                    const start = new Date()
-                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-                    return [start, end]
-                  },
-           },
-      ],
+          mapData: {},          
+      } 
     }
   },
   
@@ -373,13 +343,13 @@ export default {
   // 条件搜索前端看此方法
     onSubmit() {
       this.page = 1
-      this.pageSize = 10 
-      if (this.searchInfo.beSys === ""){
-        this.searchInfo.beSys=null
-      }       
-      if (this.searchInfo.beNav === ""){
-        this.searchInfo.beNav=null
-      }      
+      this.pageSize = 20 
+      // if (this.searchInfo.beSys === ""){
+      //   this.searchInfo.beSys=null
+      // }       
+      // if (this.searchInfo.beNav === ""){
+      //   this.searchInfo.beNav=null
+      // }      
       this.getTableData()
     },
     handleSelectionChange(val) {
@@ -391,7 +361,8 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.deleteCmsCat(row)
+        const ids = [row.ID] 
+         this.doDelete(ids); 
       })
     },
     async onDelete() {
@@ -407,58 +378,22 @@ export default {
         this.multipleSelection.map(item => {
           ids.push(item.ID)
         })
-      const res = await deleteCmsCatByIds({ ids })
-      if (res.code === 0) {
-        this.$message({
-          type: 'success',
-          message: '删除成功'
-        })
-        if (this.tableData.length === ids.length && this.page > 1) {
-          this.page--
-        }
-        this.deleteVisible = false
-        this.getTableData()
-      }
+      this.doDelete(ids);
     },
-    // async updateCmsCat(row) {
-    //   const res = await findCmsCat({ ID: row.ID })
-    //   console.log(res.data)
-    //   this.type = 'update'
-    //   if (res.code === 0) {
-    //     this.formData = res.data.recmsCat
-    //     this.dialogFormVisible = true
-    //   }
-    // },
-    closeDialog() {
-      this.dialogFormVisible = false
-      this.formData = {
-          pid: 0,
-          beSys: false,
-          groupId: 0,
-          mediaType: 0,
-          name: '',
-          sort: 0,
-          beNav: false,
-          desc: '',
-          keywords: '',
-          alias: '',
-          status: 0,
-          thumb:""
-      }
-    },
-    async deleteCmsCat(row) {
-      const res = await deleteCmsCat({ ID: row.ID })
-      if (res.code === 0) {
-        this.$message({
-          type: 'success',
-          message: '删除成功'
-        })
-        if (this.tableData.length === 1 && this.page > 1 ) {
-          this.page--
-        }
-        this.getTableData()
-      }
-    },
+	async doDelete(ids) {
+		const res = await deleteCmsCatByIds({ ids })
+		if (res.code === 0) {
+		  this.$message({
+			type: 'success',
+			message: '删除成功'
+		  })
+		  if (this.tableData.length === ids.length && this.page > 1) {
+			this.page--
+		  }
+		  this.deleteVisible = false
+		  this.getTableData()
+		}
+	},	 
 	//编辑或新增form
 	async goEditForm(id) {
 		console.log("id===",id);
@@ -487,7 +422,7 @@ export default {
 	  }
 	},	
 	//编辑或新增 返回保存
-    async enterDialog() { 
+    async saveEditForm() { 
       // console.log(this.$refs.imageView_thumb);
       console.log(this.$refs.imageView_thumb.myGuid);
       //更新图片guid
@@ -515,29 +450,6 @@ export default {
         this.closeDialog()
         this.getTableData()
       }
-    },
-	
-	// async updateCmsCat(row) {
-	//   const res = await findCmsCat({ ID: row.ID })
-	//   console.log(res.data)
-	//   this.type = 'update'
-	//   if (res.code === 0) {
-	//     this.formData = res.data.recmsCat
-	//     this.dialogFormVisible = true
-	//   }
-	// },
-	// openDialog() {
-	//   this.type = 'create'
-	//   this.dialogFormVisible = true
-	// },
-	
-    //  add by ljd 20210709, 排序 
-    sortChange({ prop, order }) {
-      if (prop) {
-        this.searchInfo.orderKey = toSQLLine(prop)
-        this.searchInfo.orderDesc = order === 'descending'
-      }
-      this.getTableData()
     },
     quickEdit_do(field,id,value,scope) {    
 	  let value2 = value;

@@ -1,6 +1,7 @@
 import { getDict } from '@/utils/dictionary'
 import { isEmpty } from '@/utils/utils'
 import { formatTimeToStr } from '@/utils/date'
+import { toSQLLine } from '@/utils/stringFun'
 
 export default {   
   data() {
@@ -9,7 +10,37 @@ export default {
       total: 20,
       pageSize: 20,
       tableData: [],
-      searchInfo: {}
+      searchInfo: {}, //查询
+	  multipleSelection: [],//多选
+	  shortcuts: [
+	            {
+	              text: '最近一周',
+	              value: () => {
+	                const end = new Date()
+	                const start = new Date()
+	                start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+	                return [start, end]
+	              },
+	            },
+	            {
+	              text: '最近一个月',
+	              value: () => {
+	                const end = new Date()
+	                const start = new Date()
+	                start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+	                return [start, end]
+	              },
+	            },
+	            {
+	              text: '最近三个月',
+	              value: () => {
+	                const end = new Date()
+	                const start = new Date()
+	                start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+	                return [start, end]
+	              },
+	       },
+	  ],
     }
   },
   methods: {
@@ -50,8 +81,7 @@ export default {
 	  //console.log(this[type + 'Options']);
 	  const rowLabel = this[type + 'Options'] && this[type + 'Options'].filter(item => item.value == value) 
       return rowLabel && rowLabel[0] && rowLabel[0].label
-    },
-	 
+    }, 
     async getDict(type) {
       const dicts = await getDict(type)
       this[type + 'Options'] = dicts
@@ -92,6 +122,13 @@ export default {
         this.pageSize = table.data.pageSize
       }
       afterFunc()
-    }
+    },
+	sortChange({ prop, order }) {
+	  if (prop) {
+	    this.searchInfo.orderKey = toSQLLine(prop)
+	    this.searchInfo.orderDesc = order === 'descending'
+	  }
+	  this.getTableData()
+	},
   }
 }
