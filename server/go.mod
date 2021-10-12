@@ -15,11 +15,11 @@ require (
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-redis/redis/v8 v8.11.0
 	github.com/go-sql-driver/mysql v1.5.0
-	github.com/gofrs/uuid v4.0.0+incompatible // indirect
+	github.com/gofrs/uuid v4.0.0+incompatible
 	github.com/gookit/color v1.3.1
 	github.com/jordan-wright/email v0.0.0-20200824153738-3f5bafa1cd84
-	github.com/lestrrat-go/file-rotatelogs v2.3.0+incompatible
 	github.com/mojocn/base64Captcha v1.3.1
+	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/qiniu/api.v7/v7 v7.4.1
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/satori/go.uuid v1.2.0
@@ -38,7 +38,8 @@ require (
 	golang.org/x/sys v0.0.0-20210923061019-b8560ed6a9b7 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/tools v0.1.6 // indirect
+	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
 	gorm.io/driver/mysql v1.0.1
-	gorm.io/gorm v1.20.7
+	gorm.io/gorm v1.20.11
 	nhooyr.io/websocket v1.8.6
 )

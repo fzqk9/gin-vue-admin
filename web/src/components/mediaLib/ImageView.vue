@@ -1,6 +1,6 @@
 <template>
  <div>  
-   <el-image class="image-div"  lazy fit="fill" :src="myUrl" :preview-src-list="myList" hide-on-click-modal/> 
+   <el-image class="image-div"  fit="fill" :src="myUrl" :preview-src-list="myList" hide-on-click-modal/> 
    <el-link v-if="beEdit" icon="el-icon-edit" @click="openChooseImg">重新上传</el-link>
  </div>
  <template  v-if="beEdit">
@@ -64,7 +64,7 @@
 		    url (val) {  
 		      this.myUrl = val
 			  this.myList =[this.myUrl];
-			 console.log("this.myUrl");  console.log(this.myUrl); 
+			  console.log("this.myUrl");  console.log(this.myUrl); 
 		    }
 		  }, 
  		methods: {
@@ -80,37 +80,13 @@
 				 this.myGuid = obj.guid;
  			} 
  		} 
-		//  watch: {
-		//    url(val) {
-		//      this.myUrl = val;
-					 //   this.myList = [val]; 
-		//    },
-					 // guid(val) {
-					 //   this.myGuid = val; 
-					 // } 
-		//  }, 
-		
-		// computed: {
-		   //    getUrlList() {
-		   //      return  [this.url]
-		   //    }
-		   // },
+		 
 		// async created() {
 		//    console.log("created----------");
 		//    this.urllist = [this.url]
 		//    console.log(this.urllist);
 		// },
-		// setup(props, context) {
-		//     console.log('props:', {
-		//       ...props,
-		//     })
-			// // urllist = [url]
-			// // console.log(" setup urllist  === ");
-			// //  console.log(urllist);
-		//     // console.log('context.attrs:', {
-		//     //   ...context.attrs,
-		//     // })
-		// },
+		 
 		
  	}
  </script>
