@@ -56,7 +56,7 @@
                 
           
         <el-form-item>
-          <el-button size="mini" type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
+          <el-button size="mini" type="primary" icon="el-icon-search" @click="onSearch">查询</el-button>
           <el-button size="mini" type="primary" icon="el-icon-plus" @click="goEditForm(0)">新增</el-button>
          
            <el-button size="mini" type="primary" icon="el-icon-plus" @click="excel">导出</el-button>
@@ -295,25 +295,18 @@ import infoList from '@/mixins/infoList'
 import tinymce from '@/mixins/tinymce' 
 import editForm from '@/mixins/editForm' 
 
-import ImageView from '@/components/mediaLib/imageView.vue'
-import MediaLib  from '@/components/mediaLib/mediaLib.vue'
 export default {
   name: 'CmsCat',
-  mixins: [infoList,tinymce,editForm], 
-  components: {
-    ImageView,
-   	MediaLib
-  },
+  mixins: [infoList,tinymce,editForm],
   data() {
     return { 
 	 // isNewWindow:false,
 	 //dialogFormVisible: false,
 	 // type: '',
 	  //deleteVisible: false,
-      listApi: getCmsCatList,  
-      multipleSelection: [],      
-      media_typeOptions: [],          
-      statusOptions: [],          
+      listApi: getCmsCatList,
+      media_typeOptions: [],
+	  statusOptions: [], 
       formData: {
           pid: 0,
           beSys: false,
@@ -332,25 +325,22 @@ export default {
   },
   
   async created() {
+	await this.getDict('media_type')
+	await this.getDict('status')
     await this.getTableData()
-    
-    await this.getDict('media_type')
-      
-    await this.getDict('status')
-      
   },
   methods: {
-  // 条件搜索前端看此方法
-    onSubmit() {
+   // 条件搜索 
+    onSearch() {
       this.page = 1
-      this.pageSize = 20 
-      // if (this.searchInfo.beSys === ""){
-      //   this.searchInfo.beSys=null
-      // }       
-      // if (this.searchInfo.beNav === ""){
-      //   this.searchInfo.beNav=null
-      // }      
+      this.pageSize = 20           
       this.getTableData()
+	  // if (this.searchInfo.beSys === ""){
+	  //   this.searchInfo.beSys=null
+	  // }       
+	  // if (this.searchInfo.beNav === ""){
+	  //   this.searchInfo.beNav=null
+	  // } 
     },
     handleSelectionChange(val) {
       this.multipleSelection = val
@@ -450,31 +440,32 @@ export default {
         this.closeDialog()
         this.getTableData()
       }
-    },
-    quickEdit_do(field,id,value,scope) {    
-	  let value2 = value;
-	  if (typeof(value)==="boolean")
-		   value2 = value?"1":"0"
-	  value2 =  value2+"";   
-	  let obj = {field:field,id:id,value:value2}	
-	 // console.log("quickEdit_do2 obj 1 =",obj);
-      this.quickEdit(obj);	  
-	    // if (scope._self.$refs[`popover-${scope.$index}`])
-		  // scope._self.$refs[`popover-${scope.$index}`].doClose();
-    },
-    async quickEdit(obj) { 
-    //console.log("quickEdit_do2 res 2 =",obj);
-      const res =  await quickEdit(obj)	 
-     // console.log("quickEdit_do2 res 3=",res);
-      if (res.code === 0) {
-        this.$message({
-          type: 'success',
-          message: '修改成功'
-        }) 
-        // this.getTableData()
-      }
-    },
-    excel(){ 
+    }, 
+   quickEdit_do(field,id,value,scope) {
+	 let value2 = value;
+	 if (typeof(value)==="boolean")
+	   value2 = value?"1":"0"
+	 value2 =  value2+"";   
+	 let obj = {field:field,id:id,value:value2}	
+	// console.log("quickEdit_do2 obj 1 =",obj);
+	 this.quickEdit_do2(obj);	  
+	   // if (scope._self.$refs[`popover-${scope.$index}`])
+	  // scope._self.$refs[`popover-${scope.$index}`].doClose();
+   },
+   async quickEdit_do2(obj) { 
+   //console.log("quickEdit_do2 res 2 =",obj);
+	 const res =  await quickEdit(obj)	 
+	// console.log("quickEdit_do2 res 3=",res);
+	 if (res.code === 0) {
+	   this.$message({
+		 type: 'success',
+		 message: '修改成功'
+	   }) 
+	   // this.getTableData()
+	 }
+   },
+    excel(){
+       console.log("excel");		  
     }
   },
 }

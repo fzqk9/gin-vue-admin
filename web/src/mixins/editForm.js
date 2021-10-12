@@ -1,8 +1,8 @@
 import { getDict } from '@/utils/dictionary'
 import { isEmpty } from '@/utils/utils'
 import { formatTimeToStr } from '@/utils/date' 
- 
-export default { 
+ export default {
+	 
   data() {
     return {
 	  isNewWindow:false,//是否在新窗口打开编辑器

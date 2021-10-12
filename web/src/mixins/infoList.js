@@ -11,7 +11,7 @@ export default {
       pageSize: 20,
       tableData: [],
       searchInfo: {}, //查询
-	  multipleSelection: [],//多选
+	  multipleSelection: [],//多选	 
 	  shortcuts: [
 	            {
 	              text: '最近一周',
@@ -129,6 +129,6 @@ export default {
 	    this.searchInfo.orderDesc = order === 'descending'
 	  }
 	  this.getTableData()
-	},
+	} 
   }
 }
