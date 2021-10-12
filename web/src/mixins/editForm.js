@@ -4,8 +4,7 @@ import { formatTimeToStr } from '@/utils/date'
  export default {
 	 
   data() {
-    return {
-	  isNewWindow:false,//是否在新窗口打开编辑器
+    return {	 
       dialogFormVisible: false,//编辑对话框是否显示
 	  editType:"create",
 	  //type:"create",

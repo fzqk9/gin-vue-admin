@@ -297,7 +297,7 @@ export default {
   mixins: [infoList,tinymce,editForm],
   data() {
     return { 
-	 // isNewWindow:false,
+	  isNewWindow:false,//是否在新窗口打开编辑器
 	 //dialogFormVisible: false,
 	 // type: '',
 	  //deleteVisible: false,

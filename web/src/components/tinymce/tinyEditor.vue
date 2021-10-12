@@ -88,7 +88,7 @@
             initTinymce() {
                 const _this = this
                 window.tinymce.init({
-					enubar: false, // 显示最上方menu菜单
+				   menubar: false, // 显示最上方menu菜单
                    language: 'zh_CN',
                    selector: `#${this.tinymceId}`,
                    height: 350, //高度	
@@ -120,16 +120,16 @@
                   // toolbar: this.toolbar.length > 0 ? this.toolbar : toolbar,   	
                   // plugins: plugins,	
                                  
-					 // init_instance_callback: editor => {
-						// if (_this.value) {
-						// 	editor.setContent(_this.value)
-						// }
-						// _this.hasInit = true
+					 init_instance_callback: editor => {
+						if (_this.value) {
+							editor.setContent(_this.value)
+						}
+						_this.hasInit = true
 						// editor.on('NodeChange Change KeyUp SetContent', () => {
 						// 	this.hasChange = true
 						// 	this.$emit('input', editor.getContent())
 						// })
-                    // },
+                    },
                     setup(editor) {
                         editor.on('FullscreenStateChanged', (e) => {
                             _this.fullscreen = e.state
