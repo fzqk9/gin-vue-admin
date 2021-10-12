@@ -5,6 +5,9 @@
 	   	 <MediaLib ref="mediaLib" @select-one-img="selectOneImg" /> 
 </template> 
 <script> 
+    import SparkMD5 from 'spark-md5'
+	import sha1 from 'sha1-file-web';
+	import { findBasicFile } from '@/api/basicFile'  
 	import { ref } from 'vue'
     import load from './dynamicLoadScript.js'
 	import { uploadFile } from '@/api/common_file'
@@ -144,27 +147,53 @@
 						  icon: `imageLib`,
 						  onAction: function(_) { 
 						    _this.openChooseImg(); 
-						  }
+						   }
 						});
                     },
-					images_upload_handler: (blobInfo, success, failure) => {
-					   let formData = new FormData()
-					   let file =  blobInfo.blob(); 
-					   formData.append('file',file)  
-					   formData.append('name',file.name)
-					    formData.append('size',file.size)
-					    formData.append('media_type',2) 
-					    uploadFile(formData).then(res => {
-					       // console.log(res)
-					        if (res.code == 0) {
-					            let file2 = res.data;
-					            success(file2.path);
-					            return
-					        }
-					        failure('上传失败')
-					    }).catch(() => {
-					        failure('上传出错')
-					    })
+					images_upload_handler: (blobInfo, success, failure) => { 
+					   let file =  blobInfo.blob();  
+					    sha1(file).then(sha1 => { 
+							 console.log("文件 sha1 = ", sha1)  
+							 findBasicFile({sha1:sha1}).then(res => {
+							    console.log(res)
+							 	if (res.code == 0 && res.data.basicFile && res.data.basicFile.path !="" ) { 
+									let path = res.data.basicFile.path
+									console.log(sha1,"已存在文件 ",path)
+							 		success(path);
+							 		return;
+							 	}else
+								{
+									let formData = new FormData()
+									formData.append('file',file)   					   
+									let ext ="jpg";
+									if (file.type === 'image/jpeg')  ext ="jpg";
+									if (file.type === 'image/png')  ext ="png"; 		
+									formData.append('sha1',sha1)
+									formData.append('ext',ext)
+									formData.append('name',file.name)
+									formData.append('size',file.size)
+									formData.append('size',file.size)
+									formData.append('media_type',2) 
+									uploadFile(formData).then(res => {									  
+										if (res.code == 0) {
+											let file2 = res.data;
+											success(file2.path);
+											return
+										}
+										console.log(res)
+										failure(' 上传失败')
+									}).catch(() => {
+										failure('uploadFile 上传出错')
+									}) 
+								} 
+							 }).catch(() => {
+							 	failure('findBasicFile出错')
+							 })
+							 
+						}).catch(() => {
+							console.log('sha1(file) 出错')
+						}) 
+					  
 					} 
                 })
             },

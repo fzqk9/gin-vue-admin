@@ -16,7 +16,7 @@ const showLoading = () => {
         clearTimeout(timer)
     }
     timer = setTimeout(() => {
-        if (acitveAxios > 0) {
+        if (acitveAxios > 0) { // if (acitveAxios > 0) loading 会更频繁 
             emitter.emit('showLoading')
         }
     }, 400)
