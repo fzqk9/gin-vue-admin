@@ -42,10 +42,12 @@ import {
   update{{.StructName}},
   find{{.StructName}}
 } from '@/api/{{.PackageName}}' //  此处请自行替换地址
-import infoList from '@/mixins/infoList'
+import infoList from '@/mixins/infoList' 
+import tinymce from '@/mixins/tinymce' 
+import editForm from '@/mixins/editForm'
 export default {
-  name: '{{.StructName}}',
-  mixins: [infoList],
+ name: '编辑{{.StructName}}',
+  mixins: [infoList,tinymce,editForm], 
   data() {
     return {
       type: '',

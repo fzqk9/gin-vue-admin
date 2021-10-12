@@ -237,8 +237,7 @@
 
 <script>
 import {
-  create{{.StructName}},
-  delete{{.StructName}},
+  create{{.StructName}}, 
   delete{{.StructName}}ByIds,
   update{{.StructName}},
   find{{.StructName}},
@@ -246,24 +245,16 @@ import {
   quickEdit
 } from '@/api/{{.PackageName}}' //  此处请自行替换地址
 import { formatTimeToStr } from '@/utils/date'
-import infoList from '@/mixins/infoList'
-import { toSQLLine } from '@/utils/stringFun'
-import ImageView from '@/components/mediaLib/imageView.vue'
-import MediaLib  from '@/components/mediaLib/mediaLib.vue'
+import infoList from '@/mixins/infoList' 
+import tinymce from '@/mixins/tinymce' 
+import editForm from '@/mixins/editForm' 
 export default {
   name: '{{.StructName}}',
-  mixins: [infoList],
-  components: {
-    ImageView,
-   	MediaLib
-  },
+  mixins: [infoList,tinymce,editForm], 
   data() {
     return {
-      listApi: get{{ .StructName }}List,
-      dialogFormVisible: false,
-      type: '',
-      deleteVisible: false,
-      multipleSelection: [],
+      isNewWindow:false,//是否在新窗口打开编辑器
+      listApi: get{{ .StructName }}List,   
       {{ range .Fields}}
           {{- if .DictType }}
       {{ .DictType }}Options: [],
@@ -290,56 +281,23 @@ export default {
               {{.FieldJson}}: "",
           {{ end -}}
         {{ end }}
-      }, 
-      shortcuts: [
-                {
-                  text: '最近一周',
-                  value: () => {
-                    const end = new Date()
-                    const start = new Date()
-                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-                    return [start, end]
-                  },
-                },
-                {
-                  text: '最近一个月',
-                  value: () => {
-                    const end = new Date()
-                    const start = new Date()
-                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-                    return [start, end]
-                  },
-                },
-                {
-                  text: '最近三个月',
-                  value: () => {
-                    const end = new Date()
-                    const start = new Date()
-                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-                    return [start, end]
-                  },
-           },
-      ],
-    }
+        mapData: {}
+      } 
   },
   
-  async created() {
-    await this.getTableData()
+  async created() { 
     {{ range .Fields -}}
       {{- if .DictType }}
     await this.getDict('{{.DictType}}')
       {{ end -}}
     {{- end }}
+     await this.getTableData()
   },
   methods: {
   // 条件搜索前端看此方法
     onSubmit() {
       this.page = 1
-      this.pageSize = 20
-      {{- range .Fields}} {{- if eq .FieldType "bool" }}
-      if (this.searchInfo.{{.FieldJson}} === ""){
-        this.searchInfo.{{.FieldJson}}=null
-      } {{ end }} {{ end }}
+      this.pageSize = 20 
       this.getTableData()
     },
     handleSelectionChange(val) {
@@ -351,7 +309,9 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.delete{{.StructName}}(row)
+         const ids = [row.ID] 
+         this.doDelete(ids); 
+        //this.delete{{.StructName}}(row)
       })
     },
     async onDelete() {
@@ -367,7 +327,10 @@ export default {
         this.multipleSelection.map(item => {
           ids.push(item.ID)
         })
-      const res = await delete{{.StructName}}ByIds({ ids })
+      this.doDelete(ids); 
+    },
+	async doDelete(ids) { 
+     const res = await delete{{.StructName}}ByIds({ ids })
       if (res.code === 0) {
         this.$message({
           type: 'success',
@@ -378,62 +341,52 @@ export default {
         }
         this.deleteVisible = false
         this.getTableData()
-      }
-    },
-    async update{{.StructName}}(row) {
-      const res = await find{{.StructName}}({ ID: row.ID })
-      this.type = 'update'
-      if (res.code === 0) {
-        this.formData = res.data.re{{.Abbreviation}}
-        this.dialogFormVisible = true
-      }
-    },
-    closeDialog() {
-      this.dialogFormVisible = false
-      this.formData = {
-        {{range .Fields}}
-          {{- if eq .FieldType "bool" -}}
-        {{.FieldJson}}: false,
-          {{ end -}}
-          {{- if eq .FieldType "string" -}}
-        {{.FieldJson}}: '',
-          {{ end -}}
-          {{- if eq .FieldType "int" -}}
-        {{.FieldJson}}: 0,
-          {{ end -}}
-          {{- if eq .FieldType "time.Time" -}}
-        {{.FieldJson}}: new Date(),
-          {{ end -}}
-          {{- if eq .FieldType "float64" -}}
-        {{.FieldJson}}: 0,
-          {{ end -}}
-        {{ end }}
-      }
-    },
-    async delete{{.StructName}}(row) {
-      const res = await delete{{.StructName}}({ ID: row.ID })
-      if (res.code === 0) {
-        this.$message({
-          type: 'success',
-          message: '删除成功'
-        })
-        if (this.tableData.length === 1 && this.page > 1 ) {
-          this.page--
-        }
-        this.getTableData()
-      }
-    },
-    async enterDialog() {
-      let res
-      switch (this.type) {
-        case "create":
-          res = await create{{.StructName}}(this.formData)
+      } 
+	}, 
+	//编辑或新增form
+async goEditForm(id) { 
+	  if (this.isNewWindow) {
+		  if (id >0) {
+			this.$router.push({ name: '{{.StructName}}Form', params: {id:id}})
+		  } else {
+			 this.$router.push({ name: '{{.StructName}}Form',params: {id:id}})
+		  }
+	  }else
+	  {
+		 if (id >0) {
+			  const res = await find{{.StructName}}({ID:id})
+			  console.log(res.data)
+			  this.editType = 'update'
+			  if (res.code === 0) 
+			     this.formData = res.data.{{.Abbreviation}} 
+		 }else
+		 {
+			this.editType = 'create' 
+		 }
+		  this.dialogFormVisible = true
+	  }
+	},	
+
+//编辑或新增 返回保存
+    async saveEditForm() {  
+      //更新图片guid, editor
+    //this.formData.thumb = this.$refs.imageView_thumb.myGuid; 
+	  //this.formData.desc = this.$refs.editor_desc.getContent();
+	  //this.formData.keywords = this.$refs.editor_keywords.getContent();
+
+      delete this.formData.mapData;
+      delete this.formData.CreatedAt;
+      delete this.formData.UpdatedAt;
+      let res;
+      switch (this.editType) {
+        case "create":         
+          res = await create{{.StructName}}(this.formData);
           break
-        case "update":
-          res = await update{{.StructName}}(this.formData)
+        case "update": 
+          res = await update{{.StructName}}(this.formData);
           break
-        default:
-          res = await create{{.StructName}}(this.formData)
+        default: 
+          res = await create{{.StructName}}(this.formData);
           break
       }
       if (res.code === 0) {
@@ -444,34 +397,19 @@ export default {
         this.closeDialog()
         this.getTableData()
       }
-    },
-    openDialog() {
-      this.type = 'create'
-      this.dialogFormVisible = true
-    },
-    //  add by ljd 20210709, 排序 
-    sortChange({ prop, order }) {
-      if (prop) {
-        this.searchInfo.orderKey = toSQLLine(prop)
-        this.searchInfo.orderDesc = order === 'descending'
-      }
-      this.getTableData()
-    },
+    },   
     quickEdit_do(field,id,value,scope) {    
-	  let value2 = value;
-	  if (typeof(value)==="boolean")
-		   value2 = value?"1":"0"
-	  value2 =  value2+"";   
-	  let obj = {field:field,id:id,value:value2}	
-	 // console.log("quickEdit_do2 obj 1 =",obj);
+      let value2 = value;
+      if (typeof(value)==="boolean")
+         value2 = value?"1":"0"
+      value2 =  value2+"";   
+      let obj = {field:field,id:id,value:value2}	 
       this.quickEdit(obj);	  
 	    // if (scope._self.$refs[`popover-${scope.$index}`])
 		  // scope._self.$refs[`popover-${scope.$index}`].doClose();
     },
-    async quickEdit(obj) { 
-    //console.log("quickEdit_do2 res 2 =",obj);
-      const res =  await quickEdit(obj)	 
-     // console.log("quickEdit_do2 res 3=",res);
+    async quickEdit(obj) {  
+      const res =  await quickEdit(obj)	  
       if (res.code === 0) {
         this.$message({
           type: 'success',
@@ -483,6 +421,5 @@ export default {
   },
 }
 </script>
-
 <style>
 </style>
