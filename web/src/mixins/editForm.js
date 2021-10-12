@@ -8,14 +8,14 @@ import { formatTimeToStr } from '@/utils/date'
 	  isNewWindow:false,//是否在新窗口打开编辑器
       dialogFormVisible: false,//编辑对话框是否显示
 	  editType:"create",
-	  type:"create",
+	  //type:"create",
 	  deleteVisible:false,//删除时是否提示
 	}
   },
   methods: {
       //统一关闭编辑对话框
 	  closeDialog() {		  
-		   this.dialogFormVisible = false
+		  this.dialogFormVisible = false
 	      this.formData = new Object(); 
 	   }
   }

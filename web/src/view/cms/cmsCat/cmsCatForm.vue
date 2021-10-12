@@ -68,8 +68,7 @@ export default {
   name: 'CmsCat', 
   mixins: [infoList,tinymce,editForm], 
   data() {
-    return {
-     // type: '',
+    return { 
       media_typeOptions: [],
       statusOptions: [],
       formData: {
@@ -96,10 +95,10 @@ export default {
       const res = await findCmsCat({ ID:id})
       if (res.code === 0) {
         this.formData = res.data.cmsCat
-        this.type = 'update'
+        this.editType = 'update'
       }
     } else { 
-      this.type = 'create'
+      this.editType = 'create'
     }
     await this.getDict('media_type')
     await this.getDict('status')
@@ -110,7 +109,7 @@ export default {
         
        //  
       let res
-      switch (this.type) {
+      switch (this.editType) {
         case 'create':
           res = await createCmsCat(this.formData)
           break

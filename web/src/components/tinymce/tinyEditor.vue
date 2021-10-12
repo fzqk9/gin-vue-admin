@@ -194,8 +194,8 @@
             setContent(value) {
                 window.tinymce.get(this.tinymceId).setContent(value)
             },
-            getContent() {
-                window.tinymce.get(this.tinymceId).getContent()
+            getContent() { 
+                return window.tinymce.get(this.tinymceId).getContent();
             },
             destroyTinymce() {
                 const tinymce = window.tinymce.get(this.tinymceId)

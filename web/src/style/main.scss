@@ -1382,7 +1382,12 @@ $mainHight: 100vh;
     color:#409EFF
 } 
  .mce-notification {display: none !important;}
- .tox-notifications-container {display: none !important;}    
+ .tox-notifications-container {display: none !important;}   
+  
+  .tox-tinymce-aux {
+    z-index: 9999 !important;
+  }
+  
  
 /** 
  * add  by linjd --------------------- 

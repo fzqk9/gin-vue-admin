@@ -253,19 +253,18 @@
                   <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" v-model="formData.beNav" clearable ></el-switch>
               </el-form-item>
         <el-form-item label="描述:">
-              
-                  <el-input v-model="formData.desc" clearable placeholder="请输入" />
+                 <editor ref="editor_desc" :value="formData.desc" placeholder="请输入关键词" />
+                  <!-- <el-input v-model="formData.desc" clearable placeholder="请输入" /> -->
               </el-form-item>
         <el-form-item label="关键词:">
-              
-                  <el-input v-model="formData.keywords" clearable placeholder="请输入" />
+               <editor ref="editor_keywords" :value="formData.keywords" placeholder="请输入关键词" />
+             <!--  <el-input v-model="formData.keywords" clearable placeholder="请输入" /> -->
               </el-form-item>
         <el-form-item label="别名:">
               
                   <el-input v-model="formData.alias" clearable placeholder="请输入" />
               </el-form-item>
-        <el-form-item label="状态:">
-              
+        <el-form-item label="状态:"> 
                         <el-select v-model="formData.status" placeholder="请选择" clearable>
                           <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value" />
                         </el-select>
@@ -290,11 +289,9 @@ import {
   quickEdit
 } from '@/api/cmsCat' //  此处请自行替换地址
 import { formatTimeToStr } from '@/utils/date'  
-
 import infoList from '@/mixins/infoList' 
 import tinymce from '@/mixins/tinymce' 
 import editForm from '@/mixins/editForm' 
-
 export default {
   name: 'CmsCat',
   mixins: [infoList,tinymce,editForm],
@@ -387,26 +384,24 @@ export default {
 	//编辑或新增form
 	async goEditForm(id) {
 		console.log("id===",id);
-	  if (this.isNewWindow==false)
+	  if (this.isNewWindow)
 	  {
 		  if (id >0) {
 			this.$router.push({ name: 'cmsCatForm', params: {id:id}})
 		  } else {
-			//this.$router.push({ name: 'cmsCatForm' ,params: {id:id}})
-            this.type = 'create' 
-             this.dialogFormVisible = true
+			 this.$router.push({ name: 'cmsCatForm' ,params: {id:id}})
 		  }
 	  }else
 	  {
 		 if (id >0) {
 			  const res = await findCmsCat({ID:id})
 			  console.log(res.data)
-			  this.type = 'update'
+			  this.editType = 'update'
 			  if (res.code === 0) 
 			     this.formData = res.data.cmsCat 
 		 }else
 		 {
-			this.type = 'create' 
+			this.editType = 'create' 
 		 }
 		  this.dialogFormVisible = true
 	  }
@@ -414,14 +409,19 @@ export default {
 	//编辑或新增 返回保存
     async saveEditForm() { 
       // console.log(this.$refs.imageView_thumb);
-      console.log(this.$refs.imageView_thumb.myGuid);
+     // console.log(this.$refs.imageView_thumb.myGuid);
       //更新图片guid
       this.formData.thumb = this.$refs.imageView_thumb.myGuid;
-	  delete this.formData.mapData
-	  delete this.formData.CreatedAt
-	  delete this.formData.UpdatedAt
-      let res
-      switch (this.type) {
+	//   console.log(this.$refs.editor_desc.getContent());
+	  this.formData.desc = this.$refs.editor_desc.getContent();
+	  this.formData.keywords = this.$refs.editor_keywords.getContent();
+	  // console.log("this.formData=====");
+	 // console.log(this.formData);
+	  delete this.formData.mapData;
+	  delete this.formData.CreatedAt;
+	  delete this.formData.UpdatedAt;
+      let res;
+      switch (this.editType) {
         case "create": 
           res = await createCmsCat(this.formData)
           break
@@ -472,9 +472,9 @@ export default {
 </script>
 
 <style>
-	.fileImg{
+/* 	.fileImg{
 	    width: 80px;
 	    height: 80px;
 	    position: relative;
-	}
+	} */
 </style>
