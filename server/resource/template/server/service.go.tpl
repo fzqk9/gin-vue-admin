@@ -41,9 +41,17 @@ func ({{.Abbreviation}}Service *{{.StructName}}Service)Update{{.StructName}}({{.
 
 // Get{{.StructName}} 根据id获取{{.StructName}}记录
 // Author [piexlmax](https://github.com/piexlmax)
-func ({{.Abbreviation}}Service *{{.StructName}}Service)Get{{.StructName}}(id uint) (err error, {{.Abbreviation}} autocode.{{.StructName}}) {
-	err = global.GVA_DB.Where("id = ?", id).First(&{{.Abbreviation}}).Error
-	return
+func ({{.Abbreviation}}Service *{{.StructName}}Service)Get{{.StructName}}(id uint) (err error, obj autocode.{{.StructName}}) {
+	err = global.GVA_DB.Where("id = ?", id).First(&obj).Error 
+    obj.MapData = make(map[string]string)
+     {{ range .Fields}} 
+         {{if eq .FieldType "image"}} 
+         	if !utils.IsEmpty(obj.{{.FieldName}}) {
+			    _,obj.MapData[obj.{{.FieldName}}] = commFileService.GetPathByGuid(obj.{{.FieldName}})
+		    }     
+        {{end}}  
+      {{ end }}  
+    return
 }
 
 // Get{{.StructName}}InfoList 分页获取{{.StructName}}记录
@@ -103,6 +111,19 @@ func ({{.Abbreviation}}Service *{{.StructName}}Service)Get{{.StructName}}InfoLis
 			OrderStr = order
 		} 
 	}  
-     err = db.Order(OrderStr).Limit(limit).Offset(offset).Find(&{{.Abbreviation}}s).Error 
+     err = db.Order(OrderStr).Limit(limit).Offset(offset).Find(&{{.Abbreviation}}s).Error
+     //更新图片path
+	for i, v := range {{.Abbreviation}}s {
+	 v.MapData = make(map[string]string)
+     {{ range .Fields}} 
+         {{if eq .FieldType "image"}} 
+         	if !utils.IsEmpty(v.{{.FieldName}}) {
+			    _, v.MapData[v.{{.FieldName}}] = commFileService.GetPathByGuid(v.{{.FieldName}})
+		    }     
+        {{end}}  
+      {{ end }}
+	  {{.Abbreviation}}s[i] = v
+	}
+
 	return err, {{.Abbreviation}}s, total
 }

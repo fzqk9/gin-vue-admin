@@ -41,11 +41,11 @@ func (cmsCatService *CmsCatService) UpdateCmsCat(cmsCat autocode.CmsCat) (err er
 
 // GetCmsCat 根据id获取CmsCat记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (cmsCatService *CmsCatService) GetCmsCat(id uint) (err error, cmsCat autocode.CmsCat) {
-	err = global.GVA_DB.Where("id = ?", id).First(&cmsCat).Error
-	if !utils.IsEmpty(cmsCat.Thumb) {
-		cmsCat.MapData = make(map[string]string)
-		_, cmsCat.MapData[cmsCat.Thumb] = commFileService.GetPathByGuid(cmsCat.Thumb)
+func (cmsCatService *CmsCatService) GetCmsCat(id uint) (err error, obj autocode.CmsCat) {
+	err = global.GVA_DB.Where("id = ?", id).First(&obj).Error
+	obj.MapData = make(map[string]string)
+	if !utils.IsEmpty(obj.Thumb) {
+		_, obj.MapData[obj.Thumb] = commFileService.GetPathByGuid(obj.Thumb)
 	}
 	return
 }
@@ -71,6 +71,9 @@ func (cmsCatService *CmsCatService) GetCmsCatInfoList(info autoCodeReq.CmsCatSea
 	}
 
 	// 如果有条件搜索 下方会自动创建搜索语句
+	if info.BeSys != nil {
+		db = db.Where("`be_sys` = ?", info.BeSys)
+	}
 	if info.GroupId != nil {
 		db = db.Where("`group_id` = ?", info.GroupId)
 	}
@@ -92,7 +95,6 @@ func (cmsCatService *CmsCatService) GetCmsCatInfoList(info autoCodeReq.CmsCatSea
 	err = db.Count(&total).Error
 	//err = db.Limit(limit).Offset(offset).Find(&cmsCats).Error
 	//修改 by ljd  增加查询排序
-	//修改 by ljd  增加查询排序
 	OrderStr := "id desc"
 	if !utils.IsEmpty(order) {
 		if desc {
@@ -105,12 +107,11 @@ func (cmsCatService *CmsCatService) GetCmsCatInfoList(info autoCodeReq.CmsCatSea
 	//更新图片path
 	for i, v := range cmsCats {
 		v.MapData = make(map[string]string)
-		if utils.IsEmpty(v.Thumb) {
-			v.MapData[""] = ""
-		} else {
+		if !utils.IsEmpty(v.Thumb) {
 			_, v.MapData[v.Thumb] = commFileService.GetPathByGuid(v.Thumb)
 		}
 		cmsCats[i] = v
 	}
+
 	return err, cmsCats, total
 }

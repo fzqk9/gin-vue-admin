@@ -170,7 +170,7 @@
       
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button plain size="mini" type="primary" icon="el-icon-edit" class="table-button" @click="goEditForm{{.StructName}}(scope.row.ID)">编辑</el-button>
+          <el-button plain size="mini" type="primary" icon="el-icon-edit" class="table-button" @click="goEditForm(scope.row.ID)">编辑</el-button>
           <el-button plain size="mini" type="danger" icon="el-icon-delete"  @click="deleteRow(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -186,40 +186,42 @@
       @size-change="handleSizeChange"
     />
     <!---------- 编辑弹窗------------------ -->
-    <el-dialog :before-close="closeDialog" v-model="dialogFormVisible" title="弹窗操作">
+    <el-dialog  v-if="dialogFormVisible"  :before-close="closeDialog" v-model="dialogFormVisible" title="编辑资料">
       <el-form :model="formData" label-position="right" label-width="80px">
-    {{- range .Fields}}
+    {{range .Fields}}
         <el-form-item label="{{.FieldDesc}}:">
-              {{ if eq .FieldType "bool" }}
+              {{if eq .FieldType "bool"}}
                   <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" v-model="formData.{{.FieldJson}}" clearable ></el-switch>
-              {{ end -}}
-              {{ if eq .FieldType "string" }}
-                  <el-input v-model="formData.{{.FieldJson}}" clearable placeholder="请输入" />
-              {{ end -}} 
-              {{ if eq .FieldType "int" }}
-                    {{- if .DictType}}
+              {{end}}
+              {{if eq .FieldType "string"}}
+                    {{ if .BeEditor }}
+                          <editor ref="editor_{{.FieldJson}}" :value="formData.{{.FieldJson}}" placeholder="请输入{{.FieldDesc}}" />  
+                    {{else}} 
+                      <el-input v-model="formData.{{.FieldJson}}" clearable placeholder="请输入" />
+                   {{end}}  
+              {{end}} 
+              {{if eq .FieldType "image"}}
+                     <ImageView ref="imageView_{{.FieldJson}}" be-edit :url="getMapData(formData.{{.FieldJson}},formData.mapData)" :guid="formData.{{.FieldJson}}" /> 
+               {{end}}  
+              {{if eq .FieldType "int"}}
+                    {{if .DictType}}
                         <el-select v-model="formData.{{ .FieldJson }}" placeholder="请选择" clearable>
                           <el-option v-for="(item,key) in {{ .DictType }}Options" :key="key" :label="item.label" :value="item.value" />
                         </el-select>
-                    {{ else }}
+                    {{else}}
                         <el-input v-model.number="formData.{{ .FieldJson }}" clearable placeholder="请输入" />
-                    {{ end -}}
-              {{ end -}}
-              {{ if eq .FieldType "time.Time" }}
+                    {{end}}
+              {{end}}
+              {{if eq .FieldType "time.Time"}}
                   <el-date-picker type="datetimerange" v-model="formData.{{ .FieldJson }}" format="yyyy-MM-dd HH:mm:ss"
                     value-format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" start-placeholder="开始日期"
                     end-placeholder="结束日期" range-separator="至" clearable></el-date-picker>
-                {{ end -}}
-              {{- if eq .FieldType "float64" }}
+              {{end}}
+              {{if eq .FieldType "float64"}}
                   <el-input-number v-model="formData.{{ .FieldJson }}" :precision="2" clearable />
-              {{ end -}}  
-               {{ if eq .FieldType "image" }}
-                  <ImageView ref="imageView_{{.FieldJson}}" be-edit :url="getMapData(formData.{{.FieldJson}},formData.mapData)" :guid="formData.{{.FieldJson}}" /> 
-              {{ else if .BeEditor }}
-                   <editor ref="editor_{{.FieldJson}}" :value="formData.{{.FieldJson}}" placeholder="请输入{{.FieldDesc}}" />  
-               {{ end -}} 
+              {{end}}
        </el-form-item>
-       {{- end }}
+       {{end}}
      </el-form>
       <div slot="footer" class="el-dialog__footer">
         <el-button @click="closeDialog">取 消</el-button>
@@ -247,7 +249,7 @@ export default {
   mixins: [infoList,tinymce,editForm], 
   data() {
     return {
-      beNewWindow:'{{.BeNewWindow}}',//是否在新窗口打开编辑器
+      beNewWindow:{{.BeNewWindow}},//是否在新窗口打开编辑器
       listApi: get{{ .StructName }}List,   
       {{ range .Fields}}
           {{- if .DictType }}
@@ -277,6 +279,7 @@ export default {
         {{ end }}
         mapData: {}
       } 
+    }
   },
   
   async created() { 
@@ -289,7 +292,7 @@ export default {
   },
   methods: {
   // 条件搜索前端看此方法
-    onSubmit() {
+    onSearch() {
       this.page = 1
       this.pageSize = 20 
       this.getTableData()
@@ -365,12 +368,9 @@ async goEditForm(id) {
     async saveEditForm() {  
       //更新图片guid, editor
       {{range .Fields}}
-          {{ if eq .FieldType "image" }}
-             this.formData.{{.FieldJson}} = this.$refs.imageView_{{.FieldJson}}.myGuid;           
-          {{else if .BeEditor }}
-             this.formData.{{.FieldJson}} = this.$refs.editor_{{.FieldJson}}.getContent; 
-          {{ end }}           
-      {{ end }}  
+       {{if eq .FieldType "image"}}this.formData.{{.FieldJson}} = this.$refs.imageView_{{.FieldJson}}.myGuid;           
+       {{else if .BeEditor}} this.formData.{{.FieldJson}} = this.$refs.editor_{{.FieldJson}}.getContent; {{ end }}           
+      {{end}}  
       delete this.formData.mapData;
       delete this.formData.CreatedAt;
       delete this.formData.UpdatedAt;

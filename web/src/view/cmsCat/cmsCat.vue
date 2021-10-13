@@ -427,7 +427,7 @@ export default {
   mixins: [infoList,tinymce,editForm], 
   data() {
     return {
-      beNewWindow:false,//是否在新窗口打开编辑器
+      beNewWindow:true,//是否在新窗口打开编辑器
       listApi: getCmsCatList,   
       
       media_typeOptions: [],
@@ -513,9 +513,7 @@ export default {
 	}, 
 	//编辑或新增form
 async goEditForm(id) { 
-	console.log("goEditForm = ",id)
 	  if (this.beNewWindow) {
-		  	console.log("goEditForm 111= ",id)
 		  if (id >0) {
 			this.$router.push({ name: 'CmsCatForm', params: {id:id}})
 		  } else {
@@ -523,7 +521,6 @@ async goEditForm(id) {
 		  }
 	  }else
 	  {
-		  console.log("goEditForm 22222= ",id)
 		 if (id >0) {
 			  const res = await findCmsCat({ID:id})
 			  //console.log(res.data)
