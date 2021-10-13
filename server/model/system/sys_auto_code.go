@@ -15,6 +15,8 @@ type AutoCodeStruct struct {
 	SearchCreate       bool     `json:"searchCreate"`       // 是否 搜索创建时间   新增 by ljd 20210731
 	SearchId           bool     `json:"searchId"`           // 是否搜索ID  新增 by ljd 20210731
 	BeExcel            bool     `json:"beExcel"`            // 导出excel  add by ljd 20210709
+	Module             string     `json:"module"`            // 模块 cms/game add by ljd 20210709
+	BeNewWindow        bool     `json:"beNewWindow"`         // 是否新页面打开编辑资料 add by ljd 20210709
 	Fields             []*Field `json:"fields"`
 }
 
@@ -32,6 +34,7 @@ type Field struct {
 	OrderBy         bool   `json:"orderBy"`         // 排序  add by ljd 20210709 增加排序字段
 	BeHide          bool   `json:"beHide"`          // 隐藏  add by ljd 20210709
 	BeQuickEdit     bool   `json:"beQuickEdit"`     // 快速排序  add by ljd 20210709
+	BeEditor       bool       `json:"beEditor"`       //富文本  add by ljd 20210709
 }
 
 var AutoMoveErr error = errors.New("创建代码成功并移动文件成功")

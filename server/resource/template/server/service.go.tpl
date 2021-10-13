@@ -96,8 +96,7 @@ func ({{.Abbreviation}}Service *{{.StructName}}Service)Get{{.StructName}}InfoLis
 	//err = db.Limit(limit).Offset(offset).Find(&{{.Abbreviation}}s).Error
     //修改 by ljd  增加查询排序 
      OrderStr := "id desc"
-     if !utils.IsEmpty(order) {
-		var OrderStr string
+     if !utils.IsEmpty(order) { 
 		if desc {
 			OrderStr = order + " desc"
 		} else {

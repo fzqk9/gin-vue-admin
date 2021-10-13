@@ -1,33 +1,30 @@
- <!--修改 by ljd 20210725， bool datatime DictType字段 的查询填充数据 --> 
-
 <template>
   <div>  
   <!----------查询form------------------ -->
     <div class="search-term">
       <el-form :inline="true" :model="searchInfo" class="demo-form-inline">
 
-  {{- if .SearchCreate}} 
-  <el-form-item label="创建时间">
-        <el-date-picker 
-              v-model="searchInfo.createdAtBetween" 
-              type="datetimerange"
-              format="YYYY-MM-DD HH:mm:ss"
-              :shortcuts="shortcuts"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-            />
-         </el-form-item>
-  {{ end -}} 
-
+      {{- if .SearchCreate}} 
+      <el-form-item label="创建时间">
+            <el-date-picker 
+                  v-model="searchInfo.createdAtBetween" 
+                  type="datetimerange"
+                  format="YYYY-MM-DD HH:mm:ss"
+                  :shortcuts="shortcuts"
+                  range-separator="至"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"
+                />
+              </el-form-item>
+      {{ end -}} 
       {{- if .SearchId}} 
         <el-form-item label="ID">
             <el-input placeholder="搜索ID" v-model="searchInfo.ID" />
         </el-form-item>
       {{ end -}} 
-           {{- range .Fields}} 
-            {{- if .FieldSearchType}} 
-       
+
+      {{- range .Fields}} 
+      {{- if .FieldSearchType}}   
           {{- if eq .FieldType "bool" }}
               <el-form-item label="{{.FieldDesc}}" prop="{{.FieldJson}}">
               <el-select v-model="searchInfo.{{.FieldJson}}" clearable placeholder="请选择">
@@ -41,8 +38,8 @@
                       label="否"
                       value="false">
                   </el-option>
-              </el-select>
-              </el-form-item> 
+             </el-select>
+          </el-form-item> 
           {{ else if eq .FieldType "int" -}}
               {{ if .DictType -}}
                 <el-form-item label="{{.FieldDesc}}" prop="{{.FieldJson}}">                
@@ -51,36 +48,34 @@
                     </el-select>
                 </el-form-item>
               {{ else -}}
-                 <el-form-item label="{{.FieldDesc}}">
+                  <el-form-item label="{{.FieldDesc}}">
                       <el-input placeholder="搜索条件" v-model="searchInfo.{{.FieldJson}}" clearable />
                   </el-form-item>
               {{ end -}}      
-          {{ else if eq .FieldType "time.Time" -}}
-            <el-form-item label="{{.FieldDesc}}"> 
-              <el-date-picker
-              v-model="formData.{{ .FieldJson }}"  
-              type="datetimerange"
-              format="YYYY-MM-DD HH:mm:ss"
-              :shortcuts="shortcuts"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-            />
-            
-
+            {{ else if eq .FieldType "time.Time" -}}
+              <el-form-item label="{{.FieldDesc}}"> 
+                <el-date-picker
+                v-model="formData.{{ .FieldJson }}"  
+                type="datetimerange"
+                format="YYYY-MM-DD HH:mm:ss"
+                :shortcuts="shortcuts"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+              /> 
              </el-form-item>
-          {{ else -}} 
-              <el-form-item label="{{.FieldDesc}}">
-                <el-input placeholder="搜索条件" v-model="searchInfo.{{.FieldJson}}" clearable />
-              </el-form-item>
-          {{ end -}}
+            {{ else -}} 
+                <el-form-item label="{{.FieldDesc}}">
+                  <el-input placeholder="搜索条件" v-model="searchInfo.{{.FieldJson}}" clearable />
+                </el-form-item>
+            {{ end -}}
           {{ end }}  
-          {{ end }}
+        {{ end }}
         <el-form-item>
-          <el-button size="mini" type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
-          <el-button size="mini" type="primary" icon="el-icon-plus" @click="openDialog">新增</el-button>
+          <el-button size="mini" type="primary" icon="el-icon-search" @click="onSearch">查询</el-button>
+          <el-button size="mini" type="primary" icon="el-icon-plus" @click="goEditForm(0)">新增</el-button>
          {{ if .BeExcel }}
-           <el-button size="mini" type="primary" icon="el-icon-plus" @click="excel">导出</el-button>
+           <el-button size="mini" type="primary" icon="el-icon-plus" @click="onExcel">导出</el-button>
         {{ end }}
           <el-popover v-model:visible="deleteVisible" placement="top" width="160">
             <p>确定要删除吗？</p>
@@ -106,13 +101,10 @@
       @selection-change="handleSelectionChange"
       @sort-change="sortChange" 
     >
-      <el-table-column type="selection" width="55" />
-         <!-- add by ljd 20210709,增加id 排序功能等  -->
-       <el-table-column label="ID" min-width="60" prop="ID" sortable="custom" /> 
-    
+      <el-table-column type="selection" width="55" />      
+       <el-table-column label="ID" min-width="60" prop="ID" sortable="custom" />     
       {{- range .Fields}} 
-        {{- if  .BeHide }}  
-           <!-- add by ljd 20210720, 隐藏字段   {{.FieldJson}} -->         
+        {{- if  .BeHide }}            
          {{else}}  
              {{if .BeQuickEdit}}
                  <!-- BeQuickEdit --> 
@@ -162,7 +154,7 @@
                  {{- else if eq .FieldType "image" }}
                   <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{if .OrderBy}} sortable="custom"{{end}} >
                       <template #default="scope">
-                        <ImageView pic-type="img" :pic-src="scope.row.{{.FieldJson}}" />
+                        <ImageView :url="getMapData(scope.row.{{.FieldJson}},scope.row.mapData)" />
                       </template>
                   </el-table-column>
                 {{- else }} 
@@ -178,7 +170,7 @@
       
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button plain size="mini" type="primary" icon="el-icon-edit" class="table-button" @click="update{{.StructName}}(scope.row)">编辑</el-button>
+          <el-button plain size="mini" type="primary" icon="el-icon-edit" class="table-button" @click="goEditForm{{.StructName}}(scope.row.ID)">编辑</el-button>
           <el-button plain size="mini" type="danger" icon="el-icon-delete"  @click="deleteRow(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -203,10 +195,7 @@
               {{ end -}}
               {{ if eq .FieldType "string" }}
                   <el-input v-model="formData.{{.FieldJson}}" clearable placeholder="请输入" />
-              {{ end -}}
-               {{ if eq .FieldType "image" }}
-                  <ImageView pic-type="img" :be-edit="1" :pic-src="formData.{{.FieldJson}}" /> 
-              {{ end -}}
+              {{ end -}} 
               {{ if eq .FieldType "int" }}
                     {{- if .DictType}}
                         <el-select v-model="formData.{{ .FieldJson }}" placeholder="请选择" clearable>
@@ -223,13 +212,18 @@
                 {{ end -}}
               {{- if eq .FieldType "float64" }}
                   <el-input-number v-model="formData.{{ .FieldJson }}" :precision="2" clearable />
-              {{ end -}}
+              {{ end -}}  
+               {{ if eq .FieldType "image" }}
+                  <ImageView ref="imageView_{{.FieldJson}}" be-edit :url="getMapData(formData.{{.FieldJson}},formData.mapData)" :guid="formData.{{.FieldJson}}" /> 
+              {{ else if .BeEditor }}
+                   <editor ref="editor_{{.FieldJson}}" :value="formData.{{.FieldJson}}" placeholder="请输入{{.FieldDesc}}" />  
+               {{ end -}} 
        </el-form-item>
        {{- end }}
      </el-form>
       <div slot="footer" class="el-dialog__footer">
         <el-button @click="closeDialog">取 消</el-button>
-        <el-button type="primary" @click="enterDialog">确 定</el-button>
+        <el-button type="primary" @click="saveEditForm">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -253,7 +247,7 @@ export default {
   mixins: [infoList,tinymce,editForm], 
   data() {
     return {
-      isNewWindow:false,//是否在新窗口打开编辑器
+      beNewWindow:'{{.BeNewWindow}}',//是否在新窗口打开编辑器
       listApi: get{{ .StructName }}List,   
       {{ range .Fields}}
           {{- if .DictType }}
@@ -345,7 +339,7 @@ export default {
 	}, 
 	//编辑或新增form
 async goEditForm(id) { 
-	  if (this.isNewWindow) {
+	  if (this.beNewWindow) {
 		  if (id >0) {
 			this.$router.push({ name: '{{.StructName}}Form', params: {id:id}})
 		  } else {
@@ -355,7 +349,7 @@ async goEditForm(id) {
 	  {
 		 if (id >0) {
 			  const res = await find{{.StructName}}({ID:id})
-			  console.log(res.data)
+			  //console.log(res.data)
 			  this.editType = 'update'
 			  if (res.code === 0) 
 			     this.formData = res.data.{{.Abbreviation}} 
@@ -370,10 +364,13 @@ async goEditForm(id) {
 //编辑或新增 返回保存
     async saveEditForm() {  
       //更新图片guid, editor
-    //this.formData.thumb = this.$refs.imageView_thumb.myGuid; 
-	  //this.formData.desc = this.$refs.editor_desc.getContent();
-	  //this.formData.keywords = this.$refs.editor_keywords.getContent();
-
+      {{range .Fields}}
+          {{ if eq .FieldType "image" }}
+             this.formData.{{.FieldJson}} = this.$refs.imageView_{{.FieldJson}}.myGuid;           
+          {{else if .BeEditor }}
+             this.formData.{{.FieldJson}} = this.$refs.editor_{{.FieldJson}}.getContent; 
+          {{ end }}           
+      {{ end }}  
       delete this.formData.mapData;
       delete this.formData.CreatedAt;
       delete this.formData.UpdatedAt;
@@ -404,11 +401,11 @@ async goEditForm(id) {
          value2 = value?"1":"0"
       value2 =  value2+"";   
       let obj = {field:field,id:id,value:value2}	 
-      this.quickEdit(obj);	  
+      this.quickEdit_do2(obj);	  
 	    // if (scope._self.$refs[`popover-${scope.$index}`])
 		  // scope._self.$refs[`popover-${scope.$index}`].doClose();
     },
-    async quickEdit(obj) {  
+    async quickEdit_do2(obj) {  
       const res =  await quickEdit(obj)	  
       if (res.code === 0) {
         this.$message({
@@ -417,6 +414,9 @@ async goEditForm(id) {
         }) 
         // this.getTableData()
       }
+    },
+     onExcel(){
+       console.log("excel");		  
     }
   },
 }

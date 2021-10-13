@@ -60,7 +60,9 @@
       <el-form-item label="文件名称" prop="packageName">
         <el-input v-model="form.packageName" placeholder="生成文件的默认名称(建议为驼峰格式,首字母小写,如sysXxxXxxx)" />
       </el-form-item> 
-            
+     <el-form-item label="模块名" prop="module">
+       <el-input v-model="form.module" placeholder="模块名如cms/game/act" />
+     </el-form-item> 			
       <el-form-item label-width="100px" >
         <template #label>
           <el-tooltip content="注：把自动生成的API注册进数据库" placement="bottom" effect="dark">
@@ -104,6 +106,16 @@
 	    </template>
 	    <el-checkbox v-model="form.beExcel" />
 	  </el-form-item>
+	  
+	  <el-form-item label-width="100px" >
+	    <template #label>
+	      <el-tooltip content="注：是否在新页面编辑资料" placement="bottom" effect="dark">
+	        <div>在新页面编辑 </div>
+	      </el-tooltip>
+	    </template>
+	    <el-checkbox v-model="form.beNewWindow" />
+	  </el-form-item>
+	  
 	  
     </el-form>
     <!-- 组件列表 -->
@@ -167,7 +179,12 @@
       		  <template #default="scope" >
       			  <el-switch v-model="scope.row.beHide" /> 
       		  </template> </el-table-column>
-      	 
+      	 <el-table-column prop="beEditor" label="是否富文本" width="130" >
+      	       		  <template #default="scope" >
+      	       			  <el-switch v-model="scope.row.beEditor" /> 
+      	       		  </template>
+		</el-table-column>
+		
 	   
       <el-table-column label="操作" width="300">
         <template #default="scope">
@@ -336,17 +353,18 @@ export default {
       addFlag: '',
       fdMap: {},
       form: {
-        structName: '',
-        tableName: '',
-        packageName: '',
-        abbreviation: '',
-        description: '',
+        structName: '', //结构体名
+        tableName: '', // 表名
+        packageName: '', //文件名
+        abbreviation: '', // 请输入结构体简称
+        description: '', //请输入结构体描述
         autoCreateApiToSql: false,
         autoMoveFile: false,
 		searchId: false,  //新增 by ljd 20210731
 		searchCreate: false, //新增 by ljd 20210731
-		beExcel: false, //新增 by ljd 20210731
-        fields: []
+		beExcel: false, //新增 by ljd 20210731  
+		beNewWindow:false, //是否新页面 by ljd 20210731  
+        module:'' //新增 by ljd  模块 名称 cms  game 等 
       },
       rules: {
         structName: [
@@ -372,14 +390,14 @@ export default {
       previewFlag: false
     }
   },
-  async created() {
-    this.getDb();
-    this.setFdMap();
-    const id = this.$route.params.id;
-	console.log("this.$route.params.id = ",id);
-    if (id) {
+  async created() { 
+	 this.getDb();
+	 this.setFdMap();
+	let id = this.$route.params.id
+	console.log("this.$route.params.id = ",id);	 
+    if (id>0) {
       this.getAutoCodeJson(id);
-    };
+    }; 
     // // add by ljd     
     const dictRes = await getSysDictionaryList({
       page: 1,
@@ -565,7 +583,8 @@ export default {
                 dictType: '',
 				orderBy:false,// add by ljd 202107012	 排序
 			    beHide:false,// add by ljd 202107012	是否隐藏	
-				beQuickEdit:false // add by ljd 202107012	是否快速编辑 		
+				beQuickEdit:false ,// add by ljd 202107012	是否快速编辑 
+				beEditor: false, //是否富媒体 新增 by ljd 20210731 
               })
             }
           })

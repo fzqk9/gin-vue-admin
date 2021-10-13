@@ -131,6 +131,19 @@
 	           </el-select>
 	         </el-col>
 	       </el-form-item>
+		   
+		   <el-form-item label="是否富文本" prop="beEditor">
+		       <el-col :span="8">
+		         <el-select v-model="dialogMiddle.beEditor" placeholder="请选择富文本" clearable>
+		           <el-option
+		             v-for="item in beHideOptions"
+		             :key="item.value"
+		             :label="item.label"
+		             :value="item.value"
+		           />
+		         </el-select>
+		       </el-col>
+		     </el-form-item>
 		
     </el-form>
   </div>
