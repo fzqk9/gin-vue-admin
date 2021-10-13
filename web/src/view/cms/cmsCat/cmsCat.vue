@@ -428,8 +428,7 @@ export default {
   data() {
     return {
       beNewWindow:false,//是否在新窗口打开编辑器
-      listApi: getCmsCatList,   
-      
+      listApi: getCmsCatList, 
       media_typeOptions: [],
           
       statusOptions: [],
@@ -512,10 +511,8 @@ export default {
       } 
 	}, 
 	//编辑或新增form
-async goEditForm(id) { 
-	console.log("goEditForm = ",id)
+   async goEditForm(id) { 
 	  if (this.beNewWindow) {
-		  	console.log("goEditForm 111= ",id)
 		  if (id >0) {
 			this.$router.push({ name: 'CmsCatForm', params: {id:id}})
 		  } else {
@@ -523,7 +520,6 @@ async goEditForm(id) {
 		  }
 	  }else
 	  {
-		  console.log("goEditForm 22222= ",id)
 		 if (id >0) {
 			  const res = await findCmsCat({ID:id})
 			  //console.log(res.data)
@@ -540,32 +536,11 @@ async goEditForm(id) {
 
 //编辑或新增 返回保存
     async saveEditForm() {  
-      //更新图片guid, editor
+      //更新图片guid, editor 
       
-                  
-      
-                  
-      
-                  
-      
-                  
-      
-                  
-      
-       this.formData.thumb = this.$refs.imageView_thumb.myGuid;           
-                  
-      
-                  
-      
-                  
-      
-        this.formData.desc = this.$refs.editor_desc.getContent;            
-      
-        this.formData.keywords = this.$refs.editor_keywords.getContent;            
-      
-                  
-      
-                  
+       this.formData.thumb = this.$refs.imageView_thumb.myGuid;    
+        this.formData.desc = this.$refs.editor_desc.getContent(); 
+        this.formData.keywords = this.$refs.editor_keywords.getContent();   
         
       delete this.formData.mapData;
       delete this.formData.CreatedAt;

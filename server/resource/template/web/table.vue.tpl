@@ -369,7 +369,7 @@ async goEditForm(id) {
       //更新图片guid, editor
       {{range .Fields}}
        {{if eq .FieldType "image"}}this.formData.{{.FieldJson}} = this.$refs.imageView_{{.FieldJson}}.myGuid;           
-       {{else if .BeEditor}} this.formData.{{.FieldJson}} = this.$refs.editor_{{.FieldJson}}.getContent; {{ end }}           
+       {{else if .BeEditor}} this.formData.{{.FieldJson}} = this.$refs.editor_{{.FieldJson}}.getContent();{{ end }}           
       {{end}}  
       delete this.formData.mapData;
       delete this.formData.CreatedAt;
