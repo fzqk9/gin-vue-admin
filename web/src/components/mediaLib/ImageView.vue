@@ -1,13 +1,15 @@
 <template>
  <div>  
    <el-image class="image-div"  fit="fill" :src="myUrl" :preview-src-list="myList" hide-on-click-modal/> 
-   <el-link v-if="beEdit" icon="el-icon-edit" @click="openChooseImg">重新上传</el-link>
+    <el-space :size="2" spacer=" "> 
+         <el-link v-if="beEdit" icon="el-icon-edit"  @click="openChooseImg">上传</el-link>    
+	     <el-link v-if="beEdit"  @click="deleteImg">删除<i class="el-icon-delete el-icon--right"></i></el-link> 
+     </el-space>  
  </div>
  <template  v-if="beEdit">
  	 <MediaLib ref="mediaLib" @select-one-img="selectOneImg" />
- </template>
- </template>
-
+ </template> 
+ </template> 
  <script>
  	import {
  		ref
@@ -60,41 +62,64 @@
 		    this.myList =[this.myUrl];
 		    this.myGuid = this.guid;
 		},
-		watch: {
-		    url (val) {  
-		      this.myUrl = val
-			  this.myList =[this.myUrl];
-			  console.log("this.myUrl");  console.log(this.myUrl); 
-		    }
+		watch:{ 
+			url(val){
+				this.myUrl = val;
+				this.myList =[val];
+			},
+			guid(val){  
+			   this.myGuid = val  
+			}  
+			/*
+		    url:{ 
+				handler(newVal, oldVal) {   
+				  this.myUrl = newVal
+				  this.myList =[newVal];
+				  //console.log("this.myUrl");  console.log(this.myUrl); 
+				},
+				//immediate: true//初始化绑定时就会执行handler方法
+			},
+			guid:{ 
+				handler(newVal, oldVal) {  
+				  //console.log("guid -newVal: ", newVal, "guid -oldVal: ",oldVal);
+				  this.myGuid = newVal 
+				  //console.log("this.myGuid");  console.log(this.myGuid); 
+			  },
+			 // immediate: true//初始化绑定时就会执行handler方法
+			} 
+			*/
 		  }, 
  		methods: {
  			openChooseImg() {
- 				console.log("1111");
+ 				//console.log("1111");
  				this.$refs.mediaLib.open()
  			},
+			deleteImg()
+			{
+				this.myUrl ="";
+				this.myList =[];
+				this.myGuid ="";	
+			},
  			selectOneImg(obj) {
- 				console.log("selectOneImg");
-				console.log(obj);
+ 				//console.log("selectOneImg");
+				//console.log(obj);
 				 this.myUrl = obj.url;
 				 this.myList =[obj.url];
 				 this.myGuid = obj.guid;
  			} 
- 		} 
-		 
+ 		} 		 
 		// async created() {
 		//    console.log("created----------");
 		//    this.urllist = [this.url]
 		//    console.log(this.urllist);
 		// },
-		 
-		
  	}
  </script>
  <style scoped>
  	.image-div {
  		display: flex;
- 		width: 80px;
- 		height: 80px;
+ 		width: 90px;
+ 		height: 90px;
  	}
  	.imgtxt {
  		display: flex;

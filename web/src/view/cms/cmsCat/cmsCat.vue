@@ -152,7 +152,7 @@
              
                   <el-table-column label="配图" prop="thumb" width="120"   >
                      <template #default="scope">
-                        <ImageView  :url="getMapData(scope.row.thumb,scope.row.mapData)" />  
+                        <ImageView :url="getMapData(scope.row.thumb,scope.row.mapData)"  />  
 				     </template> 
 					 
                   </el-table-column>   
@@ -217,7 +217,7 @@
       @size-change="handleSizeChange"
     />
     <!---------- 编辑弹窗------------------ -->
-    <el-dialog :before-close="closeDialog" v-model="dialogFormVisible" title="弹窗操作">
+    <el-dialog :before-close="closeDialog"  v-model="dialogFormVisible"  v-if="dialogFormVisible" title="弹窗操作">
       <el-form :model="formData" label-position="right" label-width="80px">
         <el-form-item label="父ID:">
               
@@ -242,7 +242,7 @@
       <el-input v-model="formData.name" clearable placeholder="请输入" />
               </el-form-item>
         <el-form-item label="配图:"> 
-                <ImageView ref="imageView_thumb"  be-edit :url="getMapData(formData.thumb,formData.mapData)" /> 
+                <ImageView ref="imageView_thumb"  be-edit :url="getMapData(formData.thumb,formData.mapData)" :guid="formData.thumb" /> 
               </el-form-item>
         <el-form-item label="排序:">
               
@@ -383,7 +383,7 @@ export default {
 	},	 
 	//编辑或新增form
 	async goEditForm(id) {
-		console.log("id===",id);
+	  console.log("id===",id);
 	  if (this.isNewWindow)
 	  {
 		  if (id >0) {
@@ -403,7 +403,9 @@ export default {
 		 {
 			this.editType = 'create' 
 		 }
-		  this.dialogFormVisible = true
+		 
+		  this.dialogFormVisible = true;
+		 // console.log("this.dialogFormVisible=",this.dialogFormVisible);
 	  }
 	},	
 	//编辑或新增 返回保存
