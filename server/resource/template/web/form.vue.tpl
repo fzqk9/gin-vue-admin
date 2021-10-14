@@ -2,31 +2,40 @@
   <div>
     <div class="gva-form-box">
       <el-form :model="formData" label-position="right" label-width="80px">
-      {{- range .Fields}}
+       {{- range .Fields }}
         <el-form-item label="{{.FieldDesc}}:">
-      {{- if eq .FieldType "bool" }}
-          <el-switch v-model="formData.{{.FieldJson}}" active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" clearable ></el-switch>
-      {{- end }}
-      {{- if eq .FieldType "string" }}
-          <el-input v-model="formData.{{.FieldJson}}" clearable placeholder="请输入" />
-      {{- end }}
-      {{- if eq .FieldType "int" }}
-      {{- if .DictType }}
-          <el-select v-model="formData.{{ .FieldJson }}" placeholder="请选择" clearable>
-            <el-option v-for="(item,key) in {{ .DictType }}Options" :key="key" :label="item.label" :value="item.value" />
-          </el-select>
-      {{- else }}
-          <el-input v-model.number="formData.{{ .FieldJson }}" clearable placeholder="请输入" />
-      {{- end }}
-      {{- end }}
-      {{- if eq .FieldType "time.Time" }}
-          <el-date-picker v-model="formData.{{ .FieldJson }}" type="date" placeholder="选择日期" clearable></el-date-picker>
-      {{- end }}
-      {{- if eq .FieldType "float64" }}
-          <el-input-number v-model="formData.{{ .FieldJson }}" :precision="2" clearable></el-input-number>
-      {{- end }}
-        </el-form-item>
-      {{- end }}
+              {{- if eq .FieldType "bool"}}
+             <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" v-model="formData.{{.FieldJson}}" clearable ></el-switch>
+              {{end -}}
+              {{- if eq .FieldType "string"}}
+                    {{- if .BeEditor }}
+              <editor ref="editor_{{.FieldJson}}" :value="formData.{{.FieldJson}}" placeholder="请输入{{.FieldDesc}}" />  
+                    {{- else}} 
+              <el-input v-model="formData.{{.FieldJson}}" clearable placeholder="请输入" />
+                   {{- end}}  
+              {{- end}} 
+              {{- if eq .FieldType "image"}}
+               <ImageView ref="imageView_{{.FieldJson}}" be-edit :url="getMapData(formData.{{.FieldJson}},formData.mapData)" :guid="formData.{{.FieldJson}}" /> 
+               {{- end}}  
+              {{- if eq .FieldType "int"}}
+                    {{- if .DictType}}
+                 <el-select v-model="formData.{{ .FieldJson }}" placeholder="请选择" clearable>
+                      <el-option v-for="(item,key) in {{ .DictType }}Options" :key="key" :label="item.label" :value="item.value" />
+                 </el-select>
+                    {{- else}}
+                 <el-input v-model.number="formData.{{ .FieldJson }}" clearable placeholder="请输入" />
+                    {{- end}}
+              {{- end}}
+              {{- if eq .FieldType "time.Time"}}
+               <el-date-picker type="datetimerange" v-model="formData.{{ .FieldJson }}" format="yyyy-MM-dd HH:mm:ss"
+                  value-format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" start-placeholder="开始日期"
+                  end-placeholder="结束日期" range-separator="至" clearable></el-date-picker>
+              {{- end}}
+              {{- if eq .FieldType "float64"}}
+               <el-input-number v-model="formData.{{ .FieldJson }}" :precision="2" clearable />
+              {{- end}}
+       </el-form-item>
+       {{- end}}
         <el-form-item>
           <el-button size="mini" type="primary" @click="save">保存</el-button>
           <el-button size="mini" type="primary" @click="back">返回</el-button>
@@ -49,55 +58,59 @@ export default {
  name: '编辑{{.StructName}}',
   mixins: [infoList,tinymce,editForm], 
   data() {
-    return {
-      type: '',
+    return { 
       {{- range .Fields}}
           {{- if .DictType }}
       {{ .DictType }}Options: [],
           {{- end }}
       {{- end }}
       formData: {
-        {{- range .Fields}}
-          {{- if eq .FieldType "bool" }}
-        {{.FieldJson}}: false,
+        {{ range .Fields}}
+          {{- if eq .FieldType "bool" -}}
+               {{.FieldJson}}: false,
           {{- end }}
-          {{- if eq .FieldType "string" }}
-        {{.FieldJson}}: '',
-          {{- end }}
-          {{- if eq .FieldType "int" }}
-        {{.FieldJson}}: 0,
-          {{- end }}
-          {{- if eq .FieldType "time.Time" }}
-        {{.FieldJson}}: new Date(),
-          {{- end }}
-          {{- if eq .FieldType "float64" }}
-        {{.FieldJson}}: 0,
-          {{- end }}
-        {{- end }}
+          {{- if eq .FieldType "string" -}}
+               {{.FieldJson}}: '',
+          {{ end -}}
+          {{- if eq .FieldType "int" -}}
+              {{.FieldJson}}: 0,
+          {{ end -}}
+          {{- if eq .FieldType "time.Time" -}}
+                {{.FieldJson}}: new Date(),
+         {{- end}}
+         {{- if eq .FieldType "float64" -}}
+              {{.FieldJson}}: 0,
+          {{- end}}
+           {{- if eq .FieldType "image" -}}
+              {{.FieldJson}}: "",
+          {{- end -}}
+        {{- end -}}
+        mapData: {}
       }
     }
   },
   async created() {
-    // 建议通过url传参获取目标数据ID 调用 find方法进行查询数据操作 从而决定本页面是create还是update 以下为id作为url参数示例
+    // 建议通过url传参获取目标数据ID 调用 find方法进行查询数据操作 
+    // 从而决定本页面是create还是update 以下为id作为url参数示例
     if (this.$route.query.id) {
       const res = await find{{.StructName}}({ ID: this.$route.query.id })
       if (res.code === 0) {
         this.formData = res.data.re{{.Abbreviation}}
-        this.type = 'update'
+        this.editType = 'update'
       }
     } else {
-      this.type = 'create'
+      this.editType = 'create'
     }
     {{- range .Fields }}
       {{- if .DictType }}
     await this.getDict('{{.DictType}}')
       {{- end }}
-    {{- end }}
+    {{- end }} 
   },
   methods: {
     async save() {
       let res
-      switch (this.type) {
+      switch (this.editType) {
         case 'create':
           res = await create{{.StructName}}(this.formData)
           break
@@ -113,14 +126,15 @@ export default {
           type: 'success',
           message: '创建/更改成功'
         })
+         emitter.emit('closeThisPage') 
       }
     },
     back() {
       this.$router.go(-1)
+      emitter.emit('closeThisPage') 
     }
   }
 }
 </script>
-
 <style>
 </style>

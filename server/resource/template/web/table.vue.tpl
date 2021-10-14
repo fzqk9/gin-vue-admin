@@ -3,7 +3,6 @@
   <!----------查询form------------------ -->
     <div class="search-term">
       <el-form :inline="true" :model="searchInfo" class="demo-form-inline">
-
       {{- if .SearchCreate}} 
       <el-form-item label="创建时间">
             <el-date-picker 
@@ -16,12 +15,12 @@
                   end-placeholder="结束日期"
                 />
               </el-form-item>
-      {{ end -}} 
+      {{- end }} 
       {{- if .SearchId}} 
         <el-form-item label="ID">
             <el-input placeholder="搜索ID" v-model="searchInfo.ID" />
         </el-form-item>
-      {{ end -}} 
+      {{- end -}} 
 
       {{- range .Fields}} 
       {{- if .FieldSearchType}}   
@@ -40,19 +39,19 @@
                   </el-option>
              </el-select>
           </el-form-item> 
-          {{ else if eq .FieldType "int" -}}
-              {{ if .DictType -}}
+          {{- else if eq .FieldType "int" }}
+              {{- if .DictType }}
                 <el-form-item label="{{.FieldDesc}}" prop="{{.FieldJson}}">                
                     <el-select v-model="searchInfo.{{ .FieldJson }}" placeholder="请选择" clearable>
                       <el-option v-for="(item,key) in {{ .DictType }}Options" :key="key" :label="item.label" :value="item.value"></el-option>
                     </el-select>
                 </el-form-item>
-              {{ else -}}
+              {{- else }}
                   <el-form-item label="{{.FieldDesc}}">
                       <el-input placeholder="搜索条件" v-model="searchInfo.{{.FieldJson}}" clearable />
                   </el-form-item>
-              {{ end -}}      
-            {{ else if eq .FieldType "time.Time" -}}
+              {{- end }}      
+            {{- else if eq .FieldType "time.Time" }}
               <el-form-item label="{{.FieldDesc}}"> 
                 <el-date-picker
                 v-model="formData.{{ .FieldJson }}"  
@@ -64,19 +63,19 @@
                 end-placeholder="结束日期"
               /> 
              </el-form-item>
-            {{ else -}} 
+            {{- else }} 
                 <el-form-item label="{{.FieldDesc}}">
                   <el-input placeholder="搜索条件" v-model="searchInfo.{{.FieldJson}}" clearable />
                 </el-form-item>
-            {{ end -}}
-          {{ end }}  
-        {{ end }}
+            {{- end }}
+          {{- end }}  
+        {{- end }}
         <el-form-item>
           <el-button size="mini" type="primary" icon="el-icon-search" @click="onSearch">查询</el-button>
           <el-button size="mini" type="primary" icon="el-icon-plus" @click="goEditForm(0)">新增</el-button>
-         {{ if .BeExcel }}
+         {{- if .BeExcel }}
            <el-button size="mini" type="primary" icon="el-icon-plus" @click="onExcel">导出</el-button>
-        {{ end }}
+        {{- end }}
           <el-popover v-model:visible="deleteVisible" placement="top" width="160">
             <p>确定要删除吗？</p>
             <div style="text-align: right; margin: 0">
@@ -103,67 +102,67 @@
     >
       <el-table-column type="selection" width="55" />      
        <el-table-column label="ID" min-width="60" prop="ID" sortable="custom" />     
-      {{- range .Fields}} 
-        {{- if  .BeHide }}            
-         {{else}}  
-             {{if .BeQuickEdit}}
-                 <!-- BeQuickEdit --> 
-                {{- if .DictType}}
-                    <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120" {{if .OrderBy}} sortable="custom"{{end}} >
-                    <template #default="scope">  
-                    <el-popover trigger="click" placement="top"  width = "280">  
-                          <el-select v-model="scope.row.{{.FieldJson}}" placeholder="请选择"  @change="quickEdit_do('{{.ColumnName}}',scope.row.ID,scope.row.{{.FieldJson}},scope)">
-                              <el-option v-for="(item,key) in {{.DictType}}Options" :key="key" :label="item.label" :value="item.value"></el-option>
-                          </el-select> 
-                          <template #reference>
-                              <div class="quickEdit" > {{"{{"}}filterDict(scope.row.{{.FieldJson}},"{{.DictType}}"){{"}}"}} </div>
-                          </template>
-                       </el-popover>
-                    </template>  
-                    </el-table-column>
-                {{- else if eq .FieldType "bool" }}
-                    <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{if .OrderBy}} sortable="custom"{{end}}  >                        
-                        <template #default="scope" ><el-switch v-model="scope.row.{{.FieldJson}}" @change="quickEdit_do('{{.ColumnName}}',scope.row.ID,scope.row.{{.FieldJson}},scope)"/></template> 
-                    </el-table-column> 
-                {{- else }}  
-                    <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{if .OrderBy}} sortable="custom"{{end}} >
-                    <template #default="scope">
-                        <el-popover trigger="click" placement="top"  width = "280">  
-                        <el-row :gutter="10">
-                          <el-col :span="16">  <el-input type="textarea" autosize placeholder="请输入内容" v-model="scope.row.{{.FieldJson}}"></el-input></el-col>
-                          <el-col :span="4"> <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="quickEdit_do('{{.ColumnName}}',scope.row.ID,scope.row.{{.FieldJson}},scope)">保存</el-button> </el-col> 
-                        </el-row>  
-                          <template #reference>
-                            <div  class="quickEditTxt"  > {{"{{"}}scope.row.{{.FieldJson}}{{"}}"}} </div>
-                          </template>
-                        </el-popover>
-                    </template>
-                     </el-table-column>              
-                {{ end -}}
-              {{else}}  
-                  {{- if .DictType}}
-                <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120" {{if .OrderBy}} sortable="custom"{{end}} >
-                  <template #default="scope">
-                    {{"{{"}}filterDict(scope.row.{{.FieldJson}},"{{.DictType}}"){{"}}"}}
-                  </template>
-                </el-table-column>
-                {{- else if eq .FieldType "bool" }}
-                <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{if .OrderBy}} sortable="custom"{{end}}  >
-                  <template #default="scope">{{"{{formatBoolean(scope.row."}}{{.FieldJson}}{{")}}"}}</template>
-                </el-table-column>
-                 {{- else if eq .FieldType "image" }}
-                  <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{if .OrderBy}} sortable="custom"{{end}} >
-                      <template #default="scope">
-                        <ImageView :url="getMapData(scope.row.{{.FieldJson}},scope.row.mapData)" />
-                      </template>
-                  </el-table-column>
-                {{- else }} 
-                  <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{if .OrderBy}} sortable="custom"{{end}}  />
-                {{- end }}  
-              {{end}} 
-          {{end}} 
-      {{ end}}   
-
+{{- range .Fields}} 
+  {{- if .BeHide }} 
+      <!--{{.FieldJson}} BeHide -->            
+  {{- else}}  
+      {{- if .BeQuickEdit}}
+          <!--{{.FieldJson}}  BeQuickEdit --> 
+        {{- if .DictType}}
+        <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120" {{if .OrderBy}} sortable="custom"{{end}} >
+        <template #default="scope">  
+        <el-popover trigger="click" placement="top"  width = "280">  
+              <el-select v-model="scope.row.{{.FieldJson}}" placeholder="请选择"  @change="quickEdit_do('{{.ColumnName}}',scope.row.ID,scope.row.{{.FieldJson}},scope)">
+                  <el-option v-for="(item,key) in {{.DictType}}Options" :key="key" :label="item.label" :value="item.value"></el-option>
+              </el-select> 
+              <template #reference>
+                  <div class="quickEdit" > {{"{{"}}filterDict(scope.row.{{.FieldJson}},"{{.DictType}}"){{"}}"}} </div>
+              </template>
+            </el-popover>
+        </template>  
+        </el-table-column>
+        {{- else if eq .FieldType "bool" }}
+        <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{if .OrderBy}} sortable="custom"{{end}}  >                        
+            <template #default="scope" ><el-switch v-model="scope.row.{{.FieldJson}}" @change="quickEdit_do('{{.ColumnName}}',scope.row.ID,scope.row.{{.FieldJson}},scope)"/></template> 
+        </el-table-column> 
+        {{- else }}  
+        <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{if .OrderBy}} sortable="custom"{{end}} >
+        <template #default="scope">
+            <el-popover trigger="click" placement="top"  width = "280">  
+            <el-row :gutter="10">
+              <el-col :span="16">  <el-input type="textarea" autosize placeholder="请输入内容" v-model="scope.row.{{.FieldJson}}"></el-input></el-col>
+              <el-col :span="4"> <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="quickEdit_do('{{.ColumnName}}',scope.row.ID,scope.row.{{.FieldJson}},scope)">保存</el-button> </el-col> 
+            </el-row>  
+              <template #reference>
+                <div  class="quickEditTxt"  > {{"{{"}}scope.row.{{.FieldJson}}{{"}}"}} </div>
+              </template>
+            </el-popover>
+        </template>
+          </el-table-column>              
+        {{- end -}}
+      {{- else}}  
+          {{- if .DictType}}
+        <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120" {{if .OrderBy}} sortable="custom"{{end}} >
+          <template #default="scope">
+            {{"{{"}}filterDict(scope.row.{{.FieldJson}},"{{.DictType}}"){{"}}"}}
+          </template>
+        </el-table-column>
+        {{- else if eq .FieldType "bool" }}
+        <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{if .OrderBy}} sortable="custom"{{end}}  >
+          <template #default="scope">{{"{{formatBoolean(scope.row."}}{{.FieldJson}}{{")}}"}}</template>
+        </el-table-column>
+          {{- else if eq .FieldType "image" }}
+          <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{if .OrderBy}} sortable="custom"{{end}} >
+              <template #default="scope">
+                <ImageView :url="getMapData(scope.row.{{.FieldJson}},scope.row.mapData)" />
+              </template>
+          </el-table-column>
+        {{- else }} 
+          <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" width="120"  {{if .OrderBy}} sortable="custom"{{end}}  />
+        {{- end }}  
+      {{- end}} 
+  {{- end}} 
+{{- end}} 
       <el-table-column label="日期" width="180" prop="created_at" sortable="custom" >
         <template #default="scope">{{ "{{ formatDate(scope.row.CreatedAt)}}" }}</template>
       </el-table-column>
@@ -188,40 +187,40 @@
     <!---------- 编辑弹窗------------------ -->
     <el-dialog  v-if="dialogFormVisible"  :before-close="closeDialog" v-model="dialogFormVisible" title="编辑资料">
       <el-form :model="formData" label-position="right" label-width="80px">
-    {{range .Fields}}
+    {{- range .Fields }}
         <el-form-item label="{{.FieldDesc}}:">
-              {{if eq .FieldType "bool"}}
-                  <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" v-model="formData.{{.FieldJson}}" clearable ></el-switch>
-              {{end}}
-              {{if eq .FieldType "string"}}
-                    {{ if .BeEditor }}
-                          <editor ref="editor_{{.FieldJson}}" :value="formData.{{.FieldJson}}" placeholder="请输入{{.FieldDesc}}" />  
-                    {{else}} 
-                      <el-input v-model="formData.{{.FieldJson}}" clearable placeholder="请输入" />
-                   {{end}}  
-              {{end}} 
-              {{if eq .FieldType "image"}}
-                     <ImageView ref="imageView_{{.FieldJson}}" be-edit :url="getMapData(formData.{{.FieldJson}},formData.mapData)" :guid="formData.{{.FieldJson}}" /> 
-               {{end}}  
-              {{if eq .FieldType "int"}}
-                    {{if .DictType}}
-                        <el-select v-model="formData.{{ .FieldJson }}" placeholder="请选择" clearable>
-                          <el-option v-for="(item,key) in {{ .DictType }}Options" :key="key" :label="item.label" :value="item.value" />
-                        </el-select>
-                    {{else}}
-                        <el-input v-model.number="formData.{{ .FieldJson }}" clearable placeholder="请输入" />
-                    {{end}}
-              {{end}}
-              {{if eq .FieldType "time.Time"}}
-                  <el-date-picker type="datetimerange" v-model="formData.{{ .FieldJson }}" format="yyyy-MM-dd HH:mm:ss"
-                    value-format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" start-placeholder="开始日期"
-                    end-placeholder="结束日期" range-separator="至" clearable></el-date-picker>
-              {{end}}
-              {{if eq .FieldType "float64"}}
-                  <el-input-number v-model="formData.{{ .FieldJson }}" :precision="2" clearable />
-              {{end}}
+              {{- if eq .FieldType "bool"}}
+             <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" v-model="formData.{{.FieldJson}}" clearable ></el-switch>
+              {{end -}}
+              {{- if eq .FieldType "string"}}
+                    {{- if .BeEditor }}
+              <editor ref="editor_{{.FieldJson}}" :value="formData.{{.FieldJson}}" placeholder="请输入{{.FieldDesc}}" />  
+                    {{- else}} 
+              <el-input v-model="formData.{{.FieldJson}}" clearable placeholder="请输入" />
+                   {{- end}}  
+              {{- end}} 
+              {{- if eq .FieldType "image"}}
+               <ImageView ref="imageView_{{.FieldJson}}" be-edit :url="getMapData(formData.{{.FieldJson}},formData.mapData)" :guid="formData.{{.FieldJson}}" /> 
+               {{- end}}  
+              {{- if eq .FieldType "int"}}
+                    {{- if .DictType}}
+                 <el-select v-model="formData.{{ .FieldJson }}" placeholder="请选择" clearable>
+                      <el-option v-for="(item,key) in {{ .DictType }}Options" :key="key" :label="item.label" :value="item.value" />
+                 </el-select>
+                    {{- else}}
+                 <el-input v-model.number="formData.{{ .FieldJson }}" clearable placeholder="请输入" />
+                    {{- end}}
+              {{- end}}
+              {{- if eq .FieldType "time.Time"}}
+               <el-date-picker type="datetimerange" v-model="formData.{{ .FieldJson }}" format="yyyy-MM-dd HH:mm:ss"
+                  value-format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" start-placeholder="开始日期"
+                  end-placeholder="结束日期" range-separator="至" clearable></el-date-picker>
+              {{- end}}
+              {{- if eq .FieldType "float64"}}
+               <el-input-number v-model="formData.{{ .FieldJson }}" :precision="2" clearable />
+              {{- end}}
        </el-form-item>
-       {{end}}
+       {{- end}}
      </el-form>
       <div slot="footer" class="el-dialog__footer">
         <el-button @click="closeDialog">取 消</el-button>
@@ -251,16 +250,16 @@ export default {
     return {
       beNewWindow:{{.BeNewWindow}},//是否在新窗口打开编辑器
       listApi: get{{ .StructName }}List,   
-      {{ range .Fields}}
-          {{- if .DictType }}
+ {{- range .Fields}}
+      {{- if .DictType }}
       {{ .DictType }}Options: [],
-          {{ end -}}
-      {{ end }}
+     {{- end}}
+  {{- end}}
       formData: {
-        {{range .Fields}}
+        {{ range .Fields}}
           {{- if eq .FieldType "bool" -}}
                {{.FieldJson}}: false,
-          {{ end -}}
+          {{- end }}
           {{- if eq .FieldType "string" -}}
                {{.FieldJson}}: '',
           {{ end -}}
@@ -269,29 +268,28 @@ export default {
           {{ end -}}
           {{- if eq .FieldType "time.Time" -}}
                 {{.FieldJson}}: new Date(),
-         {{ end -}}
+         {{- end}}
          {{- if eq .FieldType "float64" -}}
               {{.FieldJson}}: 0,
-          {{ end -}}
+          {{- end}}
            {{- if eq .FieldType "image" -}}
               {{.FieldJson}}: "",
-          {{ end -}}
-        {{ end }}
+          {{- end -}}
+        {{- end -}}
         mapData: {}
       } 
     }
   },
   
   async created() { 
-    {{ range .Fields -}}
+    {{- range .Fields}}
       {{- if .DictType }}
     await this.getDict('{{.DictType}}')
-      {{ end -}}
-    {{- end }}
-     await this.getTableData()
+      {{- end}}
+    {{- end}}
+    await this.getTableData()
   },
-  methods: {
-  // 条件搜索前端看此方法
+  methods: { 
     onSearch() {
       this.page = 1
       this.pageSize = 20 
@@ -326,7 +324,7 @@ export default {
         })
       this.doDelete(ids); 
     },
-	async doDelete(ids) { 
+  	async doDelete(ids) { 
      const res = await delete{{.StructName}}ByIds({ ids })
       if (res.code === 0) {
         this.$message({
@@ -339,9 +337,8 @@ export default {
         this.deleteVisible = false
         this.getTableData()
       } 
-	}, 
-	//编辑或新增form
-async goEditForm(id) { 
+	},  
+   async goEditForm(id) { 
 	  if (this.beNewWindow) {
 		  if (id >0) {
 			this.$router.push({ name: '{{.StructName}}Form', params: {id:id}})
@@ -362,15 +359,15 @@ async goEditForm(id) {
 		 }
 		  this.dialogFormVisible = true
 	  }
-	},	
-
-//编辑或新增 返回保存
-    async saveEditForm() {  
-      //更新图片guid, editor
-      {{range .Fields}}
-       {{if eq .FieldType "image"}}this.formData.{{.FieldJson}} = this.$refs.imageView_{{.FieldJson}}.myGuid;           
-       {{else if .BeEditor}} this.formData.{{.FieldJson}} = this.$refs.editor_{{.FieldJson}}.getContent();{{ end }}           
-      {{end}}  
+	}, 
+    async saveEditForm() {   
+      {{- range .Fields }}
+       {{- if eq .FieldType "image"  }}
+      this.formData.{{.FieldJson}} = this.$refs.imageView_{{.FieldJson}}.myGuid;           
+       {{- else if .BeEditor }} 
+      this.formData.{{.FieldJson}} = this.$refs.editor_{{.FieldJson}}.getContent();
+       {{- end}}           
+      {{- end}}  
       delete this.formData.mapData;
       delete this.formData.CreatedAt;
       delete this.formData.UpdatedAt;

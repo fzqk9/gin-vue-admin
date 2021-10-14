@@ -65,5 +65,9 @@ func (e *CommonFileService) GetPathByGuid(guid string) (err error, path string) 
 	if err != nil {
 		return err, ""
 	}
-	return err, global.GVA_CONFIG.Local.BaseUrl + basicFile.Path
+	path = basicFile.Path
+	if !utils.IsEmpty(path) {
+		path = global.GVA_CONFIG.Local.BaseUrl + path
+	}
+	return err, path
 }

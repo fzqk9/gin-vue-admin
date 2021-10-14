@@ -44,14 +44,14 @@ func ({{.Abbreviation}}Service *{{.StructName}}Service)Update{{.StructName}}({{.
 func ({{.Abbreviation}}Service *{{.StructName}}Service)Get{{.StructName}}(id uint) (err error, obj autocode.{{.StructName}}) {
 	err = global.GVA_DB.Where("id = ?", id).First(&obj).Error 
     obj.MapData = make(map[string]string)
-     {{ range .Fields}} 
-         {{if eq .FieldType "image"}} 
-         	if !utils.IsEmpty(obj.{{.FieldName}}) {
-			    _,obj.MapData[obj.{{.FieldName}}] = commFileService.GetPathByGuid(obj.{{.FieldName}})
-		    }     
-        {{end}}  
-      {{ end }}  
-    return
+     {{- range .Fields}} 
+         {{- if eq .FieldType "image"}} 
+    if !utils.IsEmpty(obj.{{.FieldName}}) {
+        _,obj.MapData[obj.{{.FieldName}}] = commFileService.GetPathByGuid(obj.{{.FieldName}})
+    }     
+        {{- end }}  
+      {{- end }}  
+    return err, obj
 }
 
 // Get{{.StructName}}InfoList 分页获取{{.StructName}}记录
@@ -115,15 +115,14 @@ func ({{.Abbreviation}}Service *{{.StructName}}Service)Get{{.StructName}}InfoLis
      //更新图片path
 	for i, v := range {{.Abbreviation}}s {
 	 v.MapData = make(map[string]string)
-     {{ range .Fields}} 
-         {{if eq .FieldType "image"}} 
-         	if !utils.IsEmpty(v.{{.FieldName}}) {
-			    _, v.MapData[v.{{.FieldName}}] = commFileService.GetPathByGuid(v.{{.FieldName}})
-		    }     
-        {{end}}  
-      {{ end }}
+     {{- range .Fields}} 
+         {{- if eq .FieldType "image"}} 
+        if !utils.IsEmpty(v.{{.FieldName}}) {
+            _, v.MapData[v.{{.FieldName}}] = commFileService.GetPathByGuid(v.{{.FieldName}})
+        }     
+        {{- end}}  
+      {{- end }}
 	  {{.Abbreviation}}s[i] = v
 	}
-
 	return err, {{.Abbreviation}}s, total
 }

@@ -43,37 +43,11 @@ func (cmsCatService *CmsCatService)UpdateCmsCat(cmsCat autocode.CmsCat) (err err
 // Author [piexlmax](https://github.com/piexlmax)
 func (cmsCatService *CmsCatService)GetCmsCat(id uint) (err error, obj autocode.CmsCat) {
 	err = global.GVA_DB.Where("id = ?", id).First(&obj).Error 
-    obj.MapData = make(map[string]string)
-      
-           
-       
-           
-       
-           
-       
-           
-       
-           
-       
-          
-         	if !utils.IsEmpty(obj.Thumb) {
-			    _,obj.MapData[obj.Thumb] = commFileService.GetPathByGuid(obj.Thumb)
-		    }     
-          
-       
-           
-       
-           
-       
-           
-       
-           
-       
-           
-       
-           
-        
-    return
+    obj.MapData = make(map[string]string) 
+    if !utils.IsEmpty(obj.Thumb) {
+        _,obj.MapData[obj.Thumb] = commFileService.GetPathByGuid(obj.Thumb)
+    }  
+    return err, obj
 }
 
 // GetCmsCatInfoList 分页获取CmsCat记录
@@ -132,38 +106,11 @@ func (cmsCatService *CmsCatService)GetCmsCatInfoList(info autoCodeReq.CmsCatSear
      err = db.Order(OrderStr).Limit(limit).Offset(offset).Find(&cmsCats).Error
      //更新图片path
 	for i, v := range cmsCats {
-	 v.MapData = make(map[string]string)
-      
-           
-       
-           
-       
-           
-       
-           
-       
-           
-       
-          
-         	if !utils.IsEmpty(v.Thumb) {
-			    _, v.MapData[v.Thumb] = commFileService.GetPathByGuid(v.Thumb)
-		    }     
-          
-       
-           
-       
-           
-       
-           
-       
-           
-       
-           
-       
-           
-      
+	 v.MapData = make(map[string]string) 
+        if !utils.IsEmpty(v.Thumb) {
+            _, v.MapData[v.Thumb] = commFileService.GetPathByGuid(v.Thumb)
+        }
 	  cmsCats[i] = v
 	}
-
 	return err, cmsCats, total
 }

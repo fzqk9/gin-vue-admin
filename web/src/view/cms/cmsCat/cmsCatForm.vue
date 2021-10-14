@@ -3,44 +3,47 @@
     <div class="gva-form-box">
       <el-form :model="formData" label-position="right" label-width="80px">
         <el-form-item label="父ID:">
-          <el-input v-model.number="formData.pid" clearable placeholder="请输入" />
-        </el-form-item>
+                 <el-input v-model.number="formData.pid" clearable placeholder="请输入" />
+       </el-form-item>
         <el-form-item label="系统分类:">
-          <el-switch v-model="formData.beSys" active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" clearable ></el-switch>
-        </el-form-item>
+             <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" v-model="formData.beSys" clearable ></el-switch>
+              
+       </el-form-item>
         <el-form-item label="群组id:">
-          <el-input v-model.number="formData.groupId" clearable placeholder="请输入" />
-        </el-form-item>
+                 <el-input v-model.number="formData.groupId" clearable placeholder="请输入" />
+       </el-form-item>
         <el-form-item label="文章类型:">
-          <el-select v-model="formData.mediaType" placeholder="请选择" clearable>
-            <el-option v-for="(item,key) in media_typeOptions" :key="key" :label="item.label" :value="item.value" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="名称:">
-          <el-input v-model="formData.name" clearable placeholder="请输入" />
-        </el-form-item>
+                 <el-select v-model="formData.mediaType" placeholder="请选择" clearable>
+                      <el-option v-for="(item,key) in media_typeOptions" :key="key" :label="item.label" :value="item.value" />
+                 </el-select>
+       </el-form-item>
+        <el-form-item label="名称:"> 
+              <el-input v-model="formData.name" clearable placeholder="请输入" />
+       </el-form-item>
         <el-form-item label="配图:">
-        </el-form-item>
+               <ImageView ref="imageView_thumb" be-edit :url="getMapData(formData.thumb,formData.mapData)" :guid="formData.thumb" />
+       </el-form-item>
         <el-form-item label="排序:">
-          <el-input v-model.number="formData.sort" clearable placeholder="请输入" />
-        </el-form-item>
+                 <el-input v-model.number="formData.sort" clearable placeholder="请输入" />
+       </el-form-item>
         <el-form-item label="是否导航:">
-          <el-switch v-model="formData.beNav" active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" clearable ></el-switch>
-        </el-form-item>
+             <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" v-model="formData.beNav" clearable ></el-switch>
+              
+       </el-form-item>
         <el-form-item label="描述:">
-          <el-input v-model="formData.desc" clearable placeholder="请输入" />
-        </el-form-item>
+              <editor ref="editor_desc" :value="formData.desc" placeholder="请输入描述" />
+       </el-form-item>
         <el-form-item label="关键词:">
-          <el-input v-model="formData.keywords" clearable placeholder="请输入" />
-        </el-form-item>
-        <el-form-item label="别名:">
-          <el-input v-model="formData.alias" clearable placeholder="请输入" />
-        </el-form-item>
+              <editor ref="editor_keywords" :value="formData.keywords" placeholder="请输入关键词" />
+       </el-form-item>
+        <el-form-item label="别名:"> 
+              <el-input v-model="formData.alias" clearable placeholder="请输入" />
+       </el-form-item>
         <el-form-item label="状态:">
-          <el-select v-model="formData.status" placeholder="请选择" clearable>
-            <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value" />
-          </el-select>
-        </el-form-item>
+                 <el-select v-model="formData.status" placeholder="请选择" clearable>
+                      <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value" />
+                 </el-select>
+       </el-form-item>
         <el-form-item>
           <el-button size="mini" type="primary" @click="save">保存</el-button>
           <el-button size="mini" type="primary" @click="back">返回</el-button>
@@ -64,42 +67,42 @@ export default {
   mixins: [infoList,tinymce,editForm], 
   data() {
     return {
-      type: '',
       media_typeOptions: [],
       statusOptions: [],
       formData: {
         pid: 0,
-        beSys: false,
-        groupId: 0,
-        mediaType: 0,
-        name: '',
-        sort: 0,
-        beNav: false,
-        desc: '',
-        keywords: '',
-        alias: '',
-        status: 0,
+          beSys: false,groupId: 0,
+          mediaType: 0,
+          name: '',
+          thumb: "",sort: 0,
+          beNav: false,desc: '',
+          keywords: '',
+          alias: '',
+          status: 0,
+          mapData: {}
       }
     }
   },
   async created() {
-    // 建议通过url传参获取目标数据ID 调用 find方法进行查询数据操作 从而决定本页面是create还是update 以下为id作为url参数示例
-    if (this.$route.query.id) {
-      const res = await findCmsCat({ ID: this.$route.query.id })
+    // 建议通过url传参获取目标数据ID 调用 find方法进行查询数据操作 
+    // 从而决定本页面是create还是update 以下为id作为url参数示例
+	let id = this.$route.params.id;
+    if (id >0) {
+      const res = await findCmsCat({ ID:id})
       if (res.code === 0) {
         this.formData = res.data.recmsCat
-        this.type = 'update'
+        this.editType = 'update'
       }
     } else {
-      this.type = 'create'
+      this.editType = 'create'
     }
     await this.getDict('media_type')
-    await this.getDict('status')
+    await this.getDict('status') 
   },
   methods: {
     async save() {
       let res
-      switch (this.type) {
+      switch (this.editType) {
         case 'create':
           res = await createCmsCat(this.formData)
           break
@@ -115,14 +118,15 @@ export default {
           type: 'success',
           message: '创建/更改成功'
         })
+         emitter.emit('closeThisPage') 
       }
     },
     back() {
       this.$router.go(-1)
+      emitter.emit('closeThisPage') 
     }
   }
 }
 </script>
-
 <style>
 </style>

@@ -13,13 +13,10 @@
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
                 />
-              </el-form-item>
-       
+              </el-form-item> 
         <el-form-item label="ID">
             <el-input placeholder="搜索ID" v-model="searchInfo.ID" />
         </el-form-item>
-        
-        
               <el-form-item label="系统分类" prop="beSys">
               <el-select v-model="searchInfo.beSys" clearable placeholder="请选择">
                   <el-option
@@ -33,47 +30,33 @@
                       value="false">
                   </el-option>
              </el-select>
-          </el-form-item> 
-            
-        <el-form-item label="群组id">
+          </el-form-item>
+                  <el-form-item label="群组id">
                       <el-input placeholder="搜索条件" v-model="searchInfo.groupId" clearable />
                   </el-form-item>
-                
-        <el-form-item label="文章类型" prop="mediaType">                
+                <el-form-item label="文章类型" prop="mediaType">                
                     <el-select v-model="searchInfo.mediaType" placeholder="请选择" clearable>
                       <el-option v-for="(item,key) in media_typeOptions" :key="key" :label="item.label" :value="item.value"></el-option>
                     </el-select>
-                </el-form-item>
-                
-        <el-form-item label="名称">
+                </el-form-item> 
+                <el-form-item label="名称">
                   <el-input placeholder="搜索条件" v-model="searchInfo.name" clearable />
-                </el-form-item>
-              
-          
-          
-          
-        <el-form-item label="描述">
+                </el-form-item> 
+                <el-form-item label="描述">
                   <el-input placeholder="搜索条件" v-model="searchInfo.desc" clearable />
-                </el-form-item>
-              
-        <el-form-item label="关键词">
+                </el-form-item> 
+                <el-form-item label="关键词">
                   <el-input placeholder="搜索条件" v-model="searchInfo.keywords" clearable />
                 </el-form-item>
-              
-          
-        <el-form-item label="状态" prop="status">                
+                <el-form-item label="状态" prop="status">                
                     <el-select v-model="searchInfo.status" placeholder="请选择" clearable>
                       <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value"></el-option>
                     </el-select>
                 </el-form-item>
-                
-        
         <el-form-item>
           <el-button size="mini" type="primary" icon="el-icon-search" @click="onSearch">查询</el-button>
           <el-button size="mini" type="primary" icon="el-icon-plus" @click="goEditForm(0)">新增</el-button>
-         
            <el-button size="mini" type="primary" icon="el-icon-plus" @click="onExcel">导出</el-button>
-        
           <el-popover v-model:visible="deleteVisible" placement="top" width="160">
             <p>确定要删除吗？</p>
             <div style="text-align: right; margin: 0">
@@ -99,128 +82,92 @@
       @sort-change="sortChange" 
     >
       <el-table-column type="selection" width="55" />      
-       <el-table-column label="ID" min-width="60" prop="ID" sortable="custom" />  
-             
-                 <!-- BeQuickEdit -->  
-                    <el-table-column label="父ID" prop="pid" width="120"   sortable="custom" >
-                    <template #default="scope">
-                        <el-popover trigger="click" placement="top"  width = "280">  
-                        <el-row :gutter="10">
-                          <el-col :span="16">  <el-input type="textarea" autosize placeholder="请输入内容" v-model="scope.row.pid"></el-input></el-col>
-                          <el-col :span="4"> <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="quickEdit_do('pid',scope.row.ID,scope.row.pid,scope)">保存</el-button> </el-col> 
-                        </el-row>  
-                          <template #reference>
-                            <div  class="quickEditTxt"  > {{scope.row.pid}} </div>
-                          </template>
-                        </el-popover>
-                    </template>
-                     </el-table-column>              
-                 
-           
-        
-             
-                 <!-- BeQuickEdit -->
-                    <el-table-column label="系统分类" prop="beSys" width="120"    >                        
-                        <template #default="scope" ><el-switch v-model="scope.row.beSys" @change="quickEdit_do('be_sys',scope.row.ID,scope.row.beSys,scope)"/></template> 
-                    </el-table-column> 
-           
-        
-              
-                  <el-table-column label="群组id" prop="groupId" width="120"    />  
-               
-           
-        
-             
-                 <!-- BeQuickEdit -->
-                    <el-table-column label="文章类型" prop="mediaType" width="120"  sortable="custom" >
-                    <template #default="scope">  
-                    <el-popover trigger="click" placement="top"  width = "280">  
-                          <el-select v-model="scope.row.mediaType" placeholder="请选择"  @change="quickEdit_do('media_type',scope.row.ID,scope.row.mediaType,scope)">
-                              <el-option v-for="(item,key) in media_typeOptions" :key="key" :label="item.label" :value="item.value"></el-option>
-                          </el-select> 
-                          <template #reference>
-                              <div class="quickEdit" > {{filterDict(scope.row.mediaType,"media_type")}} </div>
-                          </template>
-                       </el-popover>
-                    </template>  
-                    </el-table-column> 
-           
-        
-             
-                 <!-- BeQuickEdit -->  
-                    <el-table-column label="名称" prop="name" width="120"   >
-                    <template #default="scope">
-                        <el-popover trigger="click" placement="top"  width = "280">  
-                        <el-row :gutter="10">
-                          <el-col :span="16">  <el-input type="textarea" autosize placeholder="请输入内容" v-model="scope.row.name"></el-input></el-col>
-                          <el-col :span="4"> <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="quickEdit_do('name',scope.row.ID,scope.row.name,scope)">保存</el-button> </el-col> 
-                        </el-row>  
-                          <template #reference>
-                            <div  class="quickEditTxt"  > {{scope.row.name}} </div>
-                          </template>
-                        </el-popover>
-                    </template>
-                     </el-table-column>              
-                 
-           
-        
-             
-                  <el-table-column label="配图" prop="thumb" width="120"   >
-                      <template #default="scope">
-                        <ImageView :url="getMapData(scope.row.thumb,scope.row.mapData)" />
-                      </template>
-                  </el-table-column>  
-               
-           
-        
-             
-                 <!-- BeQuickEdit -->  
-                    <el-table-column label="排序" prop="sort" width="120"   >
-                    <template #default="scope">
-                        <el-popover trigger="click" placement="top"  width = "280">  
-                        <el-row :gutter="10">
-                          <el-col :span="16">  <el-input type="textarea" autosize placeholder="请输入内容" v-model="scope.row.sort"></el-input></el-col>
-                          <el-col :span="4"> <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="quickEdit_do('sort',scope.row.ID,scope.row.sort,scope)">保存</el-button> </el-col> 
-                        </el-row>  
-                          <template #reference>
-                            <div  class="quickEditTxt"  > {{scope.row.sort}} </div>
-                          </template>
-                        </el-popover>
-                    </template>
-                     </el-table-column>              
-                 
-           
-        
-             
-                 <!-- BeQuickEdit -->
-                    <el-table-column label="是否导航" prop="beNav" width="120"    >                        
-                        <template #default="scope" ><el-switch v-model="scope.row.beNav" @change="quickEdit_do('be_nav',scope.row.ID,scope.row.beNav,scope)"/></template> 
-                    </el-table-column> 
-           
-                  
-          
-                  
-          
-                  
-          
-        
-             
-                 <!-- BeQuickEdit -->
-                    <el-table-column label="状态" prop="status" width="120"  sortable="custom" >
-                    <template #default="scope">  
-                    <el-popover trigger="click" placement="top"  width = "280">  
-                          <el-select v-model="scope.row.status" placeholder="请选择"  @change="quickEdit_do('status',scope.row.ID,scope.row.status,scope)">
-                              <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value"></el-option>
-                          </el-select> 
-                          <template #reference>
-                              <div class="quickEdit" > {{filterDict(scope.row.status,"status")}} </div>
-                          </template>
-                       </el-popover>
-                    </template>  
-                    </el-table-column> 
-           
-         
-
+       <el-table-column label="ID" min-width="60" prop="ID" sortable="custom" />
+          <!--pid  BeQuickEdit -->  
+        <el-table-column label="父ID" prop="pid" width="120"   sortable="custom" >
+        <template #default="scope">
+            <el-popover trigger="click" placement="top"  width = "280">  
+            <el-row :gutter="10">
+              <el-col :span="16">  <el-input type="textarea" autosize placeholder="请输入内容" v-model="scope.row.pid"></el-input></el-col>
+              <el-col :span="4"> <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="quickEdit_do('pid',scope.row.ID,scope.row.pid,scope)">保存</el-button> </el-col> 
+            </el-row>  
+              <template #reference>
+                <div  class="quickEditTxt"  > {{scope.row.pid}} </div>
+              </template>
+            </el-popover>
+        </template>
+          </el-table-column>
+          <!--beSys  BeQuickEdit -->
+        <el-table-column label="系统分类" prop="beSys" width="120"    >                        
+            <template #default="scope" ><el-switch v-model="scope.row.beSys" @change="quickEdit_do('be_sys',scope.row.ID,scope.row.beSys,scope)"/></template> 
+        </el-table-column> 
+          <el-table-column label="群组id" prop="groupId" width="120"    />
+          <!--mediaType  BeQuickEdit -->
+        <el-table-column label="文章类型" prop="mediaType" width="120"  sortable="custom" >
+        <template #default="scope">  
+        <el-popover trigger="click" placement="top"  width = "280">  
+              <el-select v-model="scope.row.mediaType" placeholder="请选择"  @change="quickEdit_do('media_type',scope.row.ID,scope.row.mediaType,scope)">
+                  <el-option v-for="(item,key) in media_typeOptions" :key="key" :label="item.label" :value="item.value"></el-option>
+              </el-select> 
+              <template #reference>
+                  <div class="quickEdit" > {{filterDict(scope.row.mediaType,"media_type")}} </div>
+              </template>
+            </el-popover>
+        </template>  
+        </el-table-column>
+          <!--name  BeQuickEdit -->  
+        <el-table-column label="名称" prop="name" width="120"   >
+        <template #default="scope">
+            <el-popover trigger="click" placement="top"  width = "280">  
+            <el-row :gutter="10">
+              <el-col :span="16">  <el-input type="textarea" autosize placeholder="请输入内容" v-model="scope.row.name"></el-input></el-col>
+              <el-col :span="4"> <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="quickEdit_do('name',scope.row.ID,scope.row.name,scope)">保存</el-button> </el-col> 
+            </el-row>  
+              <template #reference>
+                <div  class="quickEditTxt"  > {{scope.row.name}} </div>
+              </template>
+            </el-popover>
+        </template>
+          </el-table-column>
+          <el-table-column label="配图" prop="thumb" width="120"   >
+              <template #default="scope">
+                <ImageView :url="getMapData(scope.row.thumb,scope.row.mapData)" />
+              </template>
+          </el-table-column>
+          <!--sort  BeQuickEdit -->  
+        <el-table-column label="排序" prop="sort" width="120"   >
+        <template #default="scope">
+            <el-popover trigger="click" placement="top"  width = "280">  
+            <el-row :gutter="10">
+              <el-col :span="16">  <el-input type="textarea" autosize placeholder="请输入内容" v-model="scope.row.sort"></el-input></el-col>
+              <el-col :span="4"> <el-button size="small" type="primary" icon="el-icon-edit" class="table-button" @click="quickEdit_do('sort',scope.row.ID,scope.row.sort,scope)">保存</el-button> </el-col> 
+            </el-row>  
+              <template #reference>
+                <div  class="quickEditTxt"  > {{scope.row.sort}} </div>
+              </template>
+            </el-popover>
+        </template>
+          </el-table-column>
+          <!--beNav  BeQuickEdit -->
+        <el-table-column label="是否导航" prop="beNav" width="120"    >                        
+            <template #default="scope" ><el-switch v-model="scope.row.beNav" @change="quickEdit_do('be_nav',scope.row.ID,scope.row.beNav,scope)"/></template> 
+        </el-table-column> 
+      <!--desc BeHide --> 
+      <!--keywords BeHide --> 
+      <!--alias BeHide -->
+          <!--status  BeQuickEdit -->
+        <el-table-column label="状态" prop="status" width="120"  sortable="custom" >
+        <template #default="scope">  
+        <el-popover trigger="click" placement="top"  width = "280">  
+              <el-select v-model="scope.row.status" placeholder="请选择"  @change="quickEdit_do('status',scope.row.ID,scope.row.status,scope)">
+                  <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value"></el-option>
+              </el-select> 
+              <template #reference>
+                  <div class="quickEdit" > {{filterDict(scope.row.status,"status")}} </div>
+              </template>
+            </el-popover>
+        </template>  
+        </el-table-column> 
       <el-table-column label="日期" width="180" prop="created_at" sortable="custom" >
         <template #default="scope">{{ formatDate(scope.row.CreatedAt)}}</template>
       </el-table-column>
@@ -245,161 +192,48 @@
     <!---------- 编辑弹窗------------------ -->
     <el-dialog  v-if="dialogFormVisible"  :before-close="closeDialog" v-model="dialogFormVisible" title="编辑资料">
       <el-form :model="formData" label-position="right" label-width="80px">
-    
         <el-form-item label="父ID:">
-              
-               
-                
-              
-                    
-                        <el-input v-model.number="formData.pid" clearable placeholder="请输入" />
-                    
-              
-              
-              
+                 <el-input v-model.number="formData.pid" clearable placeholder="请输入" />
        </el-form-item>
-       
         <el-form-item label="系统分类:">
-              
-                  <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" v-model="formData.beSys" clearable ></el-switch>
-              
-               
-                
-              
-              
+             <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" v-model="formData.beSys" clearable ></el-switch>
               
        </el-form-item>
-       
         <el-form-item label="群组id:">
-              
-               
-                
-              
-                    
-                        <el-input v-model.number="formData.groupId" clearable placeholder="请输入" />
-                    
-              
-              
-              
+                 <el-input v-model.number="formData.groupId" clearable placeholder="请输入" />
        </el-form-item>
-       
         <el-form-item label="文章类型:">
-              
-               
-                
-              
-                    
-                        <el-select v-model="formData.mediaType" placeholder="请选择" clearable>
-                          <el-option v-for="(item,key) in media_typeOptions" :key="key" :label="item.label" :value="item.value" />
-                        </el-select>
-                    
-              
-              
-              
+                 <el-select v-model="formData.mediaType" placeholder="请选择" clearable>
+                      <el-option v-for="(item,key) in media_typeOptions" :key="key" :label="item.label" :value="item.value" />
+                 </el-select>
        </el-form-item>
-       
-        <el-form-item label="名称:">
-              
-              
-                     
-                      <el-input v-model="formData.name" clearable placeholder="请输入" />
-                     
-               
-                
-              
-              
-              
+        <el-form-item label="名称:"> 
+              <el-input v-model="formData.name" clearable placeholder="请输入" />
        </el-form-item>
-       
         <el-form-item label="配图:">
-              
-               
-              
-                     <ImageView ref="imageView_thumb" be-edit :url="getMapData(formData.thumb,formData.mapData)" :guid="formData.thumb" /> 
-                 
-              
-              
-              
+               <ImageView ref="imageView_thumb" be-edit :url="getMapData(formData.thumb,formData.mapData)" :guid="formData.thumb" />
        </el-form-item>
-       
         <el-form-item label="排序:">
-              
-               
-                
-              
-                    
-                        <el-input v-model.number="formData.sort" clearable placeholder="请输入" />
-                    
-              
-              
-              
+                 <el-input v-model.number="formData.sort" clearable placeholder="请输入" />
        </el-form-item>
-       
         <el-form-item label="是否导航:">
-              
-                  <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" v-model="formData.beNav" clearable ></el-switch>
-              
-               
-                
-              
-              
+             <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" v-model="formData.beNav" clearable ></el-switch>
               
        </el-form-item>
-       
         <el-form-item label="描述:">
-              
-              
-                    
-                          <editor ref="editor_desc" :value="formData.desc" placeholder="请输入描述" />  
-                      
-               
-                
-              
-              
-              
+              <editor ref="editor_desc" :value="formData.desc" placeholder="请输入描述" />
        </el-form-item>
-       
         <el-form-item label="关键词:">
-              
-              
-                    
-                          <editor ref="editor_keywords" :value="formData.keywords" placeholder="请输入关键词" />  
-                      
-               
-                
-              
-              
-              
+              <editor ref="editor_keywords" :value="formData.keywords" placeholder="请输入关键词" />
        </el-form-item>
-       
-        <el-form-item label="别名:">
-              
-              
-                     
-                      <el-input v-model="formData.alias" clearable placeholder="请输入" />
-                     
-               
-                
-              
-              
-              
+        <el-form-item label="别名:"> 
+              <el-input v-model="formData.alias" clearable placeholder="请输入" />
        </el-form-item>
-       
         <el-form-item label="状态:">
-              
-               
-                
-              
-                    
-                        <el-select v-model="formData.status" placeholder="请选择" clearable>
-                          <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value" />
-                        </el-select>
-                    
-              
-              
-              
+                 <el-select v-model="formData.status" placeholder="请选择" clearable>
+                      <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value" />
+                 </el-select>
        </el-form-item>
-       
      </el-form>
       <div slot="footer" class="el-dialog__footer">
         <el-button @click="closeDialog">取 消</el-button>
@@ -427,41 +261,31 @@ export default {
   mixins: [infoList,tinymce,editForm], 
   data() {
     return {
-      beNewWindow:false,//是否在新窗口打开编辑器
-      listApi: getCmsCatList, 
+      beNewWindow:true,//是否在新窗口打开编辑器
+      listApi: getCmsCatList,
       media_typeOptions: [],
-          
       statusOptions: [],
-          
       formData: {
         pid: 0,
-          beSys: false,
-          groupId: 0,
+          beSys: false,groupId: 0,
           mediaType: 0,
           name: '',
-          thumb: "",
-          sort: 0,
-          beNav: false,
-          desc: '',
+          thumb: "",sort: 0,
+          beNav: false,desc: '',
           keywords: '',
           alias: '',
           status: 0,
-          
-        mapData: {}
+          mapData: {}
       } 
     }
   },
   
-  async created() { 
-    
+  async created() {
     await this.getDict('media_type')
-      
     await this.getDict('status')
-      
-     await this.getTableData()
+    await this.getTableData()
   },
-  methods: {
-  // 条件搜索前端看此方法
+  methods: { 
     onSearch() {
       this.page = 1
       this.pageSize = 20 
@@ -496,7 +320,7 @@ export default {
         })
       this.doDelete(ids); 
     },
-	async doDelete(ids) { 
+  	async doDelete(ids) { 
      const res = await deleteCmsCatByIds({ ids })
       if (res.code === 0) {
         this.$message({
@@ -509,14 +333,15 @@ export default {
         this.deleteVisible = false
         this.getTableData()
       } 
-	}, 
-	//编辑或新增form
+	},  
    async goEditForm(id) { 
+	   console.log( "goEditForm = ",id);
+	    console.log( "goEditForm = ",this.beNewWindow);
 	  if (this.beNewWindow) {
 		  if (id >0) {
-			this.$router.push({ name: 'CmsCatForm', params: {id:id}})
+			this.$router.push({ name: 'CmsCatForm' })
 		  } else {
-			 this.$router.push({ name: 'CmsCatForm',params: {id:id}})
+			 this.$router.push({ name: 'CmsCatForm' })
 		  }
 	  }else
 	  {
@@ -532,16 +357,11 @@ export default {
 		 }
 		  this.dialogFormVisible = true
 	  }
-	},	
-
-//编辑或新增 返回保存
-    async saveEditForm() {  
-      //更新图片guid, editor 
-      
-       this.formData.thumb = this.$refs.imageView_thumb.myGuid;    
-        this.formData.desc = this.$refs.editor_desc.getContent(); 
-        this.formData.keywords = this.$refs.editor_keywords.getContent();   
-        
+	}, 
+    async saveEditForm() {
+      this.formData.thumb = this.$refs.imageView_thumb.myGuid; 
+      this.formData.desc = this.$refs.editor_desc.getContent(); 
+      this.formData.keywords = this.$refs.editor_keywords.getContent();  
       delete this.formData.mapData;
       delete this.formData.CreatedAt;
       delete this.formData.UpdatedAt;
@@ -573,8 +393,8 @@ export default {
       value2 =  value2+"";   
       let obj = {field:field,id:id,value:value2}	 
       this.quickEdit_do2(obj);	  
-	    // if (scope._self.$refs[`popover-${scope.$index}`])
-		  // scope._self.$refs[`popover-${scope.$index}`].doClose();
+	  // if (scope._self.$refs[`popover-${scope.$index}`])
+	  // scope._self.$refs[`popover-${scope.$index}`].doClose();
     },
     async quickEdit_do2(obj) {  
       const res =  await quickEdit(obj)	  
