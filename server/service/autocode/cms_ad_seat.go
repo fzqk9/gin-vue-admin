@@ -41,9 +41,10 @@ func (cmsAdSeatService *CmsAdSeatService)UpdateCmsAdSeat(cmsAdSeat autocode.CmsA
 
 // GetCmsAdSeat 根据id获取CmsAdSeat记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (cmsAdSeatService *CmsAdSeatService)GetCmsAdSeat(id uint) (err error, cmsAdSeat autocode.CmsAdSeat) {
-	err = global.GVA_DB.Where("id = ?", id).First(&cmsAdSeat).Error
-	return
+func (cmsAdSeatService *CmsAdSeatService)GetCmsAdSeat(id uint) (err error, obj autocode.CmsAdSeat) {
+	err = global.GVA_DB.Where("id = ?", id).First(&obj).Error 
+    obj.MapData = make(map[string]string)  
+    return err, obj
 }
 
 // GetCmsAdSeatInfoList 分页获取CmsAdSeat记录
@@ -81,6 +82,11 @@ func (cmsAdSeatService *CmsAdSeatService)GetCmsAdSeatInfoList(info autoCodeReq.C
 			OrderStr = order
 		} 
 	}  
-     err = db.Order(OrderStr).Limit(limit).Offset(offset).Find(&cmsAdSeats).Error 
+     err = db.Order(OrderStr).Limit(limit).Offset(offset).Find(&cmsAdSeats).Error
+     //更新图片path
+	for i, v := range cmsAdSeats {
+	 v.MapData = make(map[string]string)
+	  cmsAdSeats[i] = v
+	}
 	return err, cmsAdSeats, total
 }

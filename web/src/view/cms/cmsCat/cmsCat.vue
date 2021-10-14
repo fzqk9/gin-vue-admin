@@ -261,7 +261,7 @@ export default {
   mixins: [infoList,tinymce,editForm], 
   data() {
     return {
-      beNewWindow:false,//是否在新窗口打开编辑器
+      beNewWindow:true,//是否在新窗口打开编辑器
       listApi: getCmsCatList,
       media_typeOptions: [],
       statusOptions: [],
