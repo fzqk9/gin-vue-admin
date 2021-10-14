@@ -198,7 +198,8 @@ func (autoCodeService *AutoCodeService) CreateTemp(autoCode system.AutoCodeStruc
 		fmt.Println("aaa3333")
 		Init()
 		for index := range dataList {
-			autoCodeService.addAutoMoveFile(&dataList[index])
+			// vue 页面 增加 模块 by linjd
+			autoCodeService.addAutoMoveFile(&dataList[index], autoCode.Module)
 		}
 		for _, value := range dataList { // 移动文件
 			if err := utils.FileMove(value.autoCodePath, value.autoMoveFilePath); err != nil {
@@ -330,7 +331,7 @@ func (autoCodeService *AutoCodeService) DropTable(tableName string) error {
 //@param: *tplData
 //@return: null
 
-func (autoCodeService *AutoCodeService) addAutoMoveFile(data *tplData) {
+func (autoCodeService *AutoCodeService) addAutoMoveFile(data *tplData, module string) {
 	base := filepath.Base(data.autoCodePath)
 	fileSlice := strings.Split(data.autoCodePath, string(os.PathSeparator))
 	n := len(fileSlice)
@@ -359,11 +360,15 @@ func (autoCodeService *AutoCodeService) addAutoMoveFile(data *tplData) {
 			data.autoMoveFilePath = filepath.Join(global.GVA_CONFIG.AutoCode.Root,
 				global.GVA_CONFIG.AutoCode.Web, global.GVA_CONFIG.AutoCode.WApi, base)
 		} else if strings.Contains(fileSlice[n-2], "form") {
+			//vue 路径增加 module
 			data.autoMoveFilePath = filepath.Join(global.GVA_CONFIG.AutoCode.Root,
-				global.GVA_CONFIG.AutoCode.Web, global.GVA_CONFIG.AutoCode.WForm, filepath.Base(filepath.Dir(filepath.Dir(data.autoCodePath))), strings.TrimSuffix(base, filepath.Ext(base))+"Form.vue")
+				global.GVA_CONFIG.AutoCode.Web, global.GVA_CONFIG.AutoCode.WForm, module, filepath.Base(filepath.Dir(filepath.Dir(data.autoCodePath))), strings.TrimSuffix(base, filepath.Ext(base))+"Form.vue")
+			fmt.Println("form data.autoMoveFilePath = ", data.autoMoveFilePath)
 		} else if strings.Contains(fileSlice[n-2], "table") {
+			//vue 路径增加 module
 			data.autoMoveFilePath = filepath.Join(global.GVA_CONFIG.AutoCode.Root,
-				global.GVA_CONFIG.AutoCode.Web, global.GVA_CONFIG.AutoCode.WTable, filepath.Base(filepath.Dir(filepath.Dir(data.autoCodePath))), base)
+				global.GVA_CONFIG.AutoCode.Web, global.GVA_CONFIG.AutoCode.WTable, module, filepath.Base(filepath.Dir(filepath.Dir(data.autoCodePath))), base)
+			fmt.Println("table data.autoMoveFilePath = ", data.autoMoveFilePath)
 		}
 	}
 }

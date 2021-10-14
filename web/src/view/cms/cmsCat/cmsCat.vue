@@ -261,33 +261,24 @@ export default {
   mixins: [infoList,tinymce,editForm], 
   data() {
     return {
-      beNewWindow:true,//是否在新窗口打开编辑器
+      beNewWindow:false,//是否在新窗口打开编辑器
       listApi: getCmsCatList,
       media_typeOptions: [],
       statusOptions: [],
       formData: {
-        
-              pid: 0,
-          
-               beSys: false,
-              groupId: 0,
-          
-              mediaType: 0,
-          
-               name: '',
-          
-              thumb: "",
-              sort: 0,
-          
-               beNav: false,
-               desc: '',
-          
-               keywords: '',
-          
-               alias: '',
-          
-              status: 0,
-          mapData: {}
+            pid: 0,
+           beSys: false,
+            groupId: 0,
+            mediaType: 0,
+           name: '',
+            thumb: "",
+            sort: 0,
+           beNav: false,
+           desc: '',
+           keywords: '',
+           alias: '',
+            status: 0,
+            mapData: {}
       } 
     }
   },

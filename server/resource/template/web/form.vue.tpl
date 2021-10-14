@@ -66,27 +66,27 @@ export default {
           {{- end }}
       {{- end }}
       formData: {
-          {{ range .Fields}}
+          {{- range .Fields}}
           {{- if eq .FieldType "bool" }}
-               {{.FieldJson}}: false,
+           {{.FieldJson}}: false,
           {{- end }}
           {{- if eq .FieldType "string" }}
-               {{.FieldJson}}: '',
-          {{ end -}}
+           {{.FieldJson}}: '',
+          {{- end }}
           {{- if eq .FieldType "int" }}
-              {{.FieldJson}}: 0,
-          {{ end -}}
+            {{.FieldJson}}: 0,
+          {{- end }}
           {{- if eq .FieldType "time.Time" }}
-                {{.FieldJson}}: new Date(),
+            {{.FieldJson}}: new Date(),
          {{- end}}
          {{- if eq .FieldType "float64" }}
-              {{.FieldJson}}: 0,
+            {{.FieldJson}}: 0,
           {{- end}}
            {{- if eq .FieldType "image" }}
-              {{.FieldJson}}: "",
-          {{- end -}}
-        {{- end -}}
-        mapData: {} 
+            {{.FieldJson}}: "",
+          {{- end }}
+        {{- end}}
+            mapData: {}
       }
     }
   },
