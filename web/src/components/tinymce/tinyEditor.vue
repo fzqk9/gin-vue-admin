@@ -113,7 +113,7 @@
 				   plugin_preview_height:600,					  
                    toolbar: "undo redo  | formatselect alignleft aligncenter alignright alignjustify  indent outdent , \
                        | link unlink | numlist bullist |ImageLib image media table codesample | fontselect fontsizeselect forecolor backcolor | bold italic underline strikethrough | superscript subscript | removeformat |help code fullscreen preview",
-                   toolbar_drawer: "sliding",
+                   //toolbar_drawer: "sliding",
                    quickbars_selection_toolbar: "removeformat | bold italic underline strikethrough | fontsizeselect forecolor backcolor",
                    plugins: ['preview link image media table lists fullscreen quickbars', 
                            'insertdatetime paste code help wordcount codesample'],

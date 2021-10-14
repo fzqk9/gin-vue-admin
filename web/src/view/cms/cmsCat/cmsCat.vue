@@ -266,15 +266,27 @@ export default {
       media_typeOptions: [],
       statusOptions: [],
       formData: {
-        pid: 0,
-          beSys: false,groupId: 0,
-          mediaType: 0,
-          name: '',
-          thumb: "",sort: 0,
-          beNav: false,desc: '',
-          keywords: '',
-          alias: '',
-          status: 0,
+        
+              pid: 0,
+          
+               beSys: false,
+              groupId: 0,
+          
+              mediaType: 0,
+          
+               name: '',
+          
+              thumb: "",
+              sort: 0,
+          
+               beNav: false,
+               desc: '',
+          
+               keywords: '',
+          
+               alias: '',
+          
+              status: 0,
           mapData: {}
       } 
     }
@@ -335,7 +347,7 @@ export default {
       } 
 	},  
    async goEditForm(id) { 
-	  if (this.beNewWindow ==false) {
+	  if (this.beNewWindow) {
 		  if (id >0) {
 			this.$router.push({ name:'cmsCatForm', params:{id:id}})
 		  } else {
