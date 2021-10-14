@@ -36,7 +36,7 @@
             return {
                 hasChange: false,
                 hasInit: false,
-                tinymceId : 'vue-tinymce-' + +new Date() + ((Math.random() * 1000).toFixed(0) + ''),
+                tinymceId : 'vue-tinymce-' + (Math.random()*1000).toFixed(0),
                 fullscreen: false,
               //  mediaLibOpen : 0,
                 content : '',
@@ -56,7 +56,8 @@
 			// },
             value(val) {
 				this.content =val;
-				this.setContent(val);
+				if (this.hasInit)
+				   this.setContent(val);
 				//console.log("watch==========",val);  				
                 // if (!this.hasChange && this.hasInit) {
                 //     this.$nextTick(() =>
@@ -221,7 +222,10 @@
 		*/	
 			
             setContent(value) {
-                window.tinymce.get(this.tinymceId).setContent(value)
+				console.log("this.tinymceId = ",this.tinymceId);
+				let obj =window.tinymce.get(this.tinymceId);
+				if (obj)
+                   obj.setContent(value)
             },
             getContent() { 
                 return window.tinymce.get(this.tinymceId).getContent();

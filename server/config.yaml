@@ -51,7 +51,7 @@ system:
 
 # captcha configuration
 captcha:
-  key-long: 6
+  key-long: 2
   img-width: 240
   img-height: 80
 
@@ -64,8 +64,10 @@ mysql:
   db-name: go-cms
   username: go-cms
   password: go-cmsgo-cms
-  max-idle-conns: 10
-  max-open-conns: 100
+  max-idle-conns: 0
+  max-open-conns: 0
+ #  max-idle-conns: 10
+ # max-open-conns: 100
   log-mode: false
   log-zap: ""
 

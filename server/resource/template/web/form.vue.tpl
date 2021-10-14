@@ -54,6 +54,7 @@ import {
 import infoList from '@/mixins/infoList' 
 import tinymce from '@/mixins/tinymce' 
 import editForm from '@/mixins/editForm'
+import { emitter } from '@/utils/bus.js' 
 export default {
  name: '编辑{{.StructName}}',
   mixins: [infoList,tinymce,editForm], 
@@ -90,12 +91,11 @@ export default {
     }
   },
   async created() {
-    // 建议通过url传参获取目标数据ID 调用 find方法进行查询数据操作 
-    // 从而决定本页面是create还是update 以下为id作为url参数示例
-    if (this.$route.query.id) {
-      const res = await find{{.StructName}}({ ID: this.$route.query.id })
+    let id = this.$route.params.id;
+    if (id && id >0) {
+      const res = await find{{.StructName}}({ID:id})
       if (res.code === 0) {
-        this.formData = res.data.re{{.Abbreviation}}
+        this.formData = res.data.{{.Abbreviation}}
         this.editType = 'update'
       }
     } else {
@@ -109,7 +109,17 @@ export default {
   },
   methods: {
     async save() {
-      let res
+      {{- range .Fields }}
+       {{- if eq .FieldType "image"  }}
+      this.formData.{{.FieldJson}} = this.$refs.imageView_{{.FieldJson}}.myGuid;           
+       {{- else if .BeEditor }} 
+      this.formData.{{.FieldJson}} = this.$refs.editor_{{.FieldJson}}.getContent();
+       {{- end}}           
+      {{- end}}  
+      delete this.formData.mapData;
+      delete this.formData.CreatedAt;
+      delete this.formData.UpdatedAt;
+      let res;
       switch (this.editType) {
         case 'create':
           res = await create{{.StructName}}(this.formData)

@@ -335,7 +335,7 @@ export default {
       } 
 	},  
    async goEditForm(id) { 
-	  if (this.beNewWindow ==false) {
+	  if (this.beNewWindow) {
 		  if (id >0) {
 			this.$router.push({ name:'cmsCatForm', params:{id:id}})
 		  } else {

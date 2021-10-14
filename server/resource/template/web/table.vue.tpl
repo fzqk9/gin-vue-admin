@@ -341,9 +341,9 @@ export default {
    async goEditForm(id) { 
 	  if (this.beNewWindow) {
 		  if (id >0) {
-			this.$router.push({ name: '{{.StructName}}Form', params: {id:id}})
+			this.$router.push({ name:'{{.Abbreviation}}Form', params:{id:id}})
 		  } else {
-			 this.$router.push({ name: '{{.StructName}}Form',params: {id:id}})
+			 this.$router.push({ name:'{{.Abbreviation}}Form',params:{id:id}})
 		  }
 	  }else
 	  {

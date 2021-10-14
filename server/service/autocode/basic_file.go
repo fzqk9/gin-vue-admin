@@ -42,7 +42,7 @@ func (basicFileService *BasicFileService) UpdateBasicFile(basicFile autocode.Bas
 // GetBasicFile 根据id获取BasicFile记录
 // Author  有修改的 LJD
 func (basicFileService *BasicFileService) GetBasicFile(key string, val string) (err error, basicFile autocode.BasicFile) {
-	err = global.GVA_DB.Where(key, val).First(basicFile).Error
+	err = global.GVA_DB.Where(key, val).First(&basicFile).Error
 	if !utils.IsEmpty(basicFile.Path) {
 		basicFile.Path = global.GVA_CONFIG.Local.BaseUrl + basicFile.Path
 	}
@@ -102,7 +102,9 @@ func (basicFileService *BasicFileService) GetBasicFileInfoList(info autoCodeReq.
 	err = db.Order(OrderStr).Limit(limit).Offset(offset).Find(&basicFiles).Error
 	//更新图片path
 	for i, v := range basicFiles {
-		v.Path = global.GVA_CONFIG.Local.BaseUrl + v.Path
+		if !utils.IsEmpty(v.Path) {
+			v.Path = global.GVA_CONFIG.Local.BaseUrl + v.Path
+		}
 		basicFiles[i] = v
 	}
 

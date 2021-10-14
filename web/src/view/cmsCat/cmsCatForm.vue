@@ -18,8 +18,7 @@
                  </el-select>
        </el-form-item>
         <el-form-item label="名称:"> 
-             <!-- <el-input v-model="formData.name" clearable placeholder="请输入" /> -->
-			  <ImageView ref="imageView_name" be-edit :url="getMapData(formData.name,formData.mapData)" :guid="formData.name" />
+              <el-input v-model="formData.name" clearable placeholder="请输入" />
        </el-form-item>
         <el-form-item label="配图:">
                <ImageView ref="imageView_thumb" be-edit :url="getMapData(formData.thumb,formData.mapData)" :guid="formData.thumb" />
@@ -35,7 +34,7 @@
               <editor ref="editor_desc" :value="formData.desc" placeholder="请输入描述" />
        </el-form-item>
         <el-form-item label="关键词:">
-            <editor ref="editor_keywords" :value="formData.keywords" placeholder="请输入关键词" />  
+              <editor ref="editor_keywords" :value="formData.keywords" placeholder="请输入关键词" />
        </el-form-item>
         <el-form-item label="别名:"> 
               <el-input v-model="formData.alias" clearable placeholder="请输入" />
@@ -72,15 +71,12 @@ export default {
       media_typeOptions: [],
       statusOptions: [],
       formData: {
-          pid: 0,
-          beSys: false,
-		  groupId: 0,
+        pid: 0,
+          beSys: false,groupId: 0,
           mediaType: 0,
           name: '',
-          thumb: "",
-		  sort: 0,
-          beNav: false,
-		  desc: '',
+          thumb: "",sort: 0,
+          beNav: false,desc: '',
           keywords: '',
           alias: '',
           status: 0,
@@ -90,8 +86,7 @@ export default {
   },
   async created() {
     let id = this.$route.params.id;
-	console.log("this.$route.params.id = ",id);
-    if ( id >0) {
+    if (id && id >0) {
       const res = await findCmsCat({ID:id})
       if (res.code === 0) {
         this.formData = res.data.cmsCat
@@ -106,10 +101,8 @@ export default {
   methods: {
     async save() {
       this.formData.thumb = this.$refs.imageView_thumb.myGuid; 
-	  this.formData.name = this.$refs.imageView_name.myGuid; 
-	  
       this.formData.desc = this.$refs.editor_desc.getContent(); 
-     this.formData.keywords = this.$refs.editor_keywords.getContent();  
+      this.formData.keywords = this.$refs.editor_keywords.getContent();  
       delete this.formData.mapData;
       delete this.formData.CreatedAt;
       delete this.formData.UpdatedAt;
