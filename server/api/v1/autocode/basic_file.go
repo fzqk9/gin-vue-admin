@@ -128,7 +128,7 @@ func (basicFileApi *BasicFileApi) FindBasicFile(c *gin.Context) {
 	err, basicFile := basicFileService.GetBasicFile(key, val)
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		//fmt.Println("查询不到数据")
-		response.OkWithData(gin.H{"basicFile": basicFile}, c)
+		response.OkWithData(gin.H{"basicFile": nil}, c)
 	} else if err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Any("err", err))
 		response.FailWithMessage("查询失败", c)

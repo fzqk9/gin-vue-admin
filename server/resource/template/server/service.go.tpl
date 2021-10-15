@@ -5,7 +5,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/autocode"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
     autoCodeReq "github.com/flipped-aurora/gin-vue-admin/server/model/autocode/request"
-     "github.com/flipped-aurora/gin-vue-admin/server/utils"
+    "github.com/flipped-aurora/gin-vue-admin/server/utils"
 )
 
 type {{.StructName}}Service struct {
@@ -41,8 +41,14 @@ func ({{.Abbreviation}}Service *{{.StructName}}Service)Update{{.StructName}}({{.
 
 // Get{{.StructName}} 根据id获取{{.StructName}}记录
 // Author [piexlmax](https://github.com/piexlmax)
-func ({{.Abbreviation}}Service *{{.StructName}}Service)Get{{.StructName}}(id uint) (err error, obj autocode.{{.StructName}}) {
+func ({{.Abbreviation}}Service *{{.StructName}}Service)Get{{.StructName}}(id uint,fields string ) (err error, obj autocode.{{.StructName}}) {
 	err = global.GVA_DB.Where("id = ?", id).First(&obj).Error 
+    if utils.IsEmpty(fields) {
+        err = global.GVA_DB.Where("id = ?", id).First(&obj).Error 
+        	} else {
+        err = global.GVA_DB.Select(fields).Where("id = ?", id).First(&obj).Error  
+	}
+
     obj.MapData = make(map[string]string)
      {{- range .Fields}} 
          {{- if eq .FieldType "image"}} 
@@ -56,7 +62,7 @@ func ({{.Abbreviation}}Service *{{.StructName}}Service)Get{{.StructName}}(id uin
 
 // Get{{.StructName}}InfoList 分页获取{{.StructName}}记录
 // Author [piexlmax](https://github.com/piexlmax)
-func ({{.Abbreviation}}Service *{{.StructName}}Service)Get{{.StructName}}InfoList(info autoCodeReq.{{.StructName}}Search, createdAtBetween []string) (err error, list interface{}, total int64) {
+func ({{.Abbreviation}}Service *{{.StructName}}Service)Get{{.StructName}}InfoList(info autoCodeReq.{{.StructName}}Search, createdAtBetween []string,fields string) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     //修改 by ljd  增加查询排序 
@@ -64,7 +70,8 @@ func ({{.Abbreviation}}Service *{{.StructName}}Service)Get{{.StructName}}InfoLis
 	desc := info.OrderDesc
     // 创建db
 	db := global.GVA_DB.Model(&autocode.{{.StructName}}{})
-    var {{.Abbreviation}}s []autocode.{{.StructName}}
+    //var {{.Abbreviation}}s []autocode.{{.StructName}}
+    var {{.Abbreviation}}s []autocode.{{.StructName}}Mini
 
     //修改 by ljd  
     if info.ID > 0 {
@@ -111,7 +118,11 @@ func ({{.Abbreviation}}Service *{{.StructName}}Service)Get{{.StructName}}InfoLis
 			OrderStr = order
 		} 
 	}  
-     err = db.Order(OrderStr).Limit(limit).Offset(offset).Find(&{{.Abbreviation}}s).Error
+    if utils.IsEmpty(fields) {
+      err = db.Order(OrderStr).Limit(limit).Offset(offset).Find(&{{.Abbreviation}}s).Error
+    } else {
+      err = db.Select(fields).Order(OrderStr).Limit(limit).Offset(offset).Find(&{{.Abbreviation}}s).Error
+    }         
      //更新图片path
 	for i, v := range {{.Abbreviation}}s {
 	 v.MapData = make(map[string]string)

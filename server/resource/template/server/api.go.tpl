@@ -1,6 +1,7 @@
 package autocode
 
 import (
+	"errors"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
     "github.com/flipped-aurora/gin-vue-admin/server/model/autocode"
     "github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
@@ -8,8 +9,9 @@ import (
     "github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
     "github.com/flipped-aurora/gin-vue-admin/server/service"
     "github.com/gin-gonic/gin"
-    "go.uber.org/zap"
-)
+    "go.uber.org/zap" 
+	"gorm.io/gorm"
+) 
 
 type {{.StructName}}Api struct {
 }
@@ -108,8 +110,12 @@ func ({{.Abbreviation}}Api *{{.StructName}}Api) Update{{.StructName}}(c *gin.Con
 // @Router /{{.Abbreviation}}/find{{.StructName}} [get]
 func ({{.Abbreviation}}Api *{{.StructName}}Api) Find{{.StructName}}(c *gin.Context) {
 	var {{.Abbreviation}} autocode.{{.StructName}}
-	_ = c.ShouldBindQuery(&{{.Abbreviation}})
-	if err, re{{.Abbreviation}} := {{.Abbreviation}}Service.Get{{.StructName}}({{.Abbreviation}}.ID); err != nil {
+	_ = c.ShouldBindQuery(&{{.Abbreviation}}) 
+	 err, re{{.Abbreviation}} := {{.Abbreviation}}Service.Get{{.StructName}}({{.Abbreviation}}.ID,""); 
+	 if errors.Is(err, gorm.ErrRecordNotFound) {
+		//fmt.Println("查询不到数据")
+		response.OkWithData(gin.H{"{{.Abbreviation}}": nil}, c)
+	} else if err != nil { 
         global.GVA_LOG.Error("查询失败!", zap.Any("err", err))
 		response.FailWithMessage("查询失败", c)
 	} else {
@@ -132,7 +138,7 @@ func ({{.Abbreviation}}Api *{{.StructName}}Api) Get{{.StructName}}List(c *gin.Co
 
 	var pageInfo autocodeReq.{{.StructName}}Search
 	_ = c.ShouldBindQuery(&pageInfo)
-	if err, list, total := {{.Abbreviation}}Service.Get{{.StructName}}InfoList(pageInfo,createdAtBetween); err != nil {
+	if err, list, total := {{.Abbreviation}}Service.Get{{.StructName}}InfoList(pageInfo,createdAtBetween,""); err != nil {
 	    global.GVA_LOG.Error("获取失败!", zap.Any("err", err))
         response.FailWithMessage("获取失败", c)
     } else {

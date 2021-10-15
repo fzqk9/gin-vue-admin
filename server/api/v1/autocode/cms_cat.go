@@ -1,6 +1,7 @@
 package autocode
 
 import (
+	"errors"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
     "github.com/flipped-aurora/gin-vue-admin/server/model/autocode"
     "github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
@@ -8,8 +9,9 @@ import (
     "github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
     "github.com/flipped-aurora/gin-vue-admin/server/service"
     "github.com/gin-gonic/gin"
-    "go.uber.org/zap"
-)
+    "go.uber.org/zap" 
+	"gorm.io/gorm"
+) 
 
 type CmsCatApi struct {
 }
@@ -108,8 +110,12 @@ func (cmsCatApi *CmsCatApi) UpdateCmsCat(c *gin.Context) {
 // @Router /cmsCat/findCmsCat [get]
 func (cmsCatApi *CmsCatApi) FindCmsCat(c *gin.Context) {
 	var cmsCat autocode.CmsCat
-	_ = c.ShouldBindQuery(&cmsCat)
-	if err, recmsCat := cmsCatService.GetCmsCat(cmsCat.ID); err != nil {
+	_ = c.ShouldBindQuery(&cmsCat) 
+	 err, recmsCat := cmsCatService.GetCmsCat(cmsCat.ID,""); 
+	 if errors.Is(err, gorm.ErrRecordNotFound) {
+		//fmt.Println("查询不到数据")
+		response.OkWithData(gin.H{"cmsCat": nil}, c)
+	} else if err != nil { 
         global.GVA_LOG.Error("查询失败!", zap.Any("err", err))
 		response.FailWithMessage("查询失败", c)
 	} else {
@@ -132,7 +138,7 @@ func (cmsCatApi *CmsCatApi) GetCmsCatList(c *gin.Context) {
 
 	var pageInfo autocodeReq.CmsCatSearch
 	_ = c.ShouldBindQuery(&pageInfo)
-	if err, list, total := cmsCatService.GetCmsCatInfoList(pageInfo,createdAtBetween); err != nil {
+	if err, list, total := cmsCatService.GetCmsCatInfoList(pageInfo,createdAtBetween,""); err != nil {
 	    global.GVA_LOG.Error("获取失败!", zap.Any("err", err))
         response.FailWithMessage("获取失败", c)
     } else {

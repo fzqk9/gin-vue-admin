@@ -5,7 +5,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/autocode"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
     autoCodeReq "github.com/flipped-aurora/gin-vue-admin/server/model/autocode/request"
-     "github.com/flipped-aurora/gin-vue-admin/server/utils"
+    "github.com/flipped-aurora/gin-vue-admin/server/utils"
 )
 
 type CmsCatService struct {
@@ -41,8 +41,14 @@ func (cmsCatService *CmsCatService)UpdateCmsCat(cmsCat autocode.CmsCat) (err err
 
 // GetCmsCat 根据id获取CmsCat记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (cmsCatService *CmsCatService)GetCmsCat(id uint) (err error, obj autocode.CmsCat) {
+func (cmsCatService *CmsCatService)GetCmsCat(id uint,fields string ) (err error, obj autocode.CmsCat) {
 	err = global.GVA_DB.Where("id = ?", id).First(&obj).Error 
+    if utils.IsEmpty(fields) {
+        err = global.GVA_DB.Where("id = ?", id).First(&obj).Error 
+        	} else {
+        err = global.GVA_DB.Select(fields).Where("id = ?", id).First(&obj).Error  
+	}
+
     obj.MapData = make(map[string]string) 
     if !utils.IsEmpty(obj.Thumb) {
         _,obj.MapData[obj.Thumb] = commFileService.GetPathByGuid(obj.Thumb)
@@ -52,7 +58,7 @@ func (cmsCatService *CmsCatService)GetCmsCat(id uint) (err error, obj autocode.C
 
 // GetCmsCatInfoList 分页获取CmsCat记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (cmsCatService *CmsCatService)GetCmsCatInfoList(info autoCodeReq.CmsCatSearch, createdAtBetween []string) (err error, list interface{}, total int64) {
+func (cmsCatService *CmsCatService)GetCmsCatInfoList(info autoCodeReq.CmsCatSearch, createdAtBetween []string,fields string) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     //修改 by ljd  增加查询排序 
@@ -60,7 +66,8 @@ func (cmsCatService *CmsCatService)GetCmsCatInfoList(info autoCodeReq.CmsCatSear
 	desc := info.OrderDesc
     // 创建db
 	db := global.GVA_DB.Model(&autocode.CmsCat{})
-    var cmsCats []autocode.CmsCat
+    //var cmsCats []autocode.CmsCat
+    var cmsCats []autocode.CmsCatMini
 
     //修改 by ljd  
     if info.ID > 0 {
@@ -103,7 +110,11 @@ func (cmsCatService *CmsCatService)GetCmsCatInfoList(info autoCodeReq.CmsCatSear
 			OrderStr = order
 		} 
 	}  
-     err = db.Order(OrderStr).Limit(limit).Offset(offset).Find(&cmsCats).Error
+    if utils.IsEmpty(fields) {
+      err = db.Order(OrderStr).Limit(limit).Offset(offset).Find(&cmsCats).Error
+    } else {
+      err = db.Select(fields).Order(OrderStr).Limit(limit).Offset(offset).Find(&cmsCats).Error
+    }         
      //更新图片path
 	for i, v := range cmsCats {
 	 v.MapData = make(map[string]string) 

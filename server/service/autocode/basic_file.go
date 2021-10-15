@@ -11,6 +11,8 @@ import (
 type BasicFileService struct {
 }
 
+var basicFileFields string = "aaa"
+
 // CreateBasicFile 创建BasicFile记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (basicFileService *BasicFileService) CreateBasicFile(basicFile autocode.BasicFile) (err error) {

@@ -33,8 +33,8 @@
         <el-form-item label="描述:">
               <editor ref="editor_desc" :value="formData.desc" placeholder="请输入描述" />
        </el-form-item>
-        <el-form-item label="关键词:">
-              <editor ref="editor_keywords" :value="formData.keywords" placeholder="请输入关键词" />
+        <el-form-item label="关键词:"> 
+              <el-input v-model="formData.keywords" clearable placeholder="请输入" />
        </el-form-item>
         <el-form-item label="别名:"> 
               <el-input v-model="formData.alias" clearable placeholder="请输入" />
@@ -104,8 +104,7 @@ export default {
   methods: {
     async save() {
       this.formData.thumb = this.$refs.imageView_thumb.myGuid; 
-      this.formData.desc = this.$refs.editor_desc.getContent(); 
-      this.formData.keywords = this.$refs.editor_keywords.getContent();  
+      this.formData.desc = this.$refs.editor_desc.getContent();  
       delete this.formData.mapData;
       delete this.formData.CreatedAt;
       delete this.formData.UpdatedAt;

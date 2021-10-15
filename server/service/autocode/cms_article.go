@@ -5,7 +5,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/autocode"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
     autoCodeReq "github.com/flipped-aurora/gin-vue-admin/server/model/autocode/request"
-     "github.com/flipped-aurora/gin-vue-admin/server/utils"
+    "github.com/flipped-aurora/gin-vue-admin/server/utils"
 )
 
 type CmsArticleService struct {
@@ -41,8 +41,14 @@ func (cmsArticleService *CmsArticleService)UpdateCmsArticle(cmsArticle autocode.
 
 // GetCmsArticle 根据id获取CmsArticle记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (cmsArticleService *CmsArticleService)GetCmsArticle(id uint) (err error, obj autocode.CmsArticle) {
+func (cmsArticleService *CmsArticleService)GetCmsArticle(id uint,fields string ) (err error, obj autocode.CmsArticle) {
 	err = global.GVA_DB.Where("id = ?", id).First(&obj).Error 
+    if utils.IsEmpty(fields) {
+        err = global.GVA_DB.Where("id = ?", id).First(&obj).Error 
+        	} else {
+        err = global.GVA_DB.Select(fields).Where("id = ?", id).First(&obj).Error  
+	}
+
     obj.MapData = make(map[string]string) 
     if !utils.IsEmpty(obj.Thumb) {
         _,obj.MapData[obj.Thumb] = commFileService.GetPathByGuid(obj.Thumb)
@@ -52,7 +58,7 @@ func (cmsArticleService *CmsArticleService)GetCmsArticle(id uint) (err error, ob
 
 // GetCmsArticleInfoList 分页获取CmsArticle记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (cmsArticleService *CmsArticleService)GetCmsArticleInfoList(info autoCodeReq.CmsArticleSearch, createdAtBetween []string) (err error, list interface{}, total int64) {
+func (cmsArticleService *CmsArticleService)GetCmsArticleInfoList(info autoCodeReq.CmsArticleSearch, createdAtBetween []string,fields string) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     //修改 by ljd  增加查询排序 
@@ -60,7 +66,8 @@ func (cmsArticleService *CmsArticleService)GetCmsArticleInfoList(info autoCodeRe
 	desc := info.OrderDesc
     // 创建db
 	db := global.GVA_DB.Model(&autocode.CmsArticle{})
-    var cmsArticles []autocode.CmsArticle
+    //var cmsArticles []autocode.CmsArticle
+    var cmsArticles []autocode.CmsArticleMini
 
     //修改 by ljd  
     if info.ID > 0 {
@@ -97,7 +104,11 @@ func (cmsArticleService *CmsArticleService)GetCmsArticleInfoList(info autoCodeRe
 			OrderStr = order
 		} 
 	}  
-     err = db.Order(OrderStr).Limit(limit).Offset(offset).Find(&cmsArticles).Error
+    if utils.IsEmpty(fields) {
+      err = db.Order(OrderStr).Limit(limit).Offset(offset).Find(&cmsArticles).Error
+    } else {
+      err = db.Select(fields).Order(OrderStr).Limit(limit).Offset(offset).Find(&cmsArticles).Error
+    }         
      //更新图片path
 	for i, v := range cmsArticles {
 	 v.MapData = make(map[string]string) 
