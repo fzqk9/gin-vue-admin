@@ -1,6 +1,7 @@
 package autocode
 
 import (
+	"errors"
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
     "github.com/flipped-aurora/gin-vue-admin/server/model/autocode"
     "github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
@@ -8,8 +9,9 @@ import (
     "github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
     "github.com/flipped-aurora/gin-vue-admin/server/service"
     "github.com/gin-gonic/gin"
-    "go.uber.org/zap"
-)
+    "go.uber.org/zap" 
+	"gorm.io/gorm"
+) 
 
 type CmsAdSeatApi struct {
 }
@@ -108,8 +110,12 @@ func (cmsAdSeatApi *CmsAdSeatApi) UpdateCmsAdSeat(c *gin.Context) {
 // @Router /cmsAdSeat/findCmsAdSeat [get]
 func (cmsAdSeatApi *CmsAdSeatApi) FindCmsAdSeat(c *gin.Context) {
 	var cmsAdSeat autocode.CmsAdSeat
-	_ = c.ShouldBindQuery(&cmsAdSeat)
-	if err, recmsAdSeat := cmsAdSeatService.GetCmsAdSeat(cmsAdSeat.ID); err != nil {
+	_ = c.ShouldBindQuery(&cmsAdSeat) 
+	 err, recmsAdSeat := cmsAdSeatService.GetCmsAdSeat(cmsAdSeat.ID,""); 
+	 if errors.Is(err, gorm.ErrRecordNotFound) {
+		//fmt.Println("查询不到数据")
+		response.OkWithData(gin.H{"cmsAdSeat": nil}, c)
+	} else if err != nil { 
         global.GVA_LOG.Error("查询失败!", zap.Any("err", err))
 		response.FailWithMessage("查询失败", c)
 	} else {
@@ -132,7 +138,7 @@ func (cmsAdSeatApi *CmsAdSeatApi) GetCmsAdSeatList(c *gin.Context) {
 
 	var pageInfo autocodeReq.CmsAdSeatSearch
 	_ = c.ShouldBindQuery(&pageInfo)
-	if err, list, total := cmsAdSeatService.GetCmsAdSeatInfoList(pageInfo,createdAtBetween); err != nil {
+	if err, list, total := cmsAdSeatService.GetCmsAdSeatInfoList(pageInfo,createdAtBetween,""); err != nil {
 	    global.GVA_LOG.Error("获取失败!", zap.Any("err", err))
         response.FailWithMessage("获取失败", c)
     } else {

@@ -5,7 +5,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/autocode"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
     autoCodeReq "github.com/flipped-aurora/gin-vue-admin/server/model/autocode/request"
-     "github.com/flipped-aurora/gin-vue-admin/server/utils"
+    "github.com/flipped-aurora/gin-vue-admin/server/utils"
 )
 
 type CmsAdSeatService struct {
@@ -41,15 +41,21 @@ func (cmsAdSeatService *CmsAdSeatService)UpdateCmsAdSeat(cmsAdSeat autocode.CmsA
 
 // GetCmsAdSeat 根据id获取CmsAdSeat记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (cmsAdSeatService *CmsAdSeatService)GetCmsAdSeat(id uint) (err error, obj autocode.CmsAdSeat) {
+func (cmsAdSeatService *CmsAdSeatService)GetCmsAdSeat(id uint,fields string ) (err error, obj autocode.CmsAdSeat) {
 	err = global.GVA_DB.Where("id = ?", id).First(&obj).Error 
+    if utils.IsEmpty(fields) {
+        err = global.GVA_DB.Where("id = ?", id).First(&obj).Error 
+        	} else {
+        err = global.GVA_DB.Select(fields).Where("id = ?", id).First(&obj).Error  
+	}
+
     obj.MapData = make(map[string]string)  
     return err, obj
 }
 
 // GetCmsAdSeatInfoList 分页获取CmsAdSeat记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (cmsAdSeatService *CmsAdSeatService)GetCmsAdSeatInfoList(info autoCodeReq.CmsAdSeatSearch, createdAtBetween []string) (err error, list interface{}, total int64) {
+func (cmsAdSeatService *CmsAdSeatService)GetCmsAdSeatInfoList(info autoCodeReq.CmsAdSeatSearch, createdAtBetween []string,fields string) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     //修改 by ljd  增加查询排序 
@@ -57,7 +63,8 @@ func (cmsAdSeatService *CmsAdSeatService)GetCmsAdSeatInfoList(info autoCodeReq.C
 	desc := info.OrderDesc
     // 创建db
 	db := global.GVA_DB.Model(&autocode.CmsAdSeat{})
-    var cmsAdSeats []autocode.CmsAdSeat
+    //var cmsAdSeats []autocode.CmsAdSeat
+    var cmsAdSeats []autocode.CmsAdSeatMini
 
     //修改 by ljd  
     if info.ID > 0 {
@@ -82,7 +89,11 @@ func (cmsAdSeatService *CmsAdSeatService)GetCmsAdSeatInfoList(info autoCodeReq.C
 			OrderStr = order
 		} 
 	}  
-     err = db.Order(OrderStr).Limit(limit).Offset(offset).Find(&cmsAdSeats).Error
+    if utils.IsEmpty(fields) {
+      err = db.Order(OrderStr).Limit(limit).Offset(offset).Find(&cmsAdSeats).Error
+    } else {
+      err = db.Select(fields).Order(OrderStr).Limit(limit).Offset(offset).Find(&cmsAdSeats).Error
+    }         
      //更新图片path
 	for i, v := range cmsAdSeats {
 	 v.MapData = make(map[string]string)
