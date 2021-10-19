@@ -81,7 +81,7 @@ func (e *FileUploadAndDownloadService) GetFileRecordInfoList(info request.PageIn
 func (e *FileUploadAndDownloadService) UploadFile(header *multipart.FileHeader, noSave string) (err error, file example.ExaFileUploadAndDownload) {
 	oss := upload.NewOss()
 	module := 0
-	filePath, key, uploadErr := oss.UploadFile(header, module)
+	filePath, key, uploadErr := oss.UploadFile(header, module, 1)
 	if uploadErr != nil {
 		panic(err)
 	}

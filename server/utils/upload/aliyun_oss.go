@@ -12,7 +12,7 @@ import (
 
 type AliyunOSS struct{}
 
-func (*AliyunOSS) UploadFile(file *multipart.FileHeader, module int) (string, string, error) {
+func (*AliyunOSS) UploadFile(file *multipart.FileHeader, module int, userType int) (string, string, error) {
 	bucket, err := NewBucket()
 	if err != nil {
 		global.GVA_LOG.Error("function AliyunOSS.NewBucket() Failed", zap.Any("err", err.Error()))

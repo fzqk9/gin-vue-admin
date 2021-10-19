@@ -74,8 +74,8 @@ mysql:
 # local configuration
 local:
   base-url: http://localhost:40050/
-  path: res/sys
-  path-user: res/user
+  path:  res/sys
+  path-user:  res/user
 
 # autocode configuration
 autocode:

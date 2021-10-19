@@ -26,7 +26,7 @@ type Local struct{}
 //@param: file *multipart.FileHeader
 //@return: string, string, error
 
-func (*Local) UploadFile(file *multipart.FileHeader, module int) (string, string, error) {
+func (*Local) UploadFile(file *multipart.FileHeader, module int, userType int) (string, string, error) {
 	// 读取文件后缀
 	ext := path.Ext(file.Filename)
 	// 读取文件名并加密
@@ -38,8 +38,14 @@ func (*Local) UploadFile(file *multipart.FileHeader, module int) (string, string
 	// filename := name + "_" + time.Now().Format("20060102150405") + ext
 
 	//filename := name + "_" + time.Now().Format("20060102150405") + ext
-	path := global.GVA_CONFIG.Local.Path + "/" + strconv.Itoa(module) +
-		"/" + time.Now().Format("20060102")
+	var path string
+	if userType == 1 { //管理用户
+		path = global.GVA_CONFIG.Local.Path + "/" + strconv.Itoa(module) +
+			"/" + time.Now().Format("20060102")
+	} else if userType == 2 { //普通用户
+		path = global.GVA_CONFIG.Local.PathUser + "/" + strconv.Itoa(module) +
+			"/" + time.Now().Format("20060102")
+	}
 
 	// 尝试创建此路径
 	//mkdirErr := os.MkdirAll(global.GVA_CONFIG.Local.Path, os.ModePerm)

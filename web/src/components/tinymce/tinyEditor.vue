@@ -12,7 +12,8 @@
     import load from './dynamicLoadScript.js'
 	import { uploadFile } from '@/api/common_file'
     import MediaLib from '@/components/mediaLib/mediaLib.vue'
-	 const tinymceCDN = window.location.origin + '/tinymce/tinymce.min.js'
+    const tinymce_path = window.location.origin + import.meta.env.VITE_ADMIN_WEB
+	const tinymceCDN = tinymce_path+'/tinymce/tinymce.min.js'
 	  
 	  // const tinymceCDN = 'https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js'
 	  // import plugins from './plugins.js'
@@ -73,7 +74,7 @@
                         console.error(err.message)
                         return
                     }
-                    window.tinymce.baseURL = window.location.origin + '/tinymce'
+                    window.tinymce.baseURL = tinymce_path + '/tinymce'
                     this.initTinymce()
                 })
             },

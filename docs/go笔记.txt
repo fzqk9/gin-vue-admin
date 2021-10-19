@@ -1,0 +1,30 @@
+-------------------------
+docker nginx 反向代理设置ip
+我出现这个问题的原因是，nginx运行在docker里面，所以localhost或者127.0.0.1访问的时候都是访问的docker里面的容器，无法访问到宿主机里面的服务，所以想要在docker里面nginx访问到宿主机的服务，需要查到宿主机的局域网ip地址，比如通过
+
+ifconfig查询ip信息，我这里使用了eth0对应的ip地址，192.168开头的地址配置到nginx之后，转发正常，问题解决
+ -------------------
+
+ upstream web {
+     # 加权策略按比例分配请求.
+     #  server 192.168.1.1:8081 weight=4;
+   least_conn; #最少连接将请求分配给当前连接数最少的服务器.
+  ip_hash;  # 来自同一个 IP 的连接都会分配给同一个服务器, 通常用于 会话保持.
+  server 192.168.1.1:8081;
+  server 192.168.1.2:8081;
+}
+
+
+通用 hash
+使用 hash 自定义要计算的 key. 示例中使用请求地址.
+可以选择 consistent 参数可以指定使用一致性哈希算法.
+
+upstream web {
+  hash $request_uri;
+  # hash $request_uri consistent;
+  server 192.168.1.1:8081;
+  server 192.168.1.2:8081;
+}
+
+
+ 

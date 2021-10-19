@@ -12,7 +12,8 @@ import (
 //@description: OSS接口
 
 type OSS interface {
-	UploadFile(file *multipart.FileHeader, module int) (string, string, error)
+	// module 模块, userType ,1管理用户 2普通用户
+	UploadFile(file *multipart.FileHeader, module int, userType int) (string, string, error)
 	DeleteFile(key string) error
 }
 
