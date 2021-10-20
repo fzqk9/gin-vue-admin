@@ -1,8 +1,18 @@
 package upload
 
 import (
+	"image"
+	_ "image/gif"
+	"image/jpeg"
+	_ "image/jpeg"
+	"image/png"
+
+	"github.com/nfnt/resize"
+
 	"errors"
+	"fmt"
 	"io"
+	"math"
 	"mime/multipart"
 	"os"
 	"path"
@@ -14,6 +24,9 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/utils"
 	"go.uber.org/zap"
 )
+
+const DEFAULT_MAX_WIDTH float64 = 200
+const DEFAULT_MAX_HEIGHT float64 = 200
 
 type Local struct{}
 
@@ -28,6 +41,7 @@ type Local struct{}
 
 func (*Local) UploadFile(file *multipart.FileHeader, module int, userType int) (string, string, error) {
 	// 读取文件后缀
+	fmt.Println("UploadFile userType  = ", userType)
 	ext := path.Ext(file.Filename)
 	// 读取文件名并加密
 	//name := strings.TrimSuffix(file.Filename, ext)
@@ -46,7 +60,7 @@ func (*Local) UploadFile(file *multipart.FileHeader, module int, userType int) (
 		path = global.GVA_CONFIG.Local.PathUser + "/" + strconv.Itoa(module) +
 			"/" + time.Now().Format("20060102")
 	}
-
+	fmt.Println("UploadFile path = ", path)
 	// 尝试创建此路径
 	//mkdirErr := os.MkdirAll(global.GVA_CONFIG.Local.Path, os.ModePerm)
 	mkdirErr := os.MkdirAll(path, os.ModePerm)
@@ -56,28 +70,80 @@ func (*Local) UploadFile(file *multipart.FileHeader, module int, userType int) (
 	}
 	// 拼接路径和文件名
 	//path := global.GVA_CONFIG.Local.Path + "/" + filename
-	path = path + "/" + name + ext
+	path_src := path + "/" + name + "_src" + ext //原图
+	path = path + "/" + name + ext               // 缩略图
+	pathAll := global.GVA_CONFIG.Local.BasePath + path
+	pathAll_src := global.GVA_CONFIG.Local.BasePath + path_src
+	fmt.Println("UploadFile path   = ", path)
+	fmt.Println("UploadFile path_src   = ", path_src)
 
+	fmt.Println("UploadFile pathAll 2 = ", pathAll)
+	fmt.Println("UploadFile pathAll_src 2 = ", pathAll_src)
 	f, openError := file.Open() // 读取文件
 	if openError != nil {
-		global.GVA_LOG.Error("function file.Open() Filed", zap.Any("err", openError.Error()))
-		return "", "", errors.New("function file.Open() Filed, err:" + openError.Error())
+		global.GVA_LOG.Error("AAA file.Open() Filed", zap.Any("err", openError.Error()))
+		return "", "", errors.New("AAA file.Open() Filed, err:" + openError.Error())
 	}
+
 	defer f.Close() // 创建文件 defer 关闭
-
-	out, createErr := os.Create(path)
+	out, createErr := os.Create(pathAll_src)
 	if createErr != nil {
-		global.GVA_LOG.Error("function os.Create() Filed", zap.Any("err", createErr.Error()))
-		return "", "", errors.New("function os.Create() Filed, err:" + createErr.Error())
+		global.GVA_LOG.Error("BBB os.Create() Filed", zap.Any("err", createErr.Error()))
+		return "", "", errors.New("BBB os.Create() Filed, err:" + createErr.Error())
 	}
-	defer out.Close() // 创建文件 defer 关闭
-
+	defer out.Close()             // 创建文件 defer 关闭
 	_, copyErr := io.Copy(out, f) // 传输（拷贝）文件
 	if copyErr != nil {
-		global.GVA_LOG.Error("function io.Copy() Filed", zap.Any("err", copyErr.Error()))
-		return "", "", errors.New("function io.Copy() Filed, err:" + copyErr.Error())
+		global.GVA_LOG.Error("CCC io.Copy() Filed", zap.Any("err", copyErr.Error()))
+		return "", "", errors.New("CCC io.Copy() Filed, err:" + copyErr.Error())
 	}
+	//生成缩略图
+	makeThumbnail(pathAll_src, pathAll, ext)
 	return path, name, nil
+}
+
+// 计算图片缩放后的尺寸
+func calculateRatioFit(srcWidth, srcHeight int) (int, int) {
+	ratio := math.Min(DEFAULT_MAX_WIDTH/float64(srcWidth), DEFAULT_MAX_HEIGHT/float64(srcHeight))
+	return int(math.Ceil(float64(srcWidth) * ratio)), int(math.Ceil(float64(srcHeight) * ratio))
+}
+
+// 生成缩略图
+func makeThumbnail(imagePath string, savePath string, ext string) error {
+	file, _ := os.Open(imagePath)
+	defer file.Close()
+
+	img, _, err := image.Decode(file)
+	if err != nil {
+		return err
+	}
+
+	b := img.Bounds()
+	width := b.Max.X
+	height := b.Max.Y
+
+	w, h := calculateRatioFit(width, height)
+
+	fmt.Println("width = ", width, " height = ", height)
+	fmt.Println("w = ", w, " h = ", h)
+
+	// 调用resize库进行图片缩放
+	m := resize.Resize(uint(w), uint(h), img, resize.Lanczos3)
+
+	// 需要保存的文件
+	imgfile, _ := os.Create(savePath)
+	defer imgfile.Close()
+
+	// 以PNG格式保存文件
+	if strings.ToLower(ext) == ".png" {
+		err = png.Encode(imgfile, m)
+	} else {
+		err = jpeg.Encode(imgfile, m, nil)
+	}
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 //@author: [piexlmax](https://github.com/piexlmax)

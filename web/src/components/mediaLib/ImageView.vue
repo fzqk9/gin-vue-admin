@@ -59,13 +59,13 @@
  		},
 		async created() {		   
 		    this.myUrl = this.url;
-		    this.myList =[this.myUrl];
+		    this.myList = this.getImgList(this.myUrl); 
 		    this.myGuid = this.guid;
 		},
 		watch:{ 
 			url(val){
 				this.myUrl = val;
-				this.myList =[val];
+				this.myList = this.getImgList(val); 
 			},
 			guid(val){  
 			   this.myGuid = val  
@@ -103,10 +103,16 @@
  			selectOneImg(obj) {
  				//console.log("selectOneImg");
 				//console.log(obj);
-				 this.myUrl = obj.url;
-				 this.myList =[obj.url];
+				 this.myUrl = obj.url; 
+				 this.myList = this.getImgList(obj.url);
 				 this.myGuid = obj.guid;
- 			} 
+ 			},
+			getImgList(path) {
+			   //更换高清图
+			   path = path.replace(".jpg","_src.jpg");
+			   path = path.replace(".png","_src.png");
+			   return [path];
+			}
  		} 		 
 		// async created() {
 		//    console.log("created----------");

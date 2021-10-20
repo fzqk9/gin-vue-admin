@@ -157,14 +157,17 @@
 					    sha1(file).then(sha1 => { 
 							 console.log("文件 sha1 = ", sha1)  
 							 findBasicFile({sha1:sha1}).then(res => {
-							    console.log(res)
+							    console.log("findBasicFile",res)
 							 	if (res.code == 0 && res.data.basicFile && res.data.basicFile.path !="" ) { 
 									let path = res.data.basicFile.path
 									console.log(sha1,"已存在文件 ",path)
+									//更换高清图
+									path = path.replace(".jpg","_src.jpg")
+									path = path.replace(".png","_src.png")
 							 		success(path);
 							 		return;
-							 	}else
-								{
+							 	}else {
+									console.log(sha1,"不存在 开始上传.... ")
 									let formData = new FormData()
 									formData.append('file',file)   					   
 									let ext ="jpg";
@@ -178,14 +181,19 @@
 									formData.append('media_type',2) 
 									uploadFile(formData).then(res => {									  
 										if (res.code == 0) {
-											let file2 = res.data;
-											success(file2.path);
+											let path = res.data.path;
+											//更换高清图
+											path = path.replace(".jpg","_src.jpg")
+											path = path.replace(".png","_src.png")
+											success(path);
 											return
 										}
+										console.log("上传出错1")
 										console.log(res)
 										failure(' 上传失败')
 									}).catch(() => {
-										failure('uploadFile 上传出错')
+										console.log("上传出错2")
+										failure('上传出错')
 									}) 
 								} 
 							 }).catch(() => {

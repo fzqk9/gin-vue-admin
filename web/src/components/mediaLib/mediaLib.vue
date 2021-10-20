@@ -261,16 +261,15 @@ export default {
 		  }) 
 	},
 	 async beforeImageUpload(file) {  
-        
-		   console.log("this.uploadData.module",this.uploadData.module) 
-	      
+           this.searchInfo.guid = "";
+		   console.log("this.uploadData.module",this.uploadData.module) 	      
 			console.log(" Promise media_type",this.uploadData.media_type)
-			if (this.uploadData.module ==-1)
+			if (  this.uploadData.module ==-1)
 			{
 				this.$message.error('请选择上传的模块')
 				return reject("error")  
 			}
-			if (this.uploadData.media_type ==-1)
+			if ( this.uploadData.media_type ==-1 )
 			{
 				this.$message.error('请选择文件类型')
 				return reject("error")  
@@ -291,28 +290,26 @@ export default {
 			  //判断是否有重复的 sha1 文件
 			 const res = await findBasicFile({ sha1:this.uploadData.sha1}) 
 			   console.log(" res = ",res) 
-			 if (res.code === 0) {
-				  
-                  console.log(" res = ",res.data.basicFile) 
-				  if (res.data.basicFile.guid!="")  
-				  { 
-                      console.log(" 已存在相同的文件 path = ",res.data.basicFile.path) 
-					   this.$message.error('已存在相同的文件') 
-                       this.handleGetByGuid(res.data.basicFile.guid);
-					   return reject("error")  
-				  }  
-			 } 
-		  this.uploadData.size = Math.round(file.size / 1024);	  //四舍五入（小数部分）		  
-		  const isRightSize =this.uploadData.size < this.fileSize
-		  console.log(" this.uploadData.size = ",this.uploadData.size , " this.fileSize = ",this.fileSize) 
-		  if (!isRightSize) {
-			// 压缩
-			  console.log(" 压缩 isRightSize") 
-			 const compress = new ImageCompress(file, this.fileSize, this.maxWH)		
-			 return compress.compress()  
-		  } 
-		  console.log(" resolve =ok ") 
-		  return new Promise(resolve => { return resolve(file) });
+			 if (res.code === 0 && res.data.basicFile && res.data.basicFile.path !="") {
+				 let path = res.data.basicFile.path 
+                 console.log(" 已存在相同的文件 path = ",path) 
+			     this.$message.error('已存在相同的文件') 
+                 this.handleGetByGuid(res.data.basicFile.guid); 
+				 return reject("error")  
+			 } else {
+				  console.log(" 开始新上传。。。 ");
+				  this.uploadData.size = Math.round(file.size / 1024);	  //四舍五入（小数部分）		  
+				  const isRightSize =this.uploadData.size < this.fileSize
+				  console.log(" this.uploadData.size = ",this.uploadData.size , " this.fileSize = ",this.fileSize) 
+				  if (!isRightSize) {
+					// 压缩
+					  console.log(" 压缩 isRightSize") 
+					 const compress = new ImageCompress(file, this.fileSize, this.maxWH)		
+					 return compress.compress()  
+				  } 
+				  console.log(" resolve =ok ") 
+				  return new Promise(resolve => { return resolve(file) });
+		    }
 	},
     
    handleGetByGuid(guid) {

@@ -25,7 +25,7 @@ func (e *CommonFileService) UploadFile(header *multipart.FileHeader, basicFile a
 	//moduleName, _ = dictSer.GetNameByValue(13, module)
 	var module int
 	module = *basicFile.Module
-	filePath, guid, uploadErr := oss.UploadFile(header, module, 2)
+	filePath, guid, uploadErr := oss.UploadFile(header, module, 1)
 	if uploadErr != nil {
 		panic(err)
 	}

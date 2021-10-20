@@ -74,8 +74,9 @@ mysql:
 # local configuration
 local:
   base-url: http://localhost:40050/
-  path:  res/sys
-  path-user:  res/user
+  base-path: C:/work_go/go-cms-fork/server/
+  path: res/sys
+  path-user: res/user
 
 # autocode configuration
 autocode:
@@ -122,6 +123,7 @@ tencent-cos:
   secret-id: 'xxxxxxxx'
   secret-key: 'xxxxxxxx'
   base-url: 'https://gin.vue.admin'
+  base-path: 'yourBasePath'
   path-prefix: 'github.com/flipped-aurora/gin-vue-admin/server'
 
 # excel configuration
