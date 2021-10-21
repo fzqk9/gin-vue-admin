@@ -911,26 +911,26 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "展示值",
-                        "name": "autoCodeExampleField",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
                         "description": "创建时间",
-                        "name": "createdAt",
+                        "name": "CreatedAt",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "主键ID",
-                        "name": "id",
+                        "name": "ID",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "更新时间",
-                        "name": "updatedAt",
+                        "name": "UpdatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "展示值",
+                        "name": "autoCodeExampleField",
                         "in": "query"
                     }
                 ],
@@ -964,20 +964,26 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "展示值",
-                        "name": "autoCodeExampleField",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
                         "description": "创建时间",
-                        "name": "createdAt",
+                        "name": "CreatedAt",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "主键ID",
-                        "name": "id",
+                        "name": "ID",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "更新时间",
+                        "name": "UpdatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "展示值",
+                        "name": "autoCodeExampleField",
                         "in": "query"
                     },
                     {
@@ -1002,12 +1008,6 @@ var doc = `{
                         "type": "integer",
                         "description": "每页大小",
                         "name": "pageSize",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "更新时间",
-                        "name": "updatedAt",
                         "in": "query"
                     }
                 ],
@@ -1116,6 +1116,454 @@ var doc = `{
                 }
             }
         },
+        "/basicFile/createBasicFile": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BasicFile"
+                ],
+                "summary": "创建BasicFile",
+                "parameters": [
+                    {
+                        "description": "创建BasicFile",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/autocode.BasicFile"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"获取成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/basicFile/deleteBasicFile": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BasicFile"
+                ],
+                "summary": "删除BasicFile",
+                "parameters": [
+                    {
+                        "description": "删除BasicFile",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/autocode.BasicFile"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"删除成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/basicFile/deleteBasicFileByIds": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BasicFile"
+                ],
+                "summary": "批量删除BasicFile",
+                "parameters": [
+                    {
+                        "description": "批量删除BasicFile",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.IdsReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"批量删除成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/basicFile/findBasicFile": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BasicFile"
+                ],
+                "summary": "用id查询BasicFile",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "创建时间",
+                        "name": "CreatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "主键ID",
+                        "name": "ID",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "更新时间",
+                        "name": "UpdatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "download",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "driver",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "ext",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "guid",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "md5",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "mediaType",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "module",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "path",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "sha1",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "usedTime",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "userId",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"查询成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/basicFile/getBasicFileList": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BasicFile"
+                ],
+                "summary": "分页获取BasicFile列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "创建时间",
+                        "name": "CreatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "主键ID",
+                        "name": "ID",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "更新时间",
+                        "name": "UpdatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "download",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "driver",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "ext",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "guid",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "md5",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "mediaType",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "module",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "排序方式:升序false(默认)|降序true",
+                        "name": "orderDesc",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd",
+                        "name": "orderKey",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页大小",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "path",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "sha1",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "usedTime",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "userId",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"获取成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/basicFile/quickEdit": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "QuickEdit"
+                ],
+                "summary": "快速更新",
+                "parameters": [
+                    {
+                        "description": "快速更新BasicFile",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/autocode.BasicFile"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"更新成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/basicFile/updateBasicFile": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "BasicFile"
+                ],
+                "summary": "更新BasicFile",
+                "parameters": [
+                    {
+                        "description": "更新BasicFile",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/autocode.BasicFile"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"更新成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/casbin/UpdateCasbin": {
             "post": {
                 "security": [
@@ -1185,6 +1633,1430 @@ var doc = `{
                 "responses": {
                     "200": {
                         "description": "{\"success\":true,\"data\":{},\"msg\":\"获取成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsAd/createCmsAd": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CmsAd"
+                ],
+                "summary": "创建CmsAd",
+                "parameters": [
+                    {
+                        "description": "创建CmsAd",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/autocode.CmsAd"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"获取成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsAd/deleteCmsAd": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CmsAd"
+                ],
+                "summary": "删除CmsAd",
+                "parameters": [
+                    {
+                        "description": "删除CmsAd",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/autocode.CmsAd"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"删除成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsAd/deleteCmsAdByIds": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CmsAd"
+                ],
+                "summary": "批量删除CmsAd",
+                "parameters": [
+                    {
+                        "description": "批量删除CmsAd",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.IdsReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"批量删除成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsAd/findCmsAd": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CmsAd"
+                ],
+                "summary": "用id查询CmsAd",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "创建时间",
+                        "name": "CreatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "主键ID",
+                        "name": "ID",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "更新时间",
+                        "name": "UpdatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "name": "beTarget",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "detail",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "endTime",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "expDetail",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "image",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "link",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "mediaType",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "seatId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "startTime",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "totalClick",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"查询成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsAd/getCmsAdList": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CmsAd"
+                ],
+                "summary": "分页获取CmsAd列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "创建时间",
+                        "name": "CreatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "主键ID",
+                        "name": "ID",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "更新时间",
+                        "name": "UpdatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "name": "beTarget",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "detail",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "endTime",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "expDetail",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "image",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "link",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "mediaType",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "排序方式:升序false(默认)|降序true",
+                        "name": "orderDesc",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd",
+                        "name": "orderKey",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页大小",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "seatId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "startTime",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "totalClick",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"获取成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsAd/quickEdit": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "QuickEdit"
+                ],
+                "summary": "快速更新",
+                "parameters": [
+                    {
+                        "description": "快速更新CmsAd",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/autocode.CmsAd"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"更新成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsAd/updateCmsAd": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "QuickEdit"
+                ],
+                "summary": "更新QuickEdit",
+                "parameters": [
+                    {
+                        "description": "更新 QuickEdit",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/autocode.CmsAd"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"更新成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsAdSeat/createCmsAdSeat": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CmsAdSeat"
+                ],
+                "summary": "创建CmsAdSeat",
+                "parameters": [
+                    {
+                        "description": "创建CmsAdSeat",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/autocode.CmsAdSeat"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"获取成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsAdSeat/deleteCmsAdSeat": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CmsAdSeat"
+                ],
+                "summary": "删除CmsAdSeat",
+                "parameters": [
+                    {
+                        "description": "删除CmsAdSeat",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/autocode.CmsAdSeat"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"删除成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsAdSeat/deleteCmsAdSeatByIds": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CmsAdSeat"
+                ],
+                "summary": "批量删除CmsAdSeat",
+                "parameters": [
+                    {
+                        "description": "批量删除CmsAdSeat",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.IdsReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"批量删除成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsAdSeat/findCmsAdSeat": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CmsAdSeat"
+                ],
+                "summary": "用id查询CmsAdSeat",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "创建时间",
+                        "name": "CreatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "主键ID",
+                        "name": "ID",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "更新时间",
+                        "name": "UpdatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "desc",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "height",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "style",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "width",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"查询成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsAdSeat/getCmsAdSeatList": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CmsAdSeat"
+                ],
+                "summary": "分页获取CmsAdSeat列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "创建时间",
+                        "name": "CreatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "主键ID",
+                        "name": "ID",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "更新时间",
+                        "name": "UpdatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "desc",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "height",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "排序方式:升序false(默认)|降序true",
+                        "name": "orderDesc",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd",
+                        "name": "orderKey",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页大小",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "style",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "width",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"获取成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsAdSeat/quickEdit": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "QuickEdit"
+                ],
+                "summary": "快速更新",
+                "parameters": [
+                    {
+                        "description": "快速更新CmsAdSeat",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/autocode.CmsAdSeat"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"更新成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsAdSeat/updateCmsAdSeat": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CmsAdSeat"
+                ],
+                "summary": "更新CmsAdSeat",
+                "parameters": [
+                    {
+                        "description": "更新CmsAdSeat",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/autocode.CmsAdSeat"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"更新成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsArticle/createCmsArticle": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CmsArticle"
+                ],
+                "summary": "创建CmsArticle",
+                "parameters": [
+                    {
+                        "description": "创建CmsArticle",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/autocode.CmsArticle"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"获取成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsArticle/deleteCmsArticle": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CmsArticle"
+                ],
+                "summary": "删除CmsArticle",
+                "parameters": [
+                    {
+                        "description": "删除CmsArticle",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/autocode.CmsArticle"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"删除成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsArticle/deleteCmsArticleByIds": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CmsArticle"
+                ],
+                "summary": "批量删除CmsArticle",
+                "parameters": [
+                    {
+                        "description": "批量删除CmsArticle",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.IdsReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"批量删除成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsArticle/findCmsArticle": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CmsArticle"
+                ],
+                "summary": "用id查询CmsArticle",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "创建时间",
+                        "name": "CreatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "主键ID",
+                        "name": "ID",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "更新时间",
+                        "name": "UpdatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "author",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "authorEmail",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "catId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "catIdSys",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "chapter",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "detail",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "imageList",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "name": "isHot",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "name": "isTop",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "link",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "mediaList",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "mediaType",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "pid",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "qrcode",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "referer",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "sketch",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "tagList",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "thumb",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "totalClick",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "totalDiscuss",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "totalStar",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "totalStar1",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "totalStar2",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "totalStar3",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "totalStar4",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "totalStar5",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "userId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "verifyMsg",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"查询成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsArticle/getCmsArticleList": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CmsArticle"
+                ],
+                "summary": "分页获取CmsArticle列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "创建时间",
+                        "name": "CreatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "主键ID",
+                        "name": "ID",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "更新时间",
+                        "name": "UpdatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "author",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "authorEmail",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "catId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "catIdSys",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "chapter",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "detail",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "imageList",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "name": "isHot",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "name": "isTop",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "link",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "mediaList",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "mediaType",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "排序方式:升序false(默认)|降序true",
+                        "name": "orderDesc",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd",
+                        "name": "orderKey",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页大小",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "pid",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "qrcode",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "referer",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "sketch",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "tagList",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "thumb",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "totalClick",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "totalDiscuss",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "totalStar",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "totalStar1",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "totalStar2",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "totalStar3",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "totalStar4",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "totalStar5",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "userId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "verifyMsg",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"获取成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsArticle/quickEdit": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "QuickEdit"
+                ],
+                "summary": "快速更新",
+                "parameters": [
+                    {
+                        "description": "快速更新CmsArticle",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/autocode.CmsArticle"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"更新成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/cmsArticle/updateCmsArticle": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CmsArticle"
+                ],
+                "summary": "更新CmsArticle",
+                "parameters": [
+                    {
+                        "description": "更新CmsArticle",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/autocode.CmsArticle"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"更新成功\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -1326,6 +3198,24 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "description": "创建时间",
+                        "name": "CreatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "主键ID",
+                        "name": "ID",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "更新时间",
+                        "name": "UpdatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
                         "name": "alias",
                         "in": "query"
                     },
@@ -1341,24 +3231,12 @@ var doc = `{
                     },
                     {
                         "type": "string",
-                        "description": "创建时间",
-                        "name": "createdAt",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
                         "name": "desc",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "name": "groupId",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "主键ID",
-                        "name": "id",
                         "in": "query"
                     },
                     {
@@ -1395,12 +3273,6 @@ var doc = `{
                         "type": "string",
                         "name": "thumb",
                         "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "更新时间",
-                        "name": "updatedAt",
-                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1433,6 +3305,24 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "description": "创建时间",
+                        "name": "CreatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "主键ID",
+                        "name": "ID",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "更新时间",
+                        "name": "UpdatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
                         "name": "alias",
                         "in": "query"
                     },
@@ -1448,24 +3338,12 @@ var doc = `{
                     },
                     {
                         "type": "string",
-                        "description": "创建时间",
-                        "name": "createdAt",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
                         "name": "desc",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "name": "groupId",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "主键ID",
-                        "name": "id",
                         "in": "query"
                     },
                     {
@@ -1526,12 +3404,6 @@ var doc = `{
                         "type": "string",
                         "name": "thumb",
                         "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "更新时间",
-                        "name": "updatedAt",
-                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1563,7 +3435,7 @@ var doc = `{
                 "summary": "快速更新",
                 "parameters": [
                     {
-                        "description": "快速更新",
+                        "description": "快速更新CmsCat",
                         "name": "data",
                         "in": "body",
                         "required": true,
@@ -1641,7 +3513,19 @@ var doc = `{
                     {
                         "type": "string",
                         "description": "创建时间",
-                        "name": "createdAt",
+                        "name": "CreatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "主键ID",
+                        "name": "ID",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "更新时间",
+                        "name": "UpdatedAt",
                         "in": "query"
                     },
                     {
@@ -1657,12 +3541,6 @@ var doc = `{
                         "in": "query"
                     },
                     {
-                        "type": "integer",
-                        "description": "主键ID",
-                        "name": "id",
-                        "in": "query"
-                    },
-                    {
                         "type": "string",
                         "description": "管理角色ID",
                         "name": "sysUserAuthorityID",
@@ -1672,12 +3550,6 @@ var doc = `{
                         "type": "integer",
                         "description": "管理ID",
                         "name": "sysUserId",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "更新时间",
-                        "name": "updatedAt",
                         "in": "query"
                     }
                 ],
@@ -2765,19 +4637,25 @@ var doc = `{
                     {
                         "type": "string",
                         "description": "创建时间",
-                        "name": "createdAt",
+                        "name": "CreatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "主键ID",
+                        "name": "ID",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "更新时间",
+                        "name": "UpdatedAt",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "描述",
                         "name": "desc",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "主键ID",
-                        "name": "id",
                         "in": "query"
                     },
                     {
@@ -2796,12 +4674,6 @@ var doc = `{
                         "type": "string",
                         "description": "字典名（英）",
                         "name": "type",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "更新时间",
-                        "name": "updatedAt",
                         "in": "query"
                     }
                 ],
@@ -2836,19 +4708,25 @@ var doc = `{
                     {
                         "type": "string",
                         "description": "创建时间",
-                        "name": "createdAt",
+                        "name": "CreatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "主键ID",
+                        "name": "ID",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "更新时间",
+                        "name": "UpdatedAt",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "描述",
                         "name": "desc",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "主键ID",
-                        "name": "id",
                         "in": "query"
                     },
                     {
@@ -2891,12 +4769,6 @@ var doc = `{
                         "type": "string",
                         "description": "字典名（英）",
                         "name": "type",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "更新时间",
-                        "name": "updatedAt",
                         "in": "query"
                     }
                 ],
@@ -3045,13 +4917,19 @@ var doc = `{
                     {
                         "type": "string",
                         "description": "创建时间",
-                        "name": "createdAt",
+                        "name": "CreatedAt",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "主键ID",
-                        "name": "id",
+                        "name": "ID",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "更新时间",
+                        "name": "UpdatedAt",
                         "in": "query"
                     },
                     {
@@ -3076,12 +4954,6 @@ var doc = `{
                         "type": "integer",
                         "description": "关联标记",
                         "name": "sysDictionaryID",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "更新时间",
-                        "name": "updatedAt",
                         "in": "query"
                     },
                     {
@@ -3122,13 +4994,19 @@ var doc = `{
                     {
                         "type": "string",
                         "description": "创建时间",
-                        "name": "createdAt",
+                        "name": "CreatedAt",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "主键ID",
-                        "name": "id",
+                        "name": "ID",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "更新时间",
+                        "name": "UpdatedAt",
                         "in": "query"
                     },
                     {
@@ -3177,12 +5055,6 @@ var doc = `{
                         "type": "integer",
                         "description": "关联标记",
                         "name": "sysDictionaryID",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "更新时间",
-                        "name": "updatedAt",
                         "in": "query"
                     },
                     {
@@ -3374,6 +5246,24 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "description": "创建时间",
+                        "name": "CreatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "主键ID",
+                        "name": "ID",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "更新时间",
+                        "name": "UpdatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
                         "description": "代理",
                         "name": "agent",
                         "in": "query"
@@ -3386,20 +5276,8 @@ var doc = `{
                     },
                     {
                         "type": "string",
-                        "description": "创建时间",
-                        "name": "createdAt",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
                         "description": "错误信息",
                         "name": "error_message",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "主键ID",
-                        "name": "id",
                         "in": "query"
                     },
                     {
@@ -3439,12 +5317,6 @@ var doc = `{
                         "in": "query"
                     },
                     {
-                        "type": "string",
-                        "description": "更新时间",
-                        "name": "updatedAt",
-                        "in": "query"
-                    },
-                    {
                         "type": "integer",
                         "description": "用户id",
                         "name": "user_id",
@@ -3481,6 +5353,24 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "description": "创建时间",
+                        "name": "CreatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "主键ID",
+                        "name": "ID",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "更新时间",
+                        "name": "UpdatedAt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
                         "description": "代理",
                         "name": "agent",
                         "in": "query"
@@ -3493,20 +5383,8 @@ var doc = `{
                     },
                     {
                         "type": "string",
-                        "description": "创建时间",
-                        "name": "createdAt",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
                         "description": "错误信息",
                         "name": "error_message",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "主键ID",
-                        "name": "id",
                         "in": "query"
                     },
                     {
@@ -3567,12 +5445,6 @@ var doc = `{
                         "type": "integer",
                         "description": "请求状态",
                         "name": "status",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "更新时间",
-                        "name": "updatedAt",
                         "in": "query"
                     },
                     {
@@ -3986,20 +5858,315 @@ var doc = `{
         "autocode.AutoCodeExample": {
             "type": "object",
             "properties": {
+                "CreatedAt": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "ID": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "UpdatedAt": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
                 "autoCodeExampleField": {
                     "description": "展示值",
                     "type": "string"
                 },
-                "createdAt": {
+                "mapData": {
+                    "description": "key-val 模式数据",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "autocode.BasicFile": {
+            "type": "object",
+            "properties": {
+                "CreatedAt": {
                     "description": "创建时间",
                     "type": "string"
                 },
-                "id": {
+                "ID": {
                     "description": "主键ID",
                     "type": "integer"
                 },
-                "updatedAt": {
+                "UpdatedAt": {
                     "description": "更新时间",
+                    "type": "string"
+                },
+                "download": {
+                    "type": "integer"
+                },
+                "driver": {
+                    "type": "integer"
+                },
+                "ext": {
+                    "type": "string"
+                },
+                "guid": {
+                    "type": "string"
+                },
+                "mapData": {
+                    "description": "key-val 模式数据",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "md5": {
+                    "type": "string"
+                },
+                "mediaType": {
+                    "type": "integer"
+                },
+                "module": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "sha1": {
+                    "type": "string"
+                },
+                "size": {
+                    "type": "integer"
+                },
+                "sort": {
+                    "type": "integer"
+                },
+                "usedTime": {
+                    "type": "integer"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "autocode.CmsAd": {
+            "type": "object",
+            "properties": {
+                "CreatedAt": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "ID": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "UpdatedAt": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "beTarget": {
+                    "type": "boolean"
+                },
+                "detail": {
+                    "type": "string"
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "expDetail": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "mapData": {
+                    "description": "key-val 模式数据",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "mediaType": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "seatId": {
+                    "type": "integer"
+                },
+                "sort": {
+                    "type": "integer"
+                },
+                "startTime": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "totalClick": {
+                    "type": "integer"
+                }
+            }
+        },
+        "autocode.CmsAdSeat": {
+            "type": "object",
+            "properties": {
+                "CreatedAt": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "ID": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "UpdatedAt": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "height": {
+                    "type": "integer"
+                },
+                "mapData": {
+                    "description": "key-val 模式数据",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "style": {
+                    "type": "string"
+                },
+                "width": {
+                    "type": "integer"
+                }
+            }
+        },
+        "autocode.CmsArticle": {
+            "type": "object",
+            "properties": {
+                "CreatedAt": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "ID": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "UpdatedAt": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "author": {
+                    "type": "string"
+                },
+                "authorEmail": {
+                    "type": "string"
+                },
+                "catId": {
+                    "type": "integer"
+                },
+                "catIdSys": {
+                    "type": "integer"
+                },
+                "chapter": {
+                    "type": "string"
+                },
+                "detail": {
+                    "type": "string"
+                },
+                "imageList": {
+                    "type": "string"
+                },
+                "isHot": {
+                    "type": "boolean"
+                },
+                "isTop": {
+                    "type": "boolean"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "mapData": {
+                    "description": "key-val 模式数据",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "mediaList": {
+                    "type": "string"
+                },
+                "mediaType": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pid": {
+                    "type": "integer"
+                },
+                "qrcode": {
+                    "type": "string"
+                },
+                "referer": {
+                    "type": "string"
+                },
+                "sketch": {
+                    "type": "string"
+                },
+                "sort": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "tagList": {
+                    "type": "string"
+                },
+                "thumb": {
+                    "type": "string"
+                },
+                "totalClick": {
+                    "type": "integer"
+                },
+                "totalDiscuss": {
+                    "type": "integer"
+                },
+                "totalStar": {
+                    "type": "integer"
+                },
+                "totalStar1": {
+                    "type": "integer"
+                },
+                "totalStar2": {
+                    "type": "integer"
+                },
+                "totalStar3": {
+                    "type": "integer"
+                },
+                "totalStar4": {
+                    "type": "integer"
+                },
+                "totalStar5": {
+                    "type": "integer"
+                },
+                "userId": {
+                    "type": "integer"
+                },
+                "verifyMsg": {
                     "type": "string"
                 }
             }
@@ -4007,6 +6174,18 @@ var doc = `{
         "autocode.CmsCat": {
             "type": "object",
             "properties": {
+                "CreatedAt": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "ID": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "UpdatedAt": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
                 "alias": {
                     "type": "string"
                 },
@@ -4016,22 +6195,21 @@ var doc = `{
                 "beSys": {
                     "type": "boolean"
                 },
-                "createdAt": {
-                    "description": "创建时间",
-                    "type": "string"
-                },
                 "desc": {
                     "type": "string"
                 },
                 "groupId": {
                     "type": "integer"
                 },
-                "id": {
-                    "description": "主键ID",
-                    "type": "integer"
-                },
                 "keywords": {
                     "type": "string"
+                },
+                "mapData": {
+                    "description": "key-val 模式数据",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
                 },
                 "mediaType": {
                     "type": "integer"
@@ -4049,10 +6227,6 @@ var doc = `{
                     "type": "integer"
                 },
                 "thumb": {
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "description": "更新时间",
                     "type": "string"
                 }
             }
@@ -4228,8 +6402,20 @@ var doc = `{
         "config.Local": {
             "type": "object",
             "properties": {
+                "base-path": {
+                    "description": "本地文件 root",
+                    "type": "string"
+                },
+                "base-url": {
+                    "description": "本地文件URL",
+                    "type": "string"
+                },
                 "path": {
-                    "description": "本地文件路径",
+                    "description": "本地文件 系统文件上传",
+                    "type": "string"
+                },
+                "path-user": {
+                    "description": "本地文件 -用户上传",
                     "type": "string"
                 }
             }
@@ -4393,6 +6579,12 @@ var doc = `{
                     "description": "环境值",
                     "type": "string"
                 },
+                "iplimitCount": {
+                    "type": "integer"
+                },
+                "iplimitTime": {
+                    "type": "integer"
+                },
                 "ossType": {
                     "description": "Oss类型",
                     "type": "string"
@@ -4464,10 +6656,6 @@ var doc = `{
                     "description": "级别",
                     "type": "string"
                 },
-                "linkName": {
-                    "description": "软链接名称",
-                    "type": "string"
-                },
                 "logInConsole": {
                     "description": "输出控制台",
                     "type": "boolean"
@@ -4489,8 +6677,16 @@ var doc = `{
         "example.ExaCustomer": {
             "type": "object",
             "properties": {
-                "createdAt": {
+                "CreatedAt": {
                     "description": "创建时间",
+                    "type": "string"
+                },
+                "ID": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "UpdatedAt": {
+                    "description": "更新时间",
                     "type": "string"
                 },
                 "customerName": {
@@ -4501,9 +6697,12 @@ var doc = `{
                     "description": "客户手机号",
                     "type": "string"
                 },
-                "id": {
-                    "description": "主键ID",
-                    "type": "integer"
+                "mapData": {
+                    "description": "key-val 模式数据",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
                 },
                 "sysUser": {
                     "description": "管理详情",
@@ -4516,27 +6715,34 @@ var doc = `{
                 "sysUserId": {
                     "description": "管理ID",
                     "type": "integer"
-                },
-                "updatedAt": {
-                    "description": "更新时间",
-                    "type": "string"
                 }
             }
         },
         "example.ExaFileUploadAndDownload": {
             "type": "object",
             "properties": {
-                "createdAt": {
+                "CreatedAt": {
                     "description": "创建时间",
                     "type": "string"
                 },
-                "id": {
+                "ID": {
                     "description": "主键ID",
                     "type": "integer"
+                },
+                "UpdatedAt": {
+                    "description": "更新时间",
+                    "type": "string"
                 },
                 "key": {
                     "description": "编号",
                     "type": "string"
+                },
+                "mapData": {
+                    "description": "key-val 模式数据",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
                 },
                 "name": {
                     "description": "文件名",
@@ -4544,10 +6750,6 @@ var doc = `{
                 },
                 "tag": {
                     "description": "文件标签",
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "description": "更新时间",
                     "type": "string"
                 },
                 "url": {
@@ -4771,21 +6973,32 @@ var doc = `{
         "request.SearchApiParams": {
             "type": "object",
             "properties": {
-                "apiGroup": {
-                    "description": "api组",
+                "CreatedAt": {
+                    "description": "创建时间",
                     "type": "string"
                 },
-                "createdAt": {
-                    "description": "创建时间",
+                "ID": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "UpdatedAt": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "apiGroup": {
+                    "description": "api组",
                     "type": "string"
                 },
                 "description": {
                     "description": "api中文描述",
                     "type": "string"
                 },
-                "id": {
-                    "description": "主键ID",
-                    "type": "integer"
+                "mapData": {
+                    "description": "key-val 模式数据",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
                 },
                 "method": {
                     "description": "方法:创建POST(默认)|查看GET|更新PUT|删除DELETE",
@@ -4809,10 +7022,6 @@ var doc = `{
                 },
                 "path": {
                     "description": "api路径",
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "description": "更新时间",
                     "type": "string"
                 }
             }
@@ -4910,6 +7119,10 @@ var doc = `{
                     "description": "导出excel  add by ljd 20210709",
                     "type": "boolean"
                 },
+                "beNewWindow": {
+                    "description": "是否新页面打开编辑资料 add by ljd 20210709",
+                    "type": "boolean"
+                },
                 "description": {
                     "description": "Struct中文名称",
                     "type": "string"
@@ -4922,6 +7135,10 @@ var doc = `{
                 },
                 "humpPackageName": {
                     "description": "go文件名称",
+                    "type": "string"
+                },
+                "module": {
+                    "description": "模块 cms/game add by ljd 20210709",
                     "type": "string"
                 },
                 "packageName": {
@@ -4949,6 +7166,10 @@ var doc = `{
         "system.Field": {
             "type": "object",
             "properties": {
+                "beEditor": {
+                    "description": "富文本  add by ljd 20210709",
+                    "type": "boolean"
+                },
                 "beHide": {
                     "description": "隐藏  add by ljd 20210709",
                     "type": "boolean"
@@ -5006,21 +7227,32 @@ var doc = `{
         "system.SysApi": {
             "type": "object",
             "properties": {
-                "apiGroup": {
-                    "description": "api组",
+                "CreatedAt": {
+                    "description": "创建时间",
                     "type": "string"
                 },
-                "createdAt": {
-                    "description": "创建时间",
+                "ID": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "UpdatedAt": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "apiGroup": {
+                    "description": "api组",
                     "type": "string"
                 },
                 "description": {
                     "description": "api中文描述",
                     "type": "string"
                 },
-                "id": {
-                    "description": "主键ID",
-                    "type": "integer"
+                "mapData": {
+                    "description": "key-val 模式数据",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
                 },
                 "method": {
                     "description": "方法:创建POST(默认)|查看GET|更新PUT|删除DELETE",
@@ -5028,10 +7260,6 @@ var doc = `{
                 },
                 "path": {
                     "description": "api路径",
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "description": "更新时间",
                     "type": "string"
                 }
             }
@@ -5089,6 +7317,18 @@ var doc = `{
         "system.SysBaseMenu": {
             "type": "object",
             "properties": {
+                "CreatedAt": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "ID": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "UpdatedAt": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
                 "authoritys": {
                     "type": "array",
                     "items": {
@@ -5109,10 +7349,6 @@ var doc = `{
                     "description": "对应前端文件路径",
                     "type": "string"
                 },
-                "createdAt": {
-                    "description": "创建时间",
-                    "type": "string"
-                },
                 "defaultMenu": {
                     "description": "是否是基础路由（开发中）",
                     "type": "boolean"
@@ -5125,13 +7361,16 @@ var doc = `{
                     "description": "菜单图标",
                     "type": "string"
                 },
-                "id": {
-                    "description": "主键ID",
-                    "type": "integer"
-                },
                 "keepAlive": {
                     "description": "是否缓存",
                     "type": "boolean"
+                },
+                "mapData": {
+                    "description": "key-val 模式数据",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
                 },
                 "name": {
                     "description": "路由name",
@@ -5158,37 +7397,40 @@ var doc = `{
                 "title": {
                     "description": "菜单名",
                     "type": "string"
-                },
-                "updatedAt": {
-                    "description": "更新时间",
-                    "type": "string"
                 }
             }
         },
         "system.SysBaseMenuParameter": {
             "type": "object",
             "properties": {
-                "createdAt": {
+                "CreatedAt": {
                     "description": "创建时间",
                     "type": "string"
                 },
-                "id": {
+                "ID": {
                     "description": "主键ID",
                     "type": "integer"
+                },
+                "UpdatedAt": {
+                    "description": "更新时间",
+                    "type": "string"
                 },
                 "key": {
                     "description": "地址栏携带参数的key",
                     "type": "string"
+                },
+                "mapData": {
+                    "description": "key-val 模式数据",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
                 },
                 "sysBaseMenuID": {
                     "type": "integer"
                 },
                 "type": {
                     "description": "地址栏携带参数为params还是query",
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "description": "更新时间",
                     "type": "string"
                 },
                 "value": {
@@ -5200,17 +7442,28 @@ var doc = `{
         "system.SysDictionary": {
             "type": "object",
             "properties": {
-                "createdAt": {
+                "CreatedAt": {
                     "description": "创建时间",
+                    "type": "string"
+                },
+                "ID": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "UpdatedAt": {
+                    "description": "更新时间",
                     "type": "string"
                 },
                 "desc": {
                     "description": "描述",
                     "type": "string"
                 },
-                "id": {
-                    "description": "主键ID",
-                    "type": "integer"
+                "mapData": {
+                    "description": "key-val 模式数据",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
                 },
                 "name": {
                     "description": "字典名（中）",
@@ -5229,27 +7482,34 @@ var doc = `{
                 "type": {
                     "description": "字典名（英）",
                     "type": "string"
-                },
-                "updatedAt": {
-                    "description": "更新时间",
-                    "type": "string"
                 }
             }
         },
         "system.SysDictionaryDetail": {
             "type": "object",
             "properties": {
-                "createdAt": {
+                "CreatedAt": {
                     "description": "创建时间",
                     "type": "string"
                 },
-                "id": {
+                "ID": {
                     "description": "主键ID",
                     "type": "integer"
+                },
+                "UpdatedAt": {
+                    "description": "更新时间",
+                    "type": "string"
                 },
                 "label": {
                     "description": "展示值",
                     "type": "string"
+                },
+                "mapData": {
+                    "description": "key-val 模式数据",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
                 },
                 "sort": {
                     "description": "排序标记",
@@ -5263,10 +7523,6 @@ var doc = `{
                     "description": "关联标记",
                     "type": "integer"
                 },
-                "updatedAt": {
-                    "description": "更新时间",
-                    "type": "string"
-                },
                 "value": {
                     "description": "字典值",
                     "type": "integer"
@@ -5276,6 +7532,18 @@ var doc = `{
         "system.SysOperationRecord": {
             "type": "object",
             "properties": {
+                "CreatedAt": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "ID": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "UpdatedAt": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
                 "agent": {
                     "description": "代理",
                     "type": "string"
@@ -5284,17 +7552,9 @@ var doc = `{
                     "description": "请求Body",
                     "type": "string"
                 },
-                "createdAt": {
-                    "description": "创建时间",
-                    "type": "string"
-                },
                 "error_message": {
                     "description": "错误信息",
                     "type": "string"
-                },
-                "id": {
-                    "description": "主键ID",
-                    "type": "integer"
                 },
                 "ip": {
                     "description": "请求ip",
@@ -5303,6 +7563,13 @@ var doc = `{
                 "latency": {
                     "description": "延迟",
                     "type": "string"
+                },
+                "mapData": {
+                    "description": "key-val 模式数据",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
                 },
                 "method": {
                     "description": "请求方法",
@@ -5320,10 +7587,6 @@ var doc = `{
                     "description": "请求状态",
                     "type": "integer"
                 },
-                "updatedAt": {
-                    "description": "更新时间",
-                    "type": "string"
-                },
                 "user": {
                     "$ref": "#/definitions/system.SysUser"
                 },
@@ -5336,6 +7599,18 @@ var doc = `{
         "system.SysUser": {
             "type": "object",
             "properties": {
+                "CreatedAt": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "ID": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "UpdatedAt": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
                 "activeColor": {
                     "description": "活跃颜色",
                     "type": "string"
@@ -5357,17 +7632,16 @@ var doc = `{
                     "description": "基础颜色",
                     "type": "string"
                 },
-                "createdAt": {
-                    "description": "创建时间",
-                    "type": "string"
-                },
                 "headerImg": {
                     "description": "用户头像",
                     "type": "string"
                 },
-                "id": {
-                    "description": "主键ID",
-                    "type": "integer"
+                "mapData": {
+                    "description": "key-val 模式数据",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
                 },
                 "nickName": {
                     "description": "用户昵称",
@@ -5375,10 +7649,6 @@ var doc = `{
                 },
                 "sideMode": {
                     "description": "用户侧边主题",
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "description": "更新时间",
                     "type": "string"
                 },
                 "userName": {

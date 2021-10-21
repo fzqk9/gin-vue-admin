@@ -2,39 +2,248 @@ basePath: /
 definitions:
   autocode.AutoCodeExample:
     properties:
+      CreatedAt:
+        description: 创建时间
+        type: string
+      ID:
+        description: 主键ID
+        type: integer
+      UpdatedAt:
+        description: 更新时间
+        type: string
       autoCodeExampleField:
         description: 展示值
         type: string
-      createdAt:
+      mapData:
+        additionalProperties:
+          type: string
+        description: key-val 模式数据
+        type: object
+    type: object
+  autocode.BasicFile:
+    properties:
+      CreatedAt:
         description: 创建时间
         type: string
-      id:
+      ID:
         description: 主键ID
         type: integer
-      updatedAt:
+      UpdatedAt:
         description: 更新时间
+        type: string
+      download:
+        type: integer
+      driver:
+        type: integer
+      ext:
+        type: string
+      guid:
+        type: string
+      mapData:
+        additionalProperties:
+          type: string
+        description: key-val 模式数据
+        type: object
+      md5:
+        type: string
+      mediaType:
+        type: integer
+      module:
+        type: integer
+      name:
+        type: string
+      path:
+        type: string
+      sha1:
+        type: string
+      size:
+        type: integer
+      sort:
+        type: integer
+      usedTime:
+        type: integer
+      userId:
+        type: integer
+    type: object
+  autocode.CmsAd:
+    properties:
+      CreatedAt:
+        description: 创建时间
+        type: string
+      ID:
+        description: 主键ID
+        type: integer
+      UpdatedAt:
+        description: 更新时间
+        type: string
+      beTarget:
+        type: boolean
+      detail:
+        type: string
+      endTime:
+        type: string
+      expDetail:
+        type: string
+      image:
+        type: string
+      link:
+        type: string
+      mapData:
+        additionalProperties:
+          type: string
+        description: key-val 模式数据
+        type: object
+      mediaType:
+        type: integer
+      name:
+        type: string
+      seatId:
+        type: integer
+      sort:
+        type: integer
+      startTime:
+        type: string
+      status:
+        type: integer
+      totalClick:
+        type: integer
+    type: object
+  autocode.CmsAdSeat:
+    properties:
+      CreatedAt:
+        description: 创建时间
+        type: string
+      ID:
+        description: 主键ID
+        type: integer
+      UpdatedAt:
+        description: 更新时间
+        type: string
+      desc:
+        type: string
+      height:
+        type: integer
+      mapData:
+        additionalProperties:
+          type: string
+        description: key-val 模式数据
+        type: object
+      name:
+        type: string
+      status:
+        type: integer
+      style:
+        type: string
+      width:
+        type: integer
+    type: object
+  autocode.CmsArticle:
+    properties:
+      CreatedAt:
+        description: 创建时间
+        type: string
+      ID:
+        description: 主键ID
+        type: integer
+      UpdatedAt:
+        description: 更新时间
+        type: string
+      author:
+        type: string
+      authorEmail:
+        type: string
+      catId:
+        type: integer
+      catIdSys:
+        type: integer
+      chapter:
+        type: string
+      detail:
+        type: string
+      imageList:
+        type: string
+      isHot:
+        type: boolean
+      isTop:
+        type: boolean
+      link:
+        type: string
+      mapData:
+        additionalProperties:
+          type: string
+        description: key-val 模式数据
+        type: object
+      mediaList:
+        type: string
+      mediaType:
+        type: integer
+      name:
+        type: string
+      pid:
+        type: integer
+      qrcode:
+        type: string
+      referer:
+        type: string
+      sketch:
+        type: string
+      sort:
+        type: integer
+      status:
+        type: integer
+      tagList:
+        type: string
+      thumb:
+        type: string
+      totalClick:
+        type: integer
+      totalDiscuss:
+        type: integer
+      totalStar:
+        type: integer
+      totalStar1:
+        type: integer
+      totalStar2:
+        type: integer
+      totalStar3:
+        type: integer
+      totalStar4:
+        type: integer
+      totalStar5:
+        type: integer
+      userId:
+        type: integer
+      verifyMsg:
         type: string
     type: object
   autocode.CmsCat:
     properties:
+      CreatedAt:
+        description: 创建时间
+        type: string
+      ID:
+        description: 主键ID
+        type: integer
+      UpdatedAt:
+        description: 更新时间
+        type: string
       alias:
         type: string
       beNav:
         type: boolean
       beSys:
         type: boolean
-      createdAt:
-        description: 创建时间
-        type: string
       desc:
         type: string
       groupId:
         type: integer
-      id:
-        description: 主键ID
-        type: integer
       keywords:
         type: string
+      mapData:
+        additionalProperties:
+          type: string
+        description: key-val 模式数据
+        type: object
       mediaType:
         type: integer
       name:
@@ -46,9 +255,6 @@ definitions:
       status:
         type: integer
       thumb:
-        type: string
-      updatedAt:
-        description: 更新时间
         type: string
     type: object
   config.AliyunOSS:
@@ -168,8 +374,17 @@ definitions:
     type: object
   config.Local:
     properties:
+      base-path:
+        description: 本地文件 root
+        type: string
+      base-url:
+        description: 本地文件URL
+        type: string
       path:
-        description: 本地文件路径
+        description: 本地文件 系统文件上传
+        type: string
+      path-user:
+        description: 本地文件 -用户上传
         type: string
     type: object
   config.Mysql:
@@ -285,6 +500,10 @@ definitions:
       env:
         description: 环境值
         type: string
+      iplimitCount:
+        type: integer
+      iplimitTime:
+        type: integer
       ossType:
         description: Oss类型
         type: string
@@ -334,9 +553,6 @@ definitions:
       level:
         description: 级别
         type: string
-      linkName:
-        description: 软链接名称
-        type: string
       logInConsole:
         description: 输出控制台
         type: boolean
@@ -352,8 +568,14 @@ definitions:
     type: object
   example.ExaCustomer:
     properties:
-      createdAt:
+      CreatedAt:
         description: 创建时间
+        type: string
+      ID:
+        description: 主键ID
+        type: integer
+      UpdatedAt:
+        description: 更新时间
         type: string
       customerName:
         description: 客户名
@@ -361,9 +583,11 @@ definitions:
       customerPhoneData:
         description: 客户手机号
         type: string
-      id:
-        description: 主键ID
-        type: integer
+      mapData:
+        additionalProperties:
+          type: string
+        description: key-val 模式数据
+        type: object
       sysUser:
         $ref: '#/definitions/system.SysUser'
         description: 管理详情
@@ -373,29 +597,31 @@ definitions:
       sysUserId:
         description: 管理ID
         type: integer
-      updatedAt:
-        description: 更新时间
-        type: string
     type: object
   example.ExaFileUploadAndDownload:
     properties:
-      createdAt:
+      CreatedAt:
         description: 创建时间
         type: string
-      id:
+      ID:
         description: 主键ID
         type: integer
+      UpdatedAt:
+        description: 更新时间
+        type: string
       key:
         description: 编号
         type: string
+      mapData:
+        additionalProperties:
+          type: string
+        description: key-val 模式数据
+        type: object
       name:
         description: 文件名
         type: string
       tag:
         description: 文件标签
-        type: string
-      updatedAt:
-        description: 更新时间
         type: string
       url:
         description: 文件地址
@@ -548,18 +774,26 @@ definitions:
     type: object
   request.SearchApiParams:
     properties:
+      CreatedAt:
+        description: 创建时间
+        type: string
+      ID:
+        description: 主键ID
+        type: integer
+      UpdatedAt:
+        description: 更新时间
+        type: string
       apiGroup:
         description: api组
-        type: string
-      createdAt:
-        description: 创建时间
         type: string
       description:
         description: api中文描述
         type: string
-      id:
-        description: 主键ID
-        type: integer
+      mapData:
+        additionalProperties:
+          type: string
+        description: key-val 模式数据
+        type: object
       method:
         description: 方法:创建POST(默认)|查看GET|更新PUT|删除DELETE
         type: string
@@ -577,9 +811,6 @@ definitions:
         type: integer
       path:
         description: api路径
-        type: string
-      updatedAt:
-        description: 更新时间
         type: string
     type: object
   request.SetUserAuth:
@@ -647,6 +878,9 @@ definitions:
       beExcel:
         description: 导出excel  add by ljd 20210709
         type: boolean
+      beNewWindow:
+        description: 是否新页面打开编辑资料 add by ljd 20210709
+        type: boolean
       description:
         description: Struct中文名称
         type: string
@@ -656,6 +890,9 @@ definitions:
         type: array
       humpPackageName:
         description: go文件名称
+        type: string
+      module:
+        description: 模块 cms/game add by ljd 20210709
         type: string
       packageName:
         description: 文件名称
@@ -675,6 +912,9 @@ definitions:
     type: object
   system.Field:
     properties:
+      beEditor:
+        description: 富文本  add by ljd 20210709
+        type: boolean
       beHide:
         description: 隐藏  add by ljd 20210709
         type: boolean
@@ -717,26 +957,31 @@ definitions:
     type: object
   system.SysApi:
     properties:
+      CreatedAt:
+        description: 创建时间
+        type: string
+      ID:
+        description: 主键ID
+        type: integer
+      UpdatedAt:
+        description: 更新时间
+        type: string
       apiGroup:
         description: api组
-        type: string
-      createdAt:
-        description: 创建时间
         type: string
       description:
         description: api中文描述
         type: string
-      id:
-        description: 主键ID
-        type: integer
+      mapData:
+        additionalProperties:
+          type: string
+        description: key-val 模式数据
+        type: object
       method:
         description: 方法:创建POST(默认)|查看GET|更新PUT|删除DELETE
         type: string
       path:
         description: api路径
-        type: string
-      updatedAt:
-        description: 更新时间
         type: string
     type: object
   system.SysAuthority:
@@ -776,6 +1021,15 @@ definitions:
     type: object
   system.SysBaseMenu:
     properties:
+      CreatedAt:
+        description: 创建时间
+        type: string
+      ID:
+        description: 主键ID
+        type: integer
+      UpdatedAt:
+        description: 更新时间
+        type: string
       authoritys:
         items:
           $ref: '#/definitions/system.SysAuthority'
@@ -790,9 +1044,6 @@ definitions:
       component:
         description: 对应前端文件路径
         type: string
-      createdAt:
-        description: 创建时间
-        type: string
       defaultMenu:
         description: 是否是基础路由（开发中）
         type: boolean
@@ -802,12 +1053,14 @@ definitions:
       icon:
         description: 菜单图标
         type: string
-      id:
-        description: 主键ID
-        type: integer
       keepAlive:
         description: 是否缓存
         type: boolean
+      mapData:
+        additionalProperties:
+          type: string
+        description: key-val 模式数据
+        type: object
       name:
         description: 路由name
         type: string
@@ -827,28 +1080,30 @@ definitions:
       title:
         description: 菜单名
         type: string
-      updatedAt:
-        description: 更新时间
-        type: string
     type: object
   system.SysBaseMenuParameter:
     properties:
-      createdAt:
+      CreatedAt:
         description: 创建时间
         type: string
-      id:
+      ID:
         description: 主键ID
         type: integer
+      UpdatedAt:
+        description: 更新时间
+        type: string
       key:
         description: 地址栏携带参数的key
         type: string
+      mapData:
+        additionalProperties:
+          type: string
+        description: key-val 模式数据
+        type: object
       sysBaseMenuID:
         type: integer
       type:
         description: 地址栏携带参数为params还是query
-        type: string
-      updatedAt:
-        description: 更新时间
         type: string
       value:
         description: 地址栏携带参数的值
@@ -856,15 +1111,23 @@ definitions:
     type: object
   system.SysDictionary:
     properties:
-      createdAt:
+      CreatedAt:
         description: 创建时间
+        type: string
+      ID:
+        description: 主键ID
+        type: integer
+      UpdatedAt:
+        description: 更新时间
         type: string
       desc:
         description: 描述
         type: string
-      id:
-        description: 主键ID
-        type: integer
+      mapData:
+        additionalProperties:
+          type: string
+        description: key-val 模式数据
+        type: object
       name:
         description: 字典名（中）
         type: string
@@ -878,21 +1141,26 @@ definitions:
       type:
         description: 字典名（英）
         type: string
-      updatedAt:
-        description: 更新时间
-        type: string
     type: object
   system.SysDictionaryDetail:
     properties:
-      createdAt:
+      CreatedAt:
         description: 创建时间
         type: string
-      id:
+      ID:
         description: 主键ID
         type: integer
+      UpdatedAt:
+        description: 更新时间
+        type: string
       label:
         description: 展示值
         type: string
+      mapData:
+        additionalProperties:
+          type: string
+        description: key-val 模式数据
+        type: object
       sort:
         description: 排序标记
         type: integer
@@ -902,36 +1170,41 @@ definitions:
       sysDictionaryID:
         description: 关联标记
         type: integer
-      updatedAt:
-        description: 更新时间
-        type: string
       value:
         description: 字典值
         type: integer
     type: object
   system.SysOperationRecord:
     properties:
+      CreatedAt:
+        description: 创建时间
+        type: string
+      ID:
+        description: 主键ID
+        type: integer
+      UpdatedAt:
+        description: 更新时间
+        type: string
       agent:
         description: 代理
         type: string
       body:
         description: 请求Body
         type: string
-      createdAt:
-        description: 创建时间
-        type: string
       error_message:
         description: 错误信息
         type: string
-      id:
-        description: 主键ID
-        type: integer
       ip:
         description: 请求ip
         type: string
       latency:
         description: 延迟
         type: string
+      mapData:
+        additionalProperties:
+          type: string
+        description: key-val 模式数据
+        type: object
       method:
         description: 请求方法
         type: string
@@ -944,9 +1217,6 @@ definitions:
       status:
         description: 请求状态
         type: integer
-      updatedAt:
-        description: 更新时间
-        type: string
       user:
         $ref: '#/definitions/system.SysUser'
       user_id:
@@ -955,6 +1225,15 @@ definitions:
     type: object
   system.SysUser:
     properties:
+      CreatedAt:
+        description: 创建时间
+        type: string
+      ID:
+        description: 主键ID
+        type: integer
+      UpdatedAt:
+        description: 更新时间
+        type: string
       activeColor:
         description: 活跃颜色
         type: string
@@ -970,23 +1249,19 @@ definitions:
       baseColor:
         description: 基础颜色
         type: string
-      createdAt:
-        description: 创建时间
-        type: string
       headerImg:
         description: 用户头像
         type: string
-      id:
-        description: 主键ID
-        type: integer
+      mapData:
+        additionalProperties:
+          type: string
+        description: key-val 模式数据
+        type: object
       nickName:
         description: 用户昵称
         type: string
       sideMode:
         description: 用户侧边主题
-        type: string
-      updatedAt:
-        description: 更新时间
         type: string
       userName:
         description: 用户登录名
@@ -1535,21 +1810,21 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: 展示值
-        in: query
-        name: autoCodeExampleField
-        type: string
       - description: 创建时间
         in: query
-        name: createdAt
+        name: CreatedAt
         type: string
       - description: 主键ID
         in: query
-        name: id
+        name: ID
         type: integer
       - description: 更新时间
         in: query
-        name: updatedAt
+        name: UpdatedAt
+        type: string
+      - description: 展示值
+        in: query
+        name: autoCodeExampleField
         type: string
       produces:
       - application/json
@@ -1568,18 +1843,22 @@ paths:
       consumes:
       - application/json
       parameters:
+      - description: 创建时间
+        in: query
+        name: CreatedAt
+        type: string
+      - description: 主键ID
+        in: query
+        name: ID
+        type: integer
+      - description: 更新时间
+        in: query
+        name: UpdatedAt
+        type: string
       - description: 展示值
         in: query
         name: autoCodeExampleField
         type: string
-      - description: 创建时间
-        in: query
-        name: createdAt
-        type: string
-      - description: 主键ID
-        in: query
-        name: id
-        type: integer
       - description: 排序方式:升序false(默认)|降序true
         in: query
         name: orderDesc
@@ -1596,10 +1875,6 @@ paths:
         in: query
         name: pageSize
         type: integer
-      - description: 更新时间
-        in: query
-        name: updatedAt
-        type: string
       produces:
       - application/json
       responses:
@@ -1670,6 +1945,279 @@ paths:
       summary: 用户登录
       tags:
       - Base
+  /basicFile/createBasicFile:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建BasicFile
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/autocode.BasicFile'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"获取成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 创建BasicFile
+      tags:
+      - BasicFile
+  /basicFile/deleteBasicFile:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 删除BasicFile
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/autocode.BasicFile'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"删除成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 删除BasicFile
+      tags:
+      - BasicFile
+  /basicFile/deleteBasicFileByIds:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 批量删除BasicFile
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.IdsReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"批量删除成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 批量删除BasicFile
+      tags:
+      - BasicFile
+  /basicFile/findBasicFile:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建时间
+        in: query
+        name: CreatedAt
+        type: string
+      - description: 主键ID
+        in: query
+        name: ID
+        type: integer
+      - description: 更新时间
+        in: query
+        name: UpdatedAt
+        type: string
+      - in: query
+        name: download
+        type: integer
+      - in: query
+        name: driver
+        type: integer
+      - in: query
+        name: ext
+        type: string
+      - in: query
+        name: guid
+        type: string
+      - in: query
+        name: md5
+        type: string
+      - in: query
+        name: mediaType
+        type: integer
+      - in: query
+        name: module
+        type: integer
+      - in: query
+        name: name
+        type: string
+      - in: query
+        name: path
+        type: string
+      - in: query
+        name: sha1
+        type: string
+      - in: query
+        name: size
+        type: integer
+      - in: query
+        name: sort
+        type: integer
+      - in: query
+        name: usedTime
+        type: integer
+      - in: query
+        name: userId
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"查询成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 用id查询BasicFile
+      tags:
+      - BasicFile
+  /basicFile/getBasicFileList:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建时间
+        in: query
+        name: CreatedAt
+        type: string
+      - description: 主键ID
+        in: query
+        name: ID
+        type: integer
+      - description: 更新时间
+        in: query
+        name: UpdatedAt
+        type: string
+      - in: query
+        name: download
+        type: integer
+      - in: query
+        name: driver
+        type: integer
+      - in: query
+        name: ext
+        type: string
+      - in: query
+        name: guid
+        type: string
+      - in: query
+        name: md5
+        type: string
+      - in: query
+        name: mediaType
+        type: integer
+      - in: query
+        name: module
+        type: integer
+      - in: query
+        name: name
+        type: string
+      - description: 排序方式:升序false(默认)|降序true
+        in: query
+        name: orderDesc
+        type: boolean
+      - description: Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd
+        in: query
+        name: orderKey
+        type: string
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页大小
+        in: query
+        name: pageSize
+        type: integer
+      - in: query
+        name: path
+        type: string
+      - in: query
+        name: sha1
+        type: string
+      - in: query
+        name: size
+        type: integer
+      - in: query
+        name: sort
+        type: integer
+      - in: query
+        name: usedTime
+        type: integer
+      - in: query
+        name: userId
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"获取成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 分页获取BasicFile列表
+      tags:
+      - BasicFile
+  /basicFile/quickEdit:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 快速更新BasicFile
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/autocode.BasicFile'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"更新成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 快速更新
+      tags:
+      - QuickEdit
+  /basicFile/updateBasicFile:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 更新BasicFile
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/autocode.BasicFile'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"更新成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 更新BasicFile
+      tags:
+      - BasicFile
   /casbin/UpdateCasbin:
     post:
       consumes:
@@ -1716,6 +2264,873 @@ paths:
       summary: 获取权限列表
       tags:
       - Casbin
+  /cmsAd/createCmsAd:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建CmsAd
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/autocode.CmsAd'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"获取成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 创建CmsAd
+      tags:
+      - CmsAd
+  /cmsAd/deleteCmsAd:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 删除CmsAd
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/autocode.CmsAd'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"删除成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 删除CmsAd
+      tags:
+      - CmsAd
+  /cmsAd/deleteCmsAdByIds:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 批量删除CmsAd
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.IdsReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"批量删除成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 批量删除CmsAd
+      tags:
+      - CmsAd
+  /cmsAd/findCmsAd:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建时间
+        in: query
+        name: CreatedAt
+        type: string
+      - description: 主键ID
+        in: query
+        name: ID
+        type: integer
+      - description: 更新时间
+        in: query
+        name: UpdatedAt
+        type: string
+      - in: query
+        name: beTarget
+        type: boolean
+      - in: query
+        name: detail
+        type: string
+      - in: query
+        name: endTime
+        type: string
+      - in: query
+        name: expDetail
+        type: string
+      - in: query
+        name: image
+        type: string
+      - in: query
+        name: link
+        type: string
+      - in: query
+        name: mediaType
+        type: integer
+      - in: query
+        name: name
+        type: string
+      - in: query
+        name: seatId
+        type: integer
+      - in: query
+        name: sort
+        type: integer
+      - in: query
+        name: startTime
+        type: string
+      - in: query
+        name: status
+        type: integer
+      - in: query
+        name: totalClick
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"查询成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 用id查询CmsAd
+      tags:
+      - CmsAd
+  /cmsAd/getCmsAdList:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建时间
+        in: query
+        name: CreatedAt
+        type: string
+      - description: 主键ID
+        in: query
+        name: ID
+        type: integer
+      - description: 更新时间
+        in: query
+        name: UpdatedAt
+        type: string
+      - in: query
+        name: beTarget
+        type: boolean
+      - in: query
+        name: detail
+        type: string
+      - in: query
+        name: endTime
+        type: string
+      - in: query
+        name: expDetail
+        type: string
+      - in: query
+        name: image
+        type: string
+      - in: query
+        name: link
+        type: string
+      - in: query
+        name: mediaType
+        type: integer
+      - in: query
+        name: name
+        type: string
+      - description: 排序方式:升序false(默认)|降序true
+        in: query
+        name: orderDesc
+        type: boolean
+      - description: Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd
+        in: query
+        name: orderKey
+        type: string
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页大小
+        in: query
+        name: pageSize
+        type: integer
+      - in: query
+        name: seatId
+        type: integer
+      - in: query
+        name: sort
+        type: integer
+      - in: query
+        name: startTime
+        type: string
+      - in: query
+        name: status
+        type: integer
+      - in: query
+        name: totalClick
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"获取成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 分页获取CmsAd列表
+      tags:
+      - CmsAd
+  /cmsAd/quickEdit:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 快速更新CmsAd
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/autocode.CmsAd'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"更新成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 快速更新
+      tags:
+      - QuickEdit
+  /cmsAd/updateCmsAd:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 更新 QuickEdit
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/autocode.CmsAd'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"更新成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 更新QuickEdit
+      tags:
+      - QuickEdit
+  /cmsAdSeat/createCmsAdSeat:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建CmsAdSeat
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/autocode.CmsAdSeat'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"获取成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 创建CmsAdSeat
+      tags:
+      - CmsAdSeat
+  /cmsAdSeat/deleteCmsAdSeat:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 删除CmsAdSeat
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/autocode.CmsAdSeat'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"删除成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 删除CmsAdSeat
+      tags:
+      - CmsAdSeat
+  /cmsAdSeat/deleteCmsAdSeatByIds:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 批量删除CmsAdSeat
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.IdsReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"批量删除成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 批量删除CmsAdSeat
+      tags:
+      - CmsAdSeat
+  /cmsAdSeat/findCmsAdSeat:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建时间
+        in: query
+        name: CreatedAt
+        type: string
+      - description: 主键ID
+        in: query
+        name: ID
+        type: integer
+      - description: 更新时间
+        in: query
+        name: UpdatedAt
+        type: string
+      - in: query
+        name: desc
+        type: string
+      - in: query
+        name: height
+        type: integer
+      - in: query
+        name: name
+        type: string
+      - in: query
+        name: status
+        type: integer
+      - in: query
+        name: style
+        type: string
+      - in: query
+        name: width
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"查询成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 用id查询CmsAdSeat
+      tags:
+      - CmsAdSeat
+  /cmsAdSeat/getCmsAdSeatList:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建时间
+        in: query
+        name: CreatedAt
+        type: string
+      - description: 主键ID
+        in: query
+        name: ID
+        type: integer
+      - description: 更新时间
+        in: query
+        name: UpdatedAt
+        type: string
+      - in: query
+        name: desc
+        type: string
+      - in: query
+        name: height
+        type: integer
+      - in: query
+        name: name
+        type: string
+      - description: 排序方式:升序false(默认)|降序true
+        in: query
+        name: orderDesc
+        type: boolean
+      - description: Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd
+        in: query
+        name: orderKey
+        type: string
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页大小
+        in: query
+        name: pageSize
+        type: integer
+      - in: query
+        name: status
+        type: integer
+      - in: query
+        name: style
+        type: string
+      - in: query
+        name: width
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"获取成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 分页获取CmsAdSeat列表
+      tags:
+      - CmsAdSeat
+  /cmsAdSeat/quickEdit:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 快速更新CmsAdSeat
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/autocode.CmsAdSeat'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"更新成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 快速更新
+      tags:
+      - QuickEdit
+  /cmsAdSeat/updateCmsAdSeat:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 更新CmsAdSeat
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/autocode.CmsAdSeat'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"更新成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 更新CmsAdSeat
+      tags:
+      - CmsAdSeat
+  /cmsArticle/createCmsArticle:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建CmsArticle
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/autocode.CmsArticle'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"获取成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 创建CmsArticle
+      tags:
+      - CmsArticle
+  /cmsArticle/deleteCmsArticle:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 删除CmsArticle
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/autocode.CmsArticle'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"删除成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 删除CmsArticle
+      tags:
+      - CmsArticle
+  /cmsArticle/deleteCmsArticleByIds:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 批量删除CmsArticle
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.IdsReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"批量删除成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 批量删除CmsArticle
+      tags:
+      - CmsArticle
+  /cmsArticle/findCmsArticle:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建时间
+        in: query
+        name: CreatedAt
+        type: string
+      - description: 主键ID
+        in: query
+        name: ID
+        type: integer
+      - description: 更新时间
+        in: query
+        name: UpdatedAt
+        type: string
+      - in: query
+        name: author
+        type: string
+      - in: query
+        name: authorEmail
+        type: string
+      - in: query
+        name: catId
+        type: integer
+      - in: query
+        name: catIdSys
+        type: integer
+      - in: query
+        name: chapter
+        type: string
+      - in: query
+        name: detail
+        type: string
+      - in: query
+        name: imageList
+        type: string
+      - in: query
+        name: isHot
+        type: boolean
+      - in: query
+        name: isTop
+        type: boolean
+      - in: query
+        name: link
+        type: string
+      - in: query
+        name: mediaList
+        type: string
+      - in: query
+        name: mediaType
+        type: integer
+      - in: query
+        name: name
+        type: string
+      - in: query
+        name: pid
+        type: integer
+      - in: query
+        name: qrcode
+        type: string
+      - in: query
+        name: referer
+        type: string
+      - in: query
+        name: sketch
+        type: string
+      - in: query
+        name: sort
+        type: integer
+      - in: query
+        name: status
+        type: integer
+      - in: query
+        name: tagList
+        type: string
+      - in: query
+        name: thumb
+        type: string
+      - in: query
+        name: totalClick
+        type: integer
+      - in: query
+        name: totalDiscuss
+        type: integer
+      - in: query
+        name: totalStar
+        type: integer
+      - in: query
+        name: totalStar1
+        type: integer
+      - in: query
+        name: totalStar2
+        type: integer
+      - in: query
+        name: totalStar3
+        type: integer
+      - in: query
+        name: totalStar4
+        type: integer
+      - in: query
+        name: totalStar5
+        type: integer
+      - in: query
+        name: userId
+        type: integer
+      - in: query
+        name: verifyMsg
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"查询成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 用id查询CmsArticle
+      tags:
+      - CmsArticle
+  /cmsArticle/getCmsArticleList:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建时间
+        in: query
+        name: CreatedAt
+        type: string
+      - description: 主键ID
+        in: query
+        name: ID
+        type: integer
+      - description: 更新时间
+        in: query
+        name: UpdatedAt
+        type: string
+      - in: query
+        name: author
+        type: string
+      - in: query
+        name: authorEmail
+        type: string
+      - in: query
+        name: catId
+        type: integer
+      - in: query
+        name: catIdSys
+        type: integer
+      - in: query
+        name: chapter
+        type: string
+      - in: query
+        name: detail
+        type: string
+      - in: query
+        name: imageList
+        type: string
+      - in: query
+        name: isHot
+        type: boolean
+      - in: query
+        name: isTop
+        type: boolean
+      - in: query
+        name: link
+        type: string
+      - in: query
+        name: mediaList
+        type: string
+      - in: query
+        name: mediaType
+        type: integer
+      - in: query
+        name: name
+        type: string
+      - description: 排序方式:升序false(默认)|降序true
+        in: query
+        name: orderDesc
+        type: boolean
+      - description: Add By ljd 20210708, 统一在这里增加 OrderKey OrderDesc CreatedAtBegin  CreatedAtEnd
+        in: query
+        name: orderKey
+        type: string
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页大小
+        in: query
+        name: pageSize
+        type: integer
+      - in: query
+        name: pid
+        type: integer
+      - in: query
+        name: qrcode
+        type: string
+      - in: query
+        name: referer
+        type: string
+      - in: query
+        name: sketch
+        type: string
+      - in: query
+        name: sort
+        type: integer
+      - in: query
+        name: status
+        type: integer
+      - in: query
+        name: tagList
+        type: string
+      - in: query
+        name: thumb
+        type: string
+      - in: query
+        name: totalClick
+        type: integer
+      - in: query
+        name: totalDiscuss
+        type: integer
+      - in: query
+        name: totalStar
+        type: integer
+      - in: query
+        name: totalStar1
+        type: integer
+      - in: query
+        name: totalStar2
+        type: integer
+      - in: query
+        name: totalStar3
+        type: integer
+      - in: query
+        name: totalStar4
+        type: integer
+      - in: query
+        name: totalStar5
+        type: integer
+      - in: query
+        name: userId
+        type: integer
+      - in: query
+        name: verifyMsg
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"获取成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 分页获取CmsArticle列表
+      tags:
+      - CmsArticle
+  /cmsArticle/quickEdit:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 快速更新CmsArticle
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/autocode.CmsArticle'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"更新成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 快速更新
+      tags:
+      - QuickEdit
+  /cmsArticle/updateCmsArticle:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 更新CmsArticle
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/autocode.CmsArticle'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"更新成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 更新CmsArticle
+      tags:
+      - CmsArticle
   /cmsCat/createCmsCat:
     post:
       consumes:
@@ -1790,6 +3205,18 @@ paths:
       consumes:
       - application/json
       parameters:
+      - description: 创建时间
+        in: query
+        name: CreatedAt
+        type: string
+      - description: 主键ID
+        in: query
+        name: ID
+        type: integer
+      - description: 更新时间
+        in: query
+        name: UpdatedAt
+        type: string
       - in: query
         name: alias
         type: string
@@ -1799,19 +3226,11 @@ paths:
       - in: query
         name: beSys
         type: boolean
-      - description: 创建时间
-        in: query
-        name: createdAt
-        type: string
       - in: query
         name: desc
         type: string
       - in: query
         name: groupId
-        type: integer
-      - description: 主键ID
-        in: query
-        name: id
         type: integer
       - in: query
         name: keywords
@@ -1834,10 +3253,6 @@ paths:
       - in: query
         name: thumb
         type: string
-      - description: 更新时间
-        in: query
-        name: updatedAt
-        type: string
       produces:
       - application/json
       responses:
@@ -1855,6 +3270,18 @@ paths:
       consumes:
       - application/json
       parameters:
+      - description: 创建时间
+        in: query
+        name: CreatedAt
+        type: string
+      - description: 主键ID
+        in: query
+        name: ID
+        type: integer
+      - description: 更新时间
+        in: query
+        name: UpdatedAt
+        type: string
       - in: query
         name: alias
         type: string
@@ -1864,19 +3291,11 @@ paths:
       - in: query
         name: beSys
         type: boolean
-      - description: 创建时间
-        in: query
-        name: createdAt
-        type: string
       - in: query
         name: desc
         type: string
       - in: query
         name: groupId
-        type: integer
-      - description: 主键ID
-        in: query
-        name: id
         type: integer
       - in: query
         name: keywords
@@ -1915,10 +3334,6 @@ paths:
       - in: query
         name: thumb
         type: string
-      - description: 更新时间
-        in: query
-        name: updatedAt
-        type: string
       produces:
       - application/json
       responses:
@@ -1936,7 +3351,7 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: 快速更新
+      - description: 快速更新CmsCat
         in: body
         name: data
         required: true
@@ -2006,7 +3421,15 @@ paths:
       parameters:
       - description: 创建时间
         in: query
-        name: createdAt
+        name: CreatedAt
+        type: string
+      - description: 主键ID
+        in: query
+        name: ID
+        type: integer
+      - description: 更新时间
+        in: query
+        name: UpdatedAt
         type: string
       - description: 客户名
         in: query
@@ -2016,10 +3439,6 @@ paths:
         in: query
         name: customerPhoneData
         type: string
-      - description: 主键ID
-        in: query
-        name: id
-        type: integer
       - description: 管理角色ID
         in: query
         name: sysUserAuthorityID
@@ -2028,10 +3447,6 @@ paths:
         in: query
         name: sysUserId
         type: integer
-      - description: 更新时间
-        in: query
-        name: updatedAt
-        type: string
       produces:
       - application/json
       responses:
@@ -2668,16 +4083,20 @@ paths:
       parameters:
       - description: 创建时间
         in: query
-        name: createdAt
+        name: CreatedAt
+        type: string
+      - description: 主键ID
+        in: query
+        name: ID
+        type: integer
+      - description: 更新时间
+        in: query
+        name: UpdatedAt
         type: string
       - description: 描述
         in: query
         name: desc
         type: string
-      - description: 主键ID
-        in: query
-        name: id
-        type: integer
       - description: 字典名（中）
         in: query
         name: name
@@ -2689,10 +4108,6 @@ paths:
       - description: 字典名（英）
         in: query
         name: type
-        type: string
-      - description: 更新时间
-        in: query
-        name: updatedAt
         type: string
       produces:
       - application/json
@@ -2713,16 +4128,20 @@ paths:
       parameters:
       - description: 创建时间
         in: query
-        name: createdAt
+        name: CreatedAt
+        type: string
+      - description: 主键ID
+        in: query
+        name: ID
+        type: integer
+      - description: 更新时间
+        in: query
+        name: UpdatedAt
         type: string
       - description: 描述
         in: query
         name: desc
         type: string
-      - description: 主键ID
-        in: query
-        name: id
-        type: integer
       - description: 字典名（中）
         in: query
         name: name
@@ -2750,10 +4169,6 @@ paths:
       - description: 字典名（英）
         in: query
         name: type
-        type: string
-      - description: 更新时间
-        in: query
-        name: updatedAt
         type: string
       produces:
       - application/json
@@ -2843,12 +4258,16 @@ paths:
       parameters:
       - description: 创建时间
         in: query
-        name: createdAt
+        name: CreatedAt
         type: string
       - description: 主键ID
         in: query
-        name: id
+        name: ID
         type: integer
+      - description: 更新时间
+        in: query
+        name: UpdatedAt
+        type: string
       - description: 展示值
         in: query
         name: label
@@ -2865,10 +4284,6 @@ paths:
         in: query
         name: sysDictionaryID
         type: integer
-      - description: 更新时间
-        in: query
-        name: updatedAt
-        type: string
       - description: 字典值
         in: query
         name: value
@@ -2892,12 +4307,16 @@ paths:
       parameters:
       - description: 创建时间
         in: query
-        name: createdAt
+        name: CreatedAt
         type: string
       - description: 主键ID
         in: query
-        name: id
+        name: ID
         type: integer
+      - description: 更新时间
+        in: query
+        name: UpdatedAt
+        type: string
       - description: 展示值
         in: query
         name: label
@@ -2930,10 +4349,6 @@ paths:
         in: query
         name: sysDictionaryID
         type: integer
-      - description: 更新时间
-        in: query
-        name: updatedAt
-        type: string
       - description: 字典值
         in: query
         name: value
@@ -3047,6 +4462,18 @@ paths:
       consumes:
       - application/json
       parameters:
+      - description: 创建时间
+        in: query
+        name: CreatedAt
+        type: string
+      - description: 主键ID
+        in: query
+        name: ID
+        type: integer
+      - description: 更新时间
+        in: query
+        name: UpdatedAt
+        type: string
       - description: 代理
         in: query
         name: agent
@@ -3055,18 +4482,10 @@ paths:
         in: query
         name: body
         type: string
-      - description: 创建时间
-        in: query
-        name: createdAt
-        type: string
       - description: 错误信息
         in: query
         name: error_message
         type: string
-      - description: 主键ID
-        in: query
-        name: id
-        type: integer
       - description: 请求ip
         in: query
         name: ip
@@ -3091,10 +4510,6 @@ paths:
         in: query
         name: status
         type: integer
-      - description: 更新时间
-        in: query
-        name: updatedAt
-        type: string
       - description: 用户id
         in: query
         name: user_id
@@ -3116,6 +4531,18 @@ paths:
       consumes:
       - application/json
       parameters:
+      - description: 创建时间
+        in: query
+        name: CreatedAt
+        type: string
+      - description: 主键ID
+        in: query
+        name: ID
+        type: integer
+      - description: 更新时间
+        in: query
+        name: UpdatedAt
+        type: string
       - description: 代理
         in: query
         name: agent
@@ -3124,18 +4551,10 @@ paths:
         in: query
         name: body
         type: string
-      - description: 创建时间
-        in: query
-        name: createdAt
-        type: string
       - description: 错误信息
         in: query
         name: error_message
         type: string
-      - description: 主键ID
-        in: query
-        name: id
-        type: integer
       - description: 请求ip
         in: query
         name: ip
@@ -3176,10 +4595,6 @@ paths:
         in: query
         name: status
         type: integer
-      - description: 更新时间
-        in: query
-        name: updatedAt
-        type: string
       - description: 用户id
         in: query
         name: user_id
