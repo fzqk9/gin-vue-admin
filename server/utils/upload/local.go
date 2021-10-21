@@ -61,9 +61,10 @@ func (*Local) UploadFile(file *multipart.FileHeader, module int, userType int) (
 			"/" + time.Now().Format("20060102")
 	}
 	fmt.Println("UploadFile path = ", path)
+
 	// 尝试创建此路径
 	//mkdirErr := os.MkdirAll(global.GVA_CONFIG.Local.Path, os.ModePerm)
-	mkdirErr := os.MkdirAll(path, os.ModePerm)
+	mkdirErr := os.MkdirAll(global.GVA_CONFIG.Local.BasePath+path, os.ModePerm)
 	if mkdirErr != nil {
 		global.GVA_LOG.Error("function os.MkdirAll() Filed", zap.Any("err", mkdirErr.Error()))
 		return "", "", errors.New("function os.MkdirAll() Filed, err:" + mkdirErr.Error())
@@ -76,9 +77,9 @@ func (*Local) UploadFile(file *multipart.FileHeader, module int, userType int) (
 	pathAll_src := global.GVA_CONFIG.Local.BasePath + path_src
 	fmt.Println("UploadFile path   = ", path)
 	fmt.Println("UploadFile path_src   = ", path_src)
+	fmt.Println("UploadFile pathAll   = ", pathAll)
+	fmt.Println("UploadFile pathAll_src = ", pathAll_src)
 
-	fmt.Println("UploadFile pathAll 2 = ", pathAll)
-	fmt.Println("UploadFile pathAll_src 2 = ", pathAll_src)
 	f, openError := file.Open() // 读取文件
 	if openError != nil {
 		global.GVA_LOG.Error("AAA file.Open() Filed", zap.Any("err", openError.Error()))
